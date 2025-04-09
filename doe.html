@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doe - ISNA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="css/estilo.css">
+  <style>
+    /* Estilização adicional para os cards */
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-img-top {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .card-text {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Menu de Navegação -->
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark" id="mainNav"">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">ISNA</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quem_somos.html">Quem Somos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="linha_de_atuacao.html">Linha de Atuação</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="galeria.html">Galeria</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="parceiros.html">Parceiros</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="doe.html">Doe</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contato.html">Fale Conosco</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <div class="container mt-5">
+    <h1 class="mb-4 text-center">Faça sua Doação</h1>
+    <p class="mb-5 text-center">
+      Sua contribuição é essencial para continuarmos com nossos projetos sociais e ajudarmos mais pessoas.
+      Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
+    </p>
+
+    <div class="row">
+      <!-- Card 1: Depósito Bancário - Caixa Econômica Federal -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <!-- Substitua "imagens/deposito.jpg" pelo caminho da imagem relacionada ao Depósito Bancário -->
+          <img src="imagens/deposito.jpg" class="card-img-top" alt="Depósito Bancário - Caixa">
+          <div class="card-body">
+            <h5 class="card-title">Depósito Bancário</h5>
+            <p class="card-text">
+              Realize sua doação por meio de depósito ou transferência bancária utilizando os dados abaixo:
+            </p>
+            <ul class="list-unstyled">
+              <li><strong>Banco:</strong> Caixa Econômica Federal</li>
+              <li><strong>Agência:</strong> 0769</li>
+              <li><strong>Operação:</strong> 003</li>
+              <li><strong>Conta Corrente:</strong> 54213-6</li>
+              <li><strong>CNPJ:</strong> 08.912.758/0001-08</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2: Doação via PayPal -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <!-- Substitua "imagens/paypal.jpg" pelo caminho da imagem relacionada ao PayPal -->
+          <img src="imagens/paypal.jpg" class="card-img-top" alt="Doação via PayPal">
+          <div class="card-body">
+            <h5 class="card-title">Doação via PayPal</h5>
+            <p class="card-text">
+              Contribua utilizando o PayPal, uma opção rápida e segura para doações online.
+            </p>
+            <div class="text-center">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_donations">
+                <!-- Substitua "seu-email@example.com" pelo e-mail da sua conta PayPal -->
+                <input type="hidden" name="business" value="seu-email@example.com">
+                <input type="hidden" name="currency_code" value="BRL">
+                <input type="image" src="https://www.paypalobjects.com/pt_BR/i/btn/btn_donateCC_LG.gif" border="0"
+                       name="submit" alt="Faça uma doação usando o PayPal">
+                <img alt="" border="0" src="https://www.paypal.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3: Doação via Iugu -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <!-- Substitua "imagens/iugu.jpg" pelo caminho da imagem relacionada ao Iugu -->
+          <img src="imagens/iugu.jpg" class="card-img-top" alt="Doação via Iugu">
+          <div class="card-body">
+            <h5 class="card-title">Doação via Iugu</h5>
+            <p class="card-text">
+              Utilize a Iugu para efetuar sua doação com segurança. Clique no botão abaixo para ser redirecionado ao formulário de doação.
+            </p>
+            <div class="text-center">
+              <!-- Substitua "https://iugu.com/seu-link-de-doacao" pelo seu link de doação Iugu -->
+              <a href="https://assinaturas.chiapettadev.site" class="btn btn-success" target="_blank">Doar com Iugu</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 ISNA. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+  <!-- Bootstrap JS (inclui Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

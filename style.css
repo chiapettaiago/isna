@@ -1,0 +1,24 @@
+/* CSS customizado para complementar o Bootstrap */
+
+/* Efeito de sobreposição na seção Hero para melhorar a legibilidade do texto */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Garante que o conteúdo da seção Hero fique acima da sobreposição */
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Espaçamento padrão para seções */
+section {
+  position: relative;
+}
