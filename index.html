@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
   <title>ISNA - Impacto Social</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,7 +14,11 @@
   <!-- Navbar -->
   <nav class="navbar sticky-top  navbar-expand-lg navbar-dark bg-dark" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#">ISNA</a>
+      <a class="navbar-brand position-relative" href="index.html">
+        <img src="images/logo.png" alt="Logo do Instituto" class="position-absolute top-50 start-0 translate-middle-y" style="height: 80px;">
+      </a>
+      
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
               aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
         <span class="navbar-toggler-icon"></span>
@@ -24,7 +29,7 @@
             <a class="nav-link active" href="#">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="quem_somos.html">Quem Somos</a>
+            <a class="nav-link" href="#quem-somos">Quem Somos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#linha-atuacao">Linha de Atuação</a>
@@ -50,7 +55,7 @@
   background-position: center; /* Centraliza a imagem no elemento */
   background-repeat: no-repeat; /* Evita a repetição da imagem */">
     <div class="container text-center">
-      <h1 class="display-4">Bem-vindo ao ISNA - Impacto Social</h1>
+      <h1 class="display-4">Bem-vindo ao Instituto Social Novo Amanhecer</h1>
       <p class="lead">Qualificando pessoas para inclusão no mercado de trabalho.</p>
       <a href="#quem-somos" class="btn btn-warning btn-lg mt-3">Saiba Mais</a>
     </div>
@@ -176,9 +181,38 @@
   <!-- Rodapé -->
   <footer class="bg-dark text-white text-center py-3">
     <div class="container">
-      <p class="mb-0">&copy; 2025 ISNA. Todos os direitos reservados.</p>
+      <p class="mb-0">&copy; 2025 Instituto Social Novo Amanhecer. Todos os direitos reservados. Desenvolvido por <a href="https://chiapettadev.site">Iago Chiapetta</a></p>
     </div>
   </footer>
+
+  <script>
+    var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = url;
+    var options = {
+    "enabled": true,
+    "chatButtonSetting": {
+    "backgroundColor": "#16BE45",
+    "ctaText": "Fale Conosco",
+    "borderRadius": "8",
+    "marginLeft": "20",
+    "marginBottom": "20",
+    "marginRight": "20",
+    "position": "left",
+    "textColor": "#ffffff",
+    "phoneNumber": "55219 98074784",
+    "messageText": "Olá, gostaria de saber mais sobre o instituto",
+    "trackClick": true
+    }
+    }
+    s.onload = function() {
+    CreateWhatsappBtn(options);
+    };
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+    </script>
 
   <script>
      // JavaScript para ajustar a opacidade da navbar ao rolar a página
@@ -198,6 +232,8 @@
   data-window-height="500px"
   data-window-width="350px"
   data-assistant-name="Isna"
+  data-brand-image-url="images/favicon.ico"
+  data-assistant-icon="images/favicon.ico"
   data-greeting="Olá! Bem-vindo ao ISNA. Como posso ajudar?"
   data-sponsor-text="Desenvolvido por Iago Chiapetta"
   data-sponsor-link="https://chiapettadev.site"
