@@ -14,12 +14,12 @@ navMenu.addEventListener('click', () => {
     navMenu.classList.toggle('active');
 });
 
- // JavaScript para ajustar a opacidade da navbar ao rolar a página
- window.addEventListener("scroll", function() {
-    const nav = document.getElementById("mainNav");
-    if (window.scrollY > 50) {
-      nav.classList.add("opacity-75");
-    } else {
-      nav.classList.remove("opacity-75");
-    }
-  });
+// JavaScript para ajustar a opacidade da navbar ao rolar a página
+window.addEventListener("scroll", function() {
+  const nav = document.getElementById("mainNav");
+  if (window.scrollY > 50) {
+    nav.classList.add("opacity-75");
+  } else {
+    nav.classList.remove("opacity-75");
+  }
+});

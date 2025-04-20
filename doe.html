@@ -207,6 +207,18 @@
     </div>
   </footer>
 
+  <script>
+    // JavaScript para ajustar a opacidade da navbar ao rolar a página
+    window.addEventListener("scroll", function() {
+     const nav = document.getElementById("mainNav");
+     if (window.scrollY > 50) {
+       nav.classList.add("opacity-75");
+     } else {
+       nav.classList.remove("opacity-75");
+     }
+   });
+ </script>
+
   <script
   data-embed-id="89a26c8a-296d-468e-9d5f-33bee8d0e689"
   data-chat-icon="chatBubble"
