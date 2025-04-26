@@ -23,3 +23,4 @@ window.addEventListener("scroll", function() {
     nav.classList.remove("opacity-75");
   }
 });
+

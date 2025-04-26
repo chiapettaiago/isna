@@ -22,3 +22,8 @@
 section {
   position: relative;
 }
+@media (max-width: 991.98px) {
+  #anything-llm-embed-chat-button {
+    display: none !important;
+  }
+}
