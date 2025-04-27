@@ -24,3 +24,23 @@ window.addEventListener("scroll", function() {
   }
 });
 
+new bootstrap.Carousel(document.getElementById('carousel3'), { interval: false, ride: false });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Inicializa o carrossel da galeria home
+  new bootstrap.Carousel(document.getElementById('carouselGaleriaHome'), { interval: false, ride: false });
+
+  // Configura os cliques nas imagens da galeria
+  document.querySelectorAll('.galeria-home-img').forEach((img) => {
+    img.addEventListener('click', () => {
+      const target = img.getAttribute('data-bs-target');
+      const index = parseInt(img.getAttribute('data-index'), 10);
+      const modalEl = document.querySelector(target);
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+      bootstrap.Carousel.getInstance(document.getElementById('carouselGaleriaHome')).to(index);
+    });
+  });
+});
+
+

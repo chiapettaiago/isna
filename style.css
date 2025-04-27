@@ -27,3 +27,10 @@ section {
     display: none !important;
   }
 }
+.modal-body img {
+  max-height: 90vh; /* imagem ocupa no máximo 90% da altura da tela */
+  max-width: 100%;  /* nunca ultrapassa a largura */
+  width: auto;      /* mantém a proporção natural */
+  display: block;
+  margin: 0 auto;   /* centraliza a imagem */
+}
