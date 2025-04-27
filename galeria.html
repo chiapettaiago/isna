@@ -7,6 +7,16 @@
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Limita a imagem ampliada para não ultrapassar o viewport no desktop */
+    .modal-body img {
+      max-height: 90vh;   /* até 90% da altura da janela */
+      max-width: 100%;    /* não ultrapassa a largura */
+      width: auto;        /* mantém proporção */
+      display: block;
+      margin: 0 auto;     /* centraliza */
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -37,108 +47,439 @@
     </div>
   </section>
 
-  <!-- Galeria de Imagens -->
+  <!-- Seção 1: Projeto de Escola Música e Cidadania -->
   <section class="py-5">
     <div class="container">
-      <h2 class="text-center mb-5">Momentos que Marcam</h2>
+      <h2 class="text-center mb-5">Projeto de Escola Música e Cidadania</h2>
       <div class="row g-4">
-        <!-- Imagem 1 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 1">
+        <!-- 9 fotos quadradas -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/1.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 1"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="0">
+          </div>
         </div>
-        <!-- Imagem 2 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 2">
+        <!-- repetir para 2…9 -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/2.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 2"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="1">
+          </div>
         </div>
-        <!-- Imagem 3 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 3">
+        <!-- … -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/3.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 3"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="2">
+          </div>
         </div>
-        <!-- Imagem 4 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 4">
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/4.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 4"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="3">
+          </div>
         </div>
-        <!-- Imagem 5 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 5">
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/5.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 5"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="4">
+          </div>
         </div>
-        <!-- Imagem 6 -->
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm" alt="Imagem 6">
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/6.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 6"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="5">
+          </div>
         </div>
-        <!-- Adicione mais blocos conforme necessário -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/7.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 7"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="6">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/8.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 8"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="7">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-escola-musica-e-cidadania/9.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Escola Música e Cidadania 9"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal1"
+                 data-index="8">
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <script>
-    var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = url;
-    var options = {
-    "enabled": true,
-    "chatButtonSetting": {
-    "backgroundColor": "#16BE45",
-    "ctaText": "Fale Conosco",
-    "borderRadius": "8",
-    "marginLeft": "20",
-    "marginBottom": "20",
-    "marginRight": "20",
-    "position": "left",
-    "textColor": "#ffffff",
-    "phoneNumber": "55219 98074784",
-    "messageText": "Olá, gostaria de saber mais sobre o instituto",
-    "trackClick": true
-    }
-    }
-    s.onload = function() {
-    CreateWhatsappBtn(options);
-    };
-    var x = document.getElementsByTagName('script')[0];
-    x.parentNode.insertBefore(s, x);
-    </script>
+  <!-- Seção 2: Projeto Notas Culturais -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-5">Projeto Notas Culturais</h2>
+      <div class="row g-4">
+        <!-- 9 fotos quadradas -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/1.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 1"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="0">
+          </div>
+        </div>
+        <!-- repetir para 2…9 -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/2.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 2"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="1">
+          </div>
+        </div>
+        <!-- … -->
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/3.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 3"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="2">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/4.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 4"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="3">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/5.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 5"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="4">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/6.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 6"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="5">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/7.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 7"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="6">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/8.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 8"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="7">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/9.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 9"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/10.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 10"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/11.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 11"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/12.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 12"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/13.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 13"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-4">
+          <div class="ratio ratio-1x1">
+            <img src="images/projeto-notas-culturais/14.jpg"
+                 class="w-100 h-100 rounded shadow-sm galeria-img"
+                 alt="Notas Culturais 14"
+                 style="object-fit: cover; cursor: pointer;"
+                 data-bs-target="#imageModal2"
+                 data-index="8">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Projetos Realizados -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Projetos Realizados</h2>
+    <div class="row g-4">
+      <!-- 9 imagens padrão -->
+      <div class="col-sm-6 col-md-4 col-lg-4">
+        <div class="ratio ratio-1x1">
+          <img src="images/projetos-realizados/1.jpg"
+               class="w-100 h-100 rounded shadow-sm galeria-img"
+               alt="Projetos Realizados 1"
+               style="object-fit: cover; cursor: pointer;"
+               data-bs-target="#imageModal3"
+               data-index="0">
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-4">
+        <div class="ratio ratio-1x1">
+          <img src="images/projetos-realizados/2.jpg"
+               class="w-100 h-100 rounded shadow-sm galeria-img"
+               alt="Projetos Realizados 2"
+               style="object-fit: cover; cursor: pointer;"
+               data-bs-target="#imageModal3"
+               data-index="1">
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-4">
+        <div class="ratio ratio-1x1">
+          <img src="images/projetos-realizados/3.jpg"
+               class="w-100 h-100 rounded shadow-sm galeria-img"
+               alt="Projetos Realizados 3"
+               style="object-fit: cover; cursor: pointer;"
+               data-bs-target="#imageModal3"
+               data-index="2">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal & Carousel Seção 3 -->
+<div class="modal fade" id="imageModal3" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0">
+        <div id="carousel3" class="carousel slide carousel-fade" data-bs-ride="false">
+          <div class="carousel-inner">
+            <!-- Slides do carrossel -->
+            <div class="carousel-item active">
+              <img src="images/projetos-realizados/1.jpg" class="d-block rounded" alt="Projetos Realizados 1">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                <h5>Projetos Realizados 1</h5>
+                <p>Descrição da imagem 1</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="images/projetos-realizados/2.jpg" class="d-block rounded" alt="Projetos Realizados 2">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                <h5>Projetos Realizados 2</h5>
+                <p>Descrição da imagem 2</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="images/projetos-realizados/3.jpg" class="d-block rounded" alt="Projetos Realizados 9">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                <h5>Projetos Realizados 3</h5>
+                <p>Descrição da imagem 3</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carousel3" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Próximo</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-  <script
-  data-embed-id="89a26c8a-296d-468e-9d5f-33bee8d0e689"
-  data-chat-icon="chatBubble"
-  data-window-height="500px"
-  data-window-width="350px"
-  data-assistant-name="Isna"
-  data-brand-image-url="images/favicon.ico"
-  data-assistant-icon="images/favicon.ico"
-  data-greeting="Olá! Bem-vindo ao ISNA. Como posso ajudar?"
-  data-sponsor-text="Desenvolvido por Iago Chiapetta"
-  data-sponsor-link="https://chiapettadev.site"
-  data-base-api-url="https://ia.chiapettadev.site/api/embed"
-  src="https://ia.chiapettadev.site/embed/anythingllm-chat-widget.min.js"></script>
+  <!-- Modal & Carousel Seção 1 -->
+  <div class="modal fade" id="imageModal1" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content bg-transparent border-0">
+        <div class="modal-body p-0">
+          <div id="carousel1" class="carousel slide carousel-fade" data-bs-ride="false">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="images/projeto-escola-musica-e-cidadania/1.jpg" class="d-block rounded" alt="Escola Música e Cidadania 1">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Escola Música e Cidadania 1</h5>
+                  <p>Descrição da imagem 1</p>
+                </div>
+              </div>
+              <!-- repita slides até 9, sempre sem w-100 -->
+              <div class="carousel-item">
+                <img src="images/projeto-escola-musica-e-cidadania/2.jpg" class="d-block rounded" alt="Escola Música e Cidadania 2">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Escola Música e Cidadania 2</h5>
+                  <p>Descrição da imagem 2</p>
+                </div>
+              </div>
+              <!-- … -->
+              <div class="carousel-item">
+                <img src="images/projeto-escola-musica-e-cidadania/9.jpg" class="d-block rounded" alt="Escola Música e Cidadania 9">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Escola Música e Cidadania 9</h5>
+                  <p>Descrição da imagem 9</p>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel1" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span><span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel1" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span><span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    // JavaScript para ajustar a opacidade da navbar ao rolar a página
-    window.addEventListener("scroll", function() {
-     const nav = document.getElementById("mainNav");
-     if (window.scrollY > 50) {
-       nav.classList.add("opacity-75");
-     } else {
-       nav.classList.remove("opacity-75");
-     }
-   });
- </script>
+  <!-- Modal & Carousel Seção 2 -->
+  <div class="modal fade" id="imageModal2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content bg-transparent border-0">
+        <div class="modal-body p-0">
+          <div id="carousel2" class="carousel slide carousel-fade" data-bs-ride="false">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="images/projeto-notas-culturais/1.jpg" class="d-block rounded" alt="Notas Culturais 1">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Notas Culturais 1</h5>
+                  <p>Descrição da imagem 1</p>
+                </div>
+              </div>
+              <!-- repita slides até 9, sempre sem w-100 -->
+              <div class="carousel-item">
+                <img src="images/projeto-notas-culturais/2.jpg" class="d-block rounded" alt="Notas Culturais 2">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Notas Culturais 2</h5>
+                  <p>Descrição da imagem 2</p>
+                </div>
+              </div>
+              <!-- … -->
+              <div class="carousel-item">
+                <img src="images/projeto-notas-culturais/9.jpg" class="d-block rounded" alt="Notas Culturais 9">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded px-3 py-2">
+                  <h5>Notas Culturais 9</h5>
+                  <p>Descrição da imagem 9</p>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span><span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span><span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Rodapé -->
   <footer class="bg-dark text-white pt-5 pb-3">
     <div class="container">
       <div class="row">
-        <!-- Sobre o Instituto -->
         <div class="col-md-4 mb-4">
           <h5>Sobre o Instituto</h5>
-          <p>
-            É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
-          </p>
+          <p>É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.</p>
         </div>
-        <!-- Links Rápidos -->
         <div class="col-md-4 mb-4">
           <h5>Links Rápidos</h5>
           <ul class="list-unstyled">
@@ -149,11 +490,10 @@
             <li><a href="doe.html" class="text-white text-decoration-none">Doe</a></li>
           </ul>
         </div>
-        <!-- Localização -->
         <div class="col-md-4 mb-4">
           <h5>Localização</h5>
           <div class="ratio ratio-4x3">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" allowfullscreen="" loading="lazy"></iframe>
           </div>
         </div>
       </div>
@@ -164,7 +504,34 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Scroll opacity navbar
+    window.addEventListener("scroll", function() {
+      const nav = document.getElementById("mainNav");
+      if (window.scrollY > 50) nav.classList.add("opacity-75");
+      else nav.classList.remove("opacity-75");
+    });
+
+    // Inicializa carrosséis e abre slide correto
+    document.addEventListener('DOMContentLoaded', () => {
+      new bootstrap.Carousel(document.getElementById('carousel1'), { interval: false, ride: false });
+      new bootstrap.Carousel(document.getElementById('carousel2'), { interval: false, ride: false });
+
+      document.querySelectorAll('.galeria-img').forEach(img => {
+        img.addEventListener('click', () => {
+          const target = img.getAttribute('data-bs-target');
+          const index = parseInt(img.getAttribute('data-index'), 10);
+          const modalEl = document.querySelector(target);
+          const modal = new bootstrap.Modal(modalEl);
+          modal.show();
+          const carouselId = target === '#imageModal1' ? 'carousel1' : 'carousel2';
+          bootstrap.Carousel.getInstance(document.getElementById(carouselId)).to(index);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
