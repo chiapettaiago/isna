@@ -74,6 +74,61 @@
     </div>
   </section>
 
+  <script>
+    var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = url;
+    var options = {
+    "enabled": true,
+    "chatButtonSetting": {
+    "backgroundColor": "#16BE45",
+    "ctaText": "Fale Conosco",
+    "borderRadius": "8",
+    "marginLeft": "20",
+    "marginBottom": "20",
+    "marginRight": "20",
+    "position": "left",
+    "textColor": "#ffffff",
+    "phoneNumber": "55219 98074784",
+    "messageText": "Olá, gostaria de saber mais sobre o instituto",
+    "trackClick": true
+    }
+    }
+    s.onload = function() {
+    CreateWhatsappBtn(options);
+    };
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+    </script>
+
+  <script>
+     // JavaScript para ajustar a opacidade da navbar ao rolar a página
+     window.addEventListener("scroll", function() {
+      const nav = document.getElementById("mainNav");
+      if (window.scrollY > 50) {
+        nav.classList.add("opacity-75");
+      } else {
+        nav.classList.remove("opacity-75");
+      }
+    });
+  </script>
+
+  <script
+  data-embed-id="89a26c8a-296d-468e-9d5f-33bee8d0e689"
+  data-chat-icon="chatBubble"
+  data-window-height="500px"
+  data-window-width="350px"
+  data-assistant-name="Isna"
+  data-brand-image-url="images/favicon.ico"
+  data-assistant-icon="images/favicon.ico"
+  data-greeting="Olá! Bem-vindo ao ISNA. Como posso ajudar?"
+  data-sponsor-text="Desenvolvido por Iago Chiapetta"
+  data-sponsor-link="https://chiapettadev.site"
+  data-base-api-url="https://ia.chiapettadev.site/api/embed"
+  src="https://ia.chiapettadev.site/embed/anythingllm-chat-widget.min.js"></script>
+
   <!-- Rodapé (mesmo de index.html) -->
   <footer class="bg-dark text-white pt-5 pb-3">
     <div class="container">
