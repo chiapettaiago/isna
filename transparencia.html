@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <title>ISNA - Transparência</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pdf-preview {
+      height: 300px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+    .pdf-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .pdf-preview.rotate-90 {
+      height: 400px;
+    }
+    .pdf-preview.rotate-90 iframe {
+      transform: rotate(90deg);
+      transform-origin: 0 0;
+      width: 100vh;
+      height: 100vw;
+      position: absolute;
+      top: 0;
+      left: 100%;
+    }
+    .card {
+      transition: transform 0.2s;
+      will-change: transform;
+      height: 100%;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-body {
+      padding: 1rem;
+    }
+    .card-title {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .btn-primary {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand position-relative" href="index.html">
+        <img src="images/logo.png" alt="Logo do Instituto" class="position-absolute top-50 start-0 translate-middle-y" style="height: 80px;">
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quem-somos.html">Quem Somos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="linha-atuacao.html">Linha de Atuação</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="galeria.html">Galeria</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="parceiros.html">Parceiros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="transparencia.html">Transparência</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="doe.html">Doe</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+   <!-- Seção Hero -->
+   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('../images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
+   background-position: center; /* Centraliza a imagem no elemento */
+   background-repeat: no-repeat; /* Evita a repetição da imagem */">
+     <div class="container text-center">
+       <h1 class="display-4">Transparência</h1>
+       <p class="lead">Conheça nossos documentos institucionais, certificações e relatórios que demonstram nosso compromisso com a transparência e a prestação de contas.</p>
+     </div>
+   </section>
+
+  <!-- Seção Principal -->
+  <section class="py-5">
+    <div class="container">
+      <h1 class="text-center mb-5">Transparência</h1>
+      
+      <div class="row g-4">
+        <!-- Card: CERTIFICADO CEBAS -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/CERTIFICADO CEBAS.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">CERTIFICADO CEBAS</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/CERTIFICADO CEBAS.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: CertificadoSiconv -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/CertificadoSiconv.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Certificado Siconv</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/CertificadoSiconv.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: cmas -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/cmas.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">CMAS</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/cmas.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: ISNA_Declaração -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/ISNA_Declaração.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Declaração ISNA</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/ISNA_Declaração.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: OSCIP -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/OSCIP.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">OSCIP</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/OSCIP.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Titulo de Utilidade publica municipal -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/Titulo de Utilidade publica municipal.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Título de Utilidade Pública Municipal</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/Titulo de Utilidade publica municipal.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Titulo de Utilidade publica -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/Titulo de Utilidade publica.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Título de Utilidade Pública</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/Titulo de Utilidade publica.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: utilidade publica -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="pdf-preview">
+              <iframe data-src="docs/utilidade publica.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Utilidade Pública</h5>
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modalPdf" data-pdf="docs/utilidade publica.pdf">Visualizar Completo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal PDF -->
+      <div class="modal fade" id="modalPdf" tabindex="-1" aria-labelledby="modalPdfLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalPdfLabel">Visualização do Documento</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" style="height:80vh;">
+              <iframe id="pdfFrame" src="" width="100%" height="100%" style="border:none;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        // Função para debounce
+        function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+
+        // Função para carregar PDFs
+        function loadPDFs() {
+          document.querySelectorAll('.pdf-preview iframe').forEach(iframe => {
+            const pdfPath = iframe.getAttribute('data-src');
+            if (pdfPath && !iframe.src) {
+              iframe.src = pdfPath;
+            }
+          });
+        }
+
+        // Função para verificar e corrigir a orientação do PDF
+        const checkPDFOrientation = debounce(() => {
+          const pdfPreviews = document.querySelectorAll('.pdf-preview');
+          
+          pdfPreviews.forEach(preview => {
+            const iframe = preview.querySelector('iframe');
+            if (!iframe) return;
+
+            iframe.onload = function() {
+              try {
+                // Aguarda um momento para o PDF carregar completamente
+                setTimeout(() => {
+                  const width = iframe.contentWindow.document.body.scrollWidth;
+                  const height = iframe.contentWindow.document.body.scrollHeight;
+                  
+                  // Se a largura for maior que a altura, gira o PDF
+                  if (width > height) {
+                    preview.classList.add('rotate-90');
+                    // Ajusta a altura do container para acomodar o PDF rotacionado
+                    const containerHeight = Math.min(width * (preview.offsetWidth / height), 400);
+                    preview.style.height = containerHeight + 'px';
+                  } else {
+                    preview.classList.remove('rotate-90');
+                    preview.style.height = '300px';
+                  }
+                }, 1000);
+              } catch (e) {
+                console.log('Não foi possível verificar a orientação do PDF:', e);
+              }
+            };
+          });
+        }, 250);
+
+        // Função para limpar recursos quando o modal é fechado
+        function cleanupModalResources() {
+          const frame = document.getElementById('pdfFrame');
+          if (frame) {
+            frame.src = '';
+          }
+        }
+
+        // Inicialização quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', () => {
+          // Carrega os PDFs imediatamente
+          loadPDFs();
+
+          // Configura o modal
+          const modalPdf = document.getElementById('modalPdf');
+          if (modalPdf) {
+            modalPdf.addEventListener('show.bs.modal', function (event) {
+              const button = event.relatedTarget;
+              const pdf = button.getAttribute('data-pdf');
+              const frame = document.getElementById('pdfFrame');
+              if (frame) {
+                frame.src = pdf;
+              }
+            });
+
+            modalPdf.addEventListener('hidden.bs.modal', cleanupModalResources);
+          }
+
+          // Verifica a orientação inicial
+          checkPDFOrientation();
+        });
+
+        // Verifica a orientação quando a janela é redimensionada
+        window.addEventListener('resize', checkPDFOrientation);
+
+        // Limpa recursos quando a página é descarregada
+        window.addEventListener('beforeunload', () => {
+          cleanupModalResources();
+        });
+      </script>
+          </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="bg-dark text-white pt-5 pb-3">
+    <div class="container">
+      <div class="row">
+        <!-- Sobre o Instituto -->
+        <div class="col-md-4 mb-4">
+          <h5>Sobre o Instituto</h5>
+          <p>
+            É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
+          </p>
+        </div>
+        <!-- Links Rápidos -->
+        <div class="col-md-4 mb-4">
+          <h5>Links Rápidos</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-white text-decoration-none">Início</a></li>
+            <li><a href="quem-somos.html" class="text-white text-decoration-none">Quem Somos</a></li>
+            <li><a href="linha-atuacao.html" class="text-white text-decoration-none">Linha de Atuação</a></li>
+            <li><a href="galeria.html" class="text-white text-decoration-none">Galeria</a></li>
+            <li><a href="doe.html" class="text-white text-decoration-none">Doe</a></li>
+            <li><a href="transparencia.html" class="text-white text-decoration-none">Transparência</a></li>
+          </ul>
+        </div>
+        <!-- Localização -->
+        <div class="col-md-4 mb-4">
+          <h5>Localização</h5>
+          <div class="ratio ratio-4x3">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+      <hr class="border-light">
+      <div class="text-center">
+        <p class="mb-0">&copy; 2025 Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapettadev.site" class="text-white text-decoration-none">Iago Chiapetta</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS (inclui Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script customizado -->
+  <script src="script.js"></script>
+
+  <!-- Scripts otimizados -->
+  <script>
+    // WhatsApp
+    (function() {
+      var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = url;
+      var options = {
+        "enabled": true,
+        "chatButtonSetting": {
+          "backgroundColor": "#16BE45",
+          "ctaText": "Fale Conosco",
+          "borderRadius": "8",
+          "marginLeft": "20",
+          "marginBottom": "20",
+          "marginRight": "20",
+          "position": "left",
+          "textColor": "#ffffff",
+          "phoneNumber": "55219 98074784",
+          "messageText": "Olá, gostaria de saber mais sobre o instituto",
+          "trackClick": true
+        }
+      };
+      s.onload = function() {
+        CreateWhatsappBtn(options);
+      };
+      var x = document.getElementsByTagName('script')[0];
+      x.parentNode.insertBefore(s, x);
+    })();
+
+    // AnythingLLM
+    (function() {
+      var s = document.createElement('script');
+      s.setAttribute('data-embed-id', '89a26c8a-296d-468e-9d5f-33bee8d0e689');
+      s.setAttribute('data-chat-icon', 'chatBubble');
+      s.setAttribute('data-window-height', '500px');
+      s.setAttribute('data-window-width', '350px');
+      s.setAttribute('data-assistant-name', 'Isna');
+      s.setAttribute('data-brand-image-url', 'images/favicon.ico');
+      s.setAttribute('data-assistant-icon', 'images/favicon.ico');
+      s.setAttribute('data-greeting', 'Olá! Bem-vindo ao ISNA. Como posso ajudar?');
+      s.setAttribute('data-sponsor-text', 'Desenvolvido por Iago Chiapetta');
+      s.setAttribute('data-sponsor-link', 'https://chiapettadev.site');
+      s.setAttribute('data-base-api-url', 'https://ia.chiapettadev.site/api/embed');
+      s.src = 'https://ia.chiapettadev.site/embed/anythingllm-chat-widget.min.js';
+      s.async = true;
+      document.body.appendChild(s);
+    })();
+  </script>
+</body>
+</html> 

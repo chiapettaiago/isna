@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISNA - IMPACTO SOCIAL</title>
+    <!--Título-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700&amp;subset=latin,latin-ext' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/boton.css" />
+    <link rel="stylesheet" type="text/css" href="css/pluton.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.cslider.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate.css" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script language="javascript">
+        function moeda(a, e, r, t) {
+            let n = "",
+                h = j = 0,
+                u = tamanho2 = 0,
+                l = ajd2 = "",
+                o = window.Event ? t.which : t.keyCode;
+            if (13 == o || 8 == o)
+                return !0;
+            if (n = String.fromCharCode(o),
+                -1 == "0123456789".indexOf(n))
+                return !1;
+            for (u = a.value.length,
+                h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+            ;
+            for (l = ""; h < u; h++)
+                -
+                1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+            if (l += n,
+                0 == (u = l.length) && (a.value = ""),
+                1 == u && (a.value = "0" + r + "0" + l),
+                2 == u && (a.value = "0" + r + l),
+                u > 2) {
+                for (ajd2 = "",
+                    j = 0,
+                    h = u - 3; h >= 0; h--)
+                    3 == j && (ajd2 += e,
+                        j = 0),
+                    ajd2 += l.charAt(h),
+                    j++;
+                for (a.value = "",
+                    tamanho2 = ajd2.length,
+                    h = tamanho2 - 1; h >= 0; h--)
+                    a.value += ajd2.charAt(h);
+                a.value += r + l.substr(u - 2, u)
+            }
+            return !1
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <a href="index.html" class="brand">
+                    <img src="images/logo.png" width="120" height="40" alt="Logo" />
+                </a>
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <i class="icon-menu"></i>
+                </button>
+                <div class="nav-collapse collapse pull-right">
+                    <ul class="nav" id="top-navigation">
+                        <li><a href="index.html" class="fa fa-home" align="center"><br><br>Inicio</a></li>
+                        <li><a href="quem_somos.html" class="fa fa-address-card" align="center"><br><br>Quem Somos</a>
+                        </li>
+                        <li><a href="linha_de_atuacao.html" class="fa fa-line-chart" align="center"><br><br>Linha de
+                                Atuação</a></li>
+                        <li><a href="galeria.html" class="fa fa-camera-retro" align="center"><br><br>Galeria</a></li>
+                        <li><a href="parceiros.html" class="fa fa-handshake-o" align="center"><br><br>Parceiros</a></li>
+                        <li class="active"><a href="doe.html" class="fa fa-heart" align="center"><br><br>Doe</a></li>
+                        <li><a href="contato.html" class="fa fa-envelope-o" align="center"><br><br>Fale Conosco</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="container" align="right"><br>
+                <a href="index.html"><img src="images/bra.jpg" width="30" height="30"></a>
+                <a href="index.html"><img src="images/usa.jpg" width="30" height="30"></a>
+                <a href="index.html"><img src="images/esp.jpg" width="30" height="30"></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div><br>
+        </div>
+    </div>
+    <div class="section secondary-section " id="portfolio">
+        <div class="container">
+            <div class=" title">
+                <h1>Faça a sua doação</h1>
+            </div>
+            <div id="single-project">
+                <div id="slidingDiv" class="toggleDiv row-fluid single-project">
+                    <div class="span6">
+                        <img src="images/ClientLogo12.png" alt="project 1" />
+                    </div>
+                    <div class="span6">
+                        <div class="project-description">
+                            <div class="project-title clearfix">
+                                <h3>Sua doação muda vidas</h3>
+                                <span class="show_hide close">
+                                    <i class="icon-cancel"></i>
+                                </span>
+                            </div>
+                            <p>Se você deseja fazer parte do nosso trabalho, contribua pelo pagseguro. Nossas crianças
+                                agradecem! <br>Clique no botão abaixo:<br>
+                                <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post"
+                                    Target="_blank">
+                                    <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO -->
+                                    <input type="hidden" name="currency" value="BRL" />
+                                    <input type="hidden" name="receiverEmail" value="isnaimpactosocial@gmail.com" />
+                                    <input type="hidden" name="iot" value="button" />
+                                    <input type="image" src="images/pagseguro.png" name="submit" />
+                                </form>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="slidingDiv1" class="toggleDiv row-fluid single-project">
+                    <div class="span6">
+                        <img src="images/ClientLogo13.png" alt="project 2">
+                    </div>
+                    <div class="span6">
+                        <div class="project-description">
+                            <div class="project-title clearfix">
+                                <h3>Sua doação muda vidas</h3>
+                                <span class="show_hide close">
+                                    <i class="icon-cancel"></i>
+                                </span>
+                            </div>
+                            <p>Se você deseja fazer parte do nosso trabalho, contribua pelo PayPal. É rápido, fácil e
+                                seguro. Nossas crianças agradecem! <br>Clique no botão abaixo:<br>
+                                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                                    <input type="hidden" name="cmd" value="_s-xclick" />
+                                    <input type="hidden" name="hosted_button_id" value="XAXDE3Y32SMR2" />
+                                    <input type="image" src="images/paypal.png" border="0" name="submit"
+                                        title="PayPal - The safer, easier way to pay online!"
+                                        alt="Donate with PayPal button" />
+                                    <img alt="" border="0" src="https://www.paypal.com/en_BR/i/scr/pixel.gif" width="1"
+                                        height="1" />
+                                </form>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="slidingDiv2" class="toggleDiv row-fluid single-project">
+                    <div class="span6">
+                        <img src="images/ClientLogo14.png" alt="project 3">
+                    </div>
+                    <div class="span6">
+                        <div class="project-description">
+                            <div class="project-title clearfix">
+                                <h3>Sua doação muda vidas</h3>
+                                <span class="show_hide close">
+                                    <i class="icon-cancel"></i>
+                                </span>
+                            </div>
+                            <br>
+                            <select id="currency">
+                                <option value="USD">$ (Dolar Americano)</option>
+                                <option value="BRL">R$ (Real Brasileiro)</option>
+                                <option value="EUR">€ (Euro)</option>
+                                <option value="GBP">£ (Libra Esterlina)</option>
+                                <option value="CAD">C$ (Dolar Canadense)</option>
+                                <option value="JPY">¥ (Iene Japonês)</option>
+                            </select><br>
+                            <input type="text" id="price" placeholder="Faça a sua doação">
+                            <br>
+                            <img alt="Visa Checkout" class="v-button" role="button"
+                                src="https://sandbox.secure.checkout.visa.com/wallet-services-web/xo/button.png" />
+                            <script type="text/javascript"
+                                src="https://assets.secure.checkout.visa.com/checkout-widget/resources/js/integration/v1/sdk.js">
+                            </script>
+                        </div>
+                    </div>
+                    <!-- cielo-->
+                </div>
+                <div id="slidingDiv3" class="toggleDiv row-fluid single-project">
+                    <div class="span6">
+                        <img src="images/cielo2.png" alt="project 4" />
+                    </div>
+                    <div class="span6">
+                        <div class="project-description">
+                            <div class="project-title clearfix">
+                                <h3>Sua doação muda vidas</h3>
+                                <span class="show_hide close">
+                                    <i class="icon-cancel"></i>
+                                </span>
+                            </div>
+                            <p>Se você deseja fazer parte do nosso trabalho, contribua através da Cielo Pagamentos.
+                                Nossas crianças agradecem!
+                                <input type="text" id="price2" placeholder="Faça a sua doação"><br>
+                                <button id="botao-cielo"> Enviar </button>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- aqui-->
+                <div id="slidingDiv4" class="toggleDiv row-fluid single-project">
+                    <div class="span6">
+                        <img src="images/caixa.png" alt="project 5" />
+                    </div>
+                    <div class="span6">
+                        <div class="project-description">
+                            <div class="project-title clearfix">
+                                <h3>Sua doação muda vidas</h3>
+                                <span class="show_hide close">
+                                    <i class="icon-cancel"></i>
+                                </span>
+                            </div>
+                            <p>Se você deseja fazer parte do nosso trabalho faça seu depósito. Nossas crianças
+                                agradecem! <br><br> Dados:<br>
+                                <p>Banco Caixa Econômica Federal <br>
+                                    Agência: 0769 <br>
+                                    Operação: 003 <br>
+                                    Conta corrente: 54213-6<br>
+                                    CNPJ: 08.912.758/0001-08 </p>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <ul id="portfolio-grid" class="thumbnails row">
+                    <li class="span3 mix photo">
+                        <div class="thumbnail">
+                            <img src="images/ClientLogo13.png" alt="project 2">
+                            <a href="#single-project" class="show_hide more" rel="#slidingDiv1">
+                                <i class="icon-plus"></i>
+                            </a>
+                            <div class="mask"></div>
+                        </div>
+                    </li>
+                    <li class="span3 mix deposito">
+                        <div class="thumbnail">
+                            <img src="images/caixa.png" alt="project 5">
+                            <a href="#single-project" class="more show_hide" rel="#slidingDiv4">
+                                <i class="icon-plus"></i>
+                            </a>
+                            <div class="mask"></div>
+                        </div>
+                    </li>
+                    <!-- Botão IUGU-->
+                    <li class="span3 mix photo">
+                        <div class="thumbnail">
+                            <img src="images/iugu-icon.png" alt="IUGU">
+                            <a href="https://assinaturas.chiapettadev.site" class="more">
+                                <i class="icon-plus"></i>
+                            </a>
+                            <div class="mask"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="section primary-section">
+            <div class="container">
+                <div class="title">
+                    <h1>Sobre nós</h1>
+                </div>
+                <div class="row">
+                    <div class="span4">
+                        <div class="testimonial">
+                            <p>É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca
+                                através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no
+                                mercado de trabalho.</p>
+                            <div class="whopic">
+                                <div class="arrow"></div>
+                                <a href="quem_somos.html"><img src="images/Client3.png" class="centered"
+                                        alt="client 3"></a>
+                                <strong> ISNA
+                                    <small>Saiba mais...</small>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="testimonial">
+                            <i class="fa fa-envelope" aria-hidden="true">&nbsp;&nbsp;&nbsp;contato@isna.org.br</i><br>
+                            <br>
+                            <i class="fa fa-map-marker" aria-hidden="true">&nbsp;&nbsp;&nbsp; Rua: 8 Lt:509 QD:19
+                                Bairro: ALDEIA DA PRATA - Itaboraí/RJ (923,70 km)<br>CEP: 24858052</i><br>
+                            <br>
+                            <i class="fa fa-phone-square" aria-hidden="true">&nbsp;&nbsp;&nbsp;</i>(21)9 9807-4784<br>
+                            <div class="whopic">
+                                <img src="images/Client2.png" class="centered" alt="client 3">
+                                <strong>Contato
+                                    <small>Te aguardamos</small>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="testimonial">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3678.822127316413!2d-42.94359308556372!3d-22.771981438798388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9995d588c777a1%3A0xaa8fe7dcb8f746c2!2sISNA%20-%20Instituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sbr!4v1588552171258!5m2!1spt-BR!2sbr"
+                                width="300" height="180" frameborder="0" style="border:0;" allowfullscreen=""
+                                aria-hidden="false" tabindex="0"></iframe>
+                        </div>
+                    </div>
+                </div><br>
+                <p class="footter">
+                    Nossas Redes Sociais<br><br><a href="https://web.facebook.com/institutosocialUNA/"
+                        target="_blank"><img src="images/facebook.png" width="43" height="43">
+                    </a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="https://twitter.com/zandormedeiros" target="_blank"><img
+                            src="images/twitter.png" width="30" height="30"></a><br>
+                    Desenvolvido por:<a href="http://zandormedeiros.com/" target="_blank"><img
+                            src="images/zandormedeiros.png">
+                    </a> | &copy; 2020 Todos os direitos reservados ao Instituto Social Um Novo Amanhecer
+                    CNPJ:08912758000108
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Footer section end -->
+    <!-- ScrollUp button start -->
+    <div class="fab">
+        <button>
+            <a href="login.html"><img src="images/login.png" width="80" height="80">
+        </button>
+    </div>
+    <!-- ScrollUp button end -->
+    <!-- Include javascript -->
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.mixitup.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.js"></script>
+    <script type="text/javascript" src="js/jquery.bxslider.js"></script>
+    <script type="text/javascript" src="js/jquery.cslider.js"></script>
+    <script type="text/javascript" src="js/jquery.placeholder.js"></script>
+    <script type="text/javascript" src="js/jquery.inview.js"></script>
+    <!-- Load google maps api and call initializeMap function defined in app.js -->
+    <script async="" defer="" type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?sensor=false&callback=initializeMap"></script>
+    <!-- css3-mediaqueries.js for IE8 or older -->
+    <!--[if lt IE 9]>
+            <script src="js/respond.min.js"></script>
+        <![endif]-->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js">
+    </script>
+    
+    <script>
+    var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = url;
+    var options = {
+    "enabled": true,
+    "chatButtonSetting": {
+    "backgroundColor": "#16BE45",
+    "ctaText": "Entre em Contato",
+    "borderRadius": "8",
+    "marginLeft": "20",
+    "marginBottom": "20",
+    "marginRight": "20",
+    "position": "left",
+    "textColor": "#ffffff",
+    "phoneNumber": "+55219 98074784",
+    "messageText": "Olá",
+    "trackClick": true
+    }
+    }
+    s.onload = function() {
+    CreateWhatsappBtn(options);
+    };
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+    </script>
+
+    <script type="text/javascript">
+        $('#price, #price2').mask("#.##0,00", {
+            reverse: true
+        });
+
+        var visaCheckoutCredentials = {
+            sharedScret: 'Xn09$@MhCZYf5alr/au2+M7ZgAcSa{l#VuTP8Vu{',
+            apikey: '0Z80V5VMHRV792BU8EZV21-WK3J7CsFajYZSMeIx_NvEBaZWc',
+        };
+
+        function onVisaCheckoutReady(currency, price) {
+            V.init({
+                apikey: visaCheckoutCredentials.apikey,
+                encryptionKey: visaCheckoutCredentials.sharedScret,
+            });
+            V.on("payment.success", function (payment) {
+                console.log(JSON.stringify(payment));
+            });
+            V.on("payment.cancel", function (payment) {
+                console.log(JSON.stringify(payment));
+            });
+            V.on("payment.error", function (payment, error) {
+                console.log(JSON.stringify(error));
+            });
+        }
+
+        function changeCheckoutValues(currency, price) {
+            // trocar para chaves de produção
+
+            V.setOptions({
+                apikey: visaCheckoutCredentials.apikey,
+                encryptionKey: visaCheckoutCredentials.sharedScret,
+                paymentRequest: {
+                    currencyCode: currency,
+                    subtotal: price,
+                }
+            });
+        }
+
+        function setCheckout() {
+            var currency = document.querySelector("#currency").value;
+            var value = document.querySelector("#price").value || '';
+            var formatedPrice = value.replace(",", ".")
+            var price = Number.parseFloat(formatedPrice);
+            if (!price || price <= 0) {
+                return;
+            }
+
+            changeCheckoutValues(currency, formatedPrice);
+        }
+        document.querySelector('#currency').addEventListener("change", setCheckout)
+        document.querySelector('#price').addEventListener("keyup", setCheckout)
+        document.querySelector('#botao-cielo').addEventListener("click", function () {
+            var donationValue = document.querySelector('#price2').value.replace('.', '').replace(',', '.');
+            var totalInCents = Number.parseInt(Number.parseFloat(donationValue) * 100);
+            $.ajax({
+                type: 'POST',
+                url: 'cielo-checkout.php',
+                data: {
+                    value: totalInCents,
+                },
+                success(response) {
+                    var settings = JSON.parse(response).settings;
+                    if (settings && settings.checkoutUrl) {
+                        window.location = settings.checkoutUrl;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
