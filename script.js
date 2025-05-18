@@ -1,5 +1,5 @@
 // Validação do formulário de newsletter
-document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('email').value;
     if (email) {
@@ -8,38 +8,142 @@ document.getElementById('newsletter-form').addEventListener('submit', function(e
     }
 });
 
-// Toggle do menu em dispositivos móveis (adicione um botão de menu no HTML se desejar)
+// Toggle do menu em dispositivos móveis (se existir)
 const navMenu = document.querySelector('.nav-menu');
-navMenu.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
+if (navMenu) {
+    navMenu.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+}
 
 // JavaScript para ajustar a opacidade da navbar ao rolar a página
 window.addEventListener("scroll", function() {
   const nav = document.getElementById("mainNav");
-  if (window.scrollY > 50) {
-    nav.classList.add("opacity-75");
-  } else {
-    nav.classList.remove("opacity-75");
+  if (nav) {
+    if (window.scrollY > 50) {
+      nav.classList.add("opacity-75");
+    } else {
+      nav.classList.remove("opacity-75");
+    }
   }
 });
 
-new bootstrap.Carousel(document.getElementById('carousel3'), { interval: false, ride: false });
-
+// Inicialização do carrossel e funções de galeria
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializa o carrossel da galeria home
-  new bootstrap.Carousel(document.getElementById('carouselGaleriaHome'), { interval: false, ride: false });
+  // Função para atualizar o contador de imagens
+  function atualizarContador(carouselElement, activeIndex) {
+    const totalItems = carouselElement.querySelectorAll('.carousel-item').length;
+    const contador = carouselElement.closest('.modal-content').querySelector('.contador-imagens');
+    if (contador) {
+      contador.textContent = `${activeIndex + 1}/${totalItems}`;
+    }
+  }
 
-  // Configura os cliques nas imagens da galeria
+  // Inicializa todos os carrosséis da página
+  const carousels = document.querySelectorAll('.carousel');
+  carousels.forEach(carousel => {
+    // Cria instância do carrossel Bootstrap
+    const carouselInstance = new bootstrap.Carousel(carousel, { 
+      interval: false, 
+      ride: false,
+      touch: true
+    });
+
+    // Evento para atualizar contador quando o slide muda
+    carousel.addEventListener('slid.bs.carousel', (e) => {
+      const activeIndex = Array.from(carousel.querySelectorAll('.carousel-item'))
+        .findIndex(item => item.classList.contains('active'));
+      atualizarContador(carousel, activeIndex);
+    });
+
+    // Inicializa o contador para o slide ativo
+    const activeIndex = Array.from(carousel.querySelectorAll('.carousel-item'))
+      .findIndex(item => item.classList.contains('active'));
+    atualizarContador(carousel, activeIndex);
+  });
+
+  // Configura eventos de clique nas imagens da galeria da página inicial
   document.querySelectorAll('.galeria-home-img').forEach((img) => {
     img.addEventListener('click', () => {
       const target = img.getAttribute('data-bs-target');
       const index = parseInt(img.getAttribute('data-index'), 10);
       const modalEl = document.querySelector(target);
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
-      bootstrap.Carousel.getInstance(document.getElementById('carouselGaleriaHome')).to(index);
+      if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+        
+        const carouselId = modalEl.querySelector('.carousel').id;
+        const carouselInstance = bootstrap.Carousel.getInstance(document.getElementById(carouselId));
+        if (carouselInstance) {
+          carouselInstance.to(index);
+        }
+      }
     });
+  });
+
+  // Configura eventos de clique nas imagens da galeria principal
+  document.querySelectorAll('.galeria-img').forEach(img => {
+    img.addEventListener('click', () => {
+      const target = img.getAttribute('data-bs-target');
+      const index = parseInt(img.getAttribute('data-index'), 10);
+      const modalEl = document.querySelector(target);
+      if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+        
+        const carouselId = target === '#imageModal1' ? 'carousel1' : 'carousel2';
+        const carouselInstance = bootstrap.Carousel.getInstance(document.getElementById(carouselId));
+        if (carouselInstance) {
+          carouselInstance.to(index);
+        }
+      }
+    });
+  });
+
+  // Adiciona navegação por teclado nos modais de galeria
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('keydown', function(e) {
+      if (modal.classList.contains('show')) {
+        const carousel = modal.querySelector('.carousel');
+        const carouselInstance = bootstrap.Carousel.getInstance(carousel);
+        
+        if (e.key === 'ArrowLeft') {
+          carouselInstance?.prev();
+          e.preventDefault();
+        } else if (e.key === 'ArrowRight') {
+          carouselInstance?.next();
+          e.preventDefault();
+        } else if (e.key === 'Escape') {
+          bootstrap.Modal.getInstance(modal)?.hide();
+        }
+      }
+    });
+  });
+
+  // Adiciona suporte a gestos de toque para dispositivos móveis
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    carousel.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    carousel.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe(carousel);
+    }, false);
+    
+    function handleSwipe(element) {
+      const carouselInstance = bootstrap.Carousel.getInstance(element);
+      if (touchEndX < touchStartX - 50) {
+        // Deslizou para a esquerda - próximo slide
+        carouselInstance?.next();
+      } else if (touchEndX > touchStartX + 50) {
+        // Deslizou para a direita - slide anterior
+        carouselInstance?.prev();
+      }
+    }
   });
 });
 
