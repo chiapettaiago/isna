@@ -125,10 +125,18 @@
               Contribua utilizando o PayPal, uma opção rápida e segura para doações online.
             </p>
             <div class="text-center">
-              <!-- Botão de Doação PayPal integrado -->
-              <a href="https://www.paypal.com/donate?token=0PzzZH_b0pfm9c3RHSGVzWLSzAe3pcZA8bo5EG3ntQALVLdu530MptlcQ8BBeOMqCybEgT8LF3YMOx-V" target="_blank" rel="noopener">
-                <img src="https://www.paypalobjects.com/pt_BR/i/btn/btn_donateCC_LG.gif" alt="Doar com PayPal" class="img-fluid">
-              </a>
+              <!-- Botão do PayPal com e-mail correto -->
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_donations">
+                <input type="hidden" name="business" value="isnaimpactosocial@gmail.com">
+                <input type="hidden" name="lc" value="BR">
+                <input type="hidden" name="item_name" value="Instituto Social Novo Amanhecer">
+                <input type="hidden" name="item_number" value="Doação">
+                <input type="hidden" name="currency_code" value="BRL">
+                <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHosted">
+                <input type="image" src="https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+              </form>
             </div>
           </div>
         </div>
