@@ -7,6 +7,8 @@
   <title>Doe - ISNA</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- CSS Personalizado -->
   <link rel="stylesheet" href="style.css">
   <style>
@@ -33,6 +35,76 @@
     .card-text {
       font-size: 1rem;
       margin-bottom: 15px;
+    }
+
+    /* Estilos para o player de vídeo estilo Netflix */
+    .netflix-player {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background-color: #000; /* Fundo preto para a área do player */
+    }
+    .netflix-player::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Camada escura sobreposta à thumbnail */
+      z-index: 1;
+      pointer-events: none;
+    }
+    .netflix-player video {
+      position: relative;
+      z-index: 0;
+    }
+    .video-controls-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 2; /* Acima da camada escura */
+    }
+    .video-info {
+      pointer-events: all;
+    }
+    .video-controls {
+      pointer-events: all;
+    }
+    .progress {
+      height: 4px;
+      cursor: pointer;
+    }
+    
+    /* Estilo adicional para o botão de play centralizado na thumbnail */
+    .play-button-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 0, 0, 0.7);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .play-button-overlay:hover {
+      background-color: rgba(255, 0, 0, 0.9);
+    }
+    .play-button-overlay i {
+      color: white;
+      font-size: 24px;
     }
   </style>
 </head>
@@ -93,6 +165,62 @@
       Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
     </p>
 
+    <!-- Player de vídeo estilo Netflix -->
+    <div class="row mb-5">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="netflix-player position-relative shadow rounded overflow-hidden" style="max-width: 800px; margin: 0 auto;">
+          <!-- Botão de play centralizado na thumbnail -->
+          <div class="play-button-overlay">
+            <i class="bi bi-play-fill"></i>
+          </div>
+          
+          <video id="donation-video" class="w-100" poster="images/projeto-escola-musica-e-cidadania/1.jpg" preload="metadata" style="max-height: 400px;">
+            <source src="videos/isna-impact-video.mp4" type="video/mp4">
+            Seu navegador não suporta a reprodução de vídeos HTML5.
+          </video>
+          
+          <!-- Overlay de controles estilo Netflix -->
+          <div class="video-controls-overlay position-absolute w-100 h-100 top-0 start-0 d-flex flex-column justify-content-between">
+            <!-- Informações sobre o vídeo (aparece no início/pausa) -->
+            <div class="video-info p-3 text-white">
+              <h5 class="video-title mb-1">Impacto Social do ISNA</h5>
+              <p class="video-description mb-0 small">Veja como sua doação pode fazer a diferença</p>
+            </div>
+            
+            <!-- Controles de vídeo (parte inferior) -->
+            <div class="video-controls px-2 pb-2 d-flex flex-column">
+              <!-- Barra de progresso -->
+              <div class="progress mb-2" style="height: 3px; cursor: pointer;">
+                <div id="video-progress" class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+              </div>
+              
+              <!-- Botões de controle -->
+              <div class="d-flex align-items-center text-white">
+                <button id="play-pause-btn" class="btn btn-sm text-white fs-6 me-2 p-0">
+                  <i class="bi bi-play-fill"></i>
+                </button>
+                <span id="current-time" class="me-2 small">0:00</span>
+                <span class="me-2 small">/</span>
+                <span id="duration" class="me-3 small">0:00</span>
+                <button id="mute-btn" class="btn btn-sm text-white fs-6 me-2 p-0">
+                  <i class="bi bi-volume-up-fill"></i>
+                </button>
+                <div class="volume-slider me-auto" style="width: 70px;">
+                  <input type="range" class="form-range" id="volume-control" min="0" max="1" step="0.1" value="1">
+                </div>
+                <button id="fullscreen-btn" class="btn btn-sm text-white fs-6 p-0">
+                  <i class="bi bi-fullscreen"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center mt-2 text-muted small">
+          Assista ao nosso vídeo para conhecer o impacto das nossas ações na comunidade.
+        </p>
+      </div>
+    </div>
+
     <div class="row">
       <!-- Card 1: Depósito Bancário - Caixa Econômica Federal -->
       <div class="col-md-4 mb-4">
@@ -141,8 +269,63 @@
           </div>
         </div>
       </div>
+      <!-- Card 3: Doações Internacionais -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+          <img src="images/iugu-icon.png" class="card-img-top" alt="Doações Internacionais">
+          <div class="card-body">
+            <h5 class="card-title">Doações Internacionais</h5>
+            <p class="card-text">
+              Para doações internacionais, utilize nossa plataforma segura que aceita diversas moedas e métodos de pagamento.
+            </p>
+            <div class="text-center mt-4">
+              <a href="https://donatehub.chiapettadev.site/donate" target="_blank" class="btn btn-primary btn-lg">Doar Agora</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Adicionando o rodapé que estava ausente -->
+  <footer class="bg-dark text-white pt-5 pb-3 mt-5">
+    <div class="container">
+      <div class="row">
+        <!-- Sobre o Instituto -->
+        <div class="col-md-4 mb-4">
+          <h5>Sobre o Instituto</h5>
+          <p>
+            É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
+          </p>
+        </div>
+        <!-- Links Rápidos -->
+        <div class="col-md-4 mb-4">
+          <h5>Links Rápidos</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-white text-decoration-none">Início</a></li>
+            <li><a href="quem-somos.html" class="text-white text-decoration-none">Quem Somos</a></li>
+            <li><a href="linha-atuacao.html" class="text-white text-decoration-none">Linha de Atuação</a></li>
+            <li><a href="galeria.html" class="text-white text-decoration-none">Projetos em Execução</a></li>
+            <li><a href="parceiros.html" class="text-white text-decoration-none">Parceiros</a></li>
+            <li><a href="transparencia.html" class="text-white text-decoration-none">Transparência</a></li>
+            <li><a href="titulos-documentos.html" class="text-white text-decoration-none">Títulos e Documentos</a></li>
+            <li><a href="doe.html" class="text-white text-decoration-none">Doe</a></li>
+          </ul>
+        </div>
+        <!-- Localização -->
+        <div class="col-md-4 mb-4">
+          <h5>Localização</h5>
+          <div class="ratio ratio-4x3">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+      <hr class="border-light">
+      <div class="text-center">
+        <p class="mb-0">&copy; 2025 Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapettadev.site" class="text-white text-decoration-none">Iago Chiapetta</a></p>
+      </div>
+    </div>
+  </footer>
 
   <script>
     // JavaScript para ajustar a opacidade da navbar ao rolar a página
@@ -156,6 +339,7 @@
    });
  </script>
 
+  <!-- Script do WhatsApp -->
   <script>
     var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
     var s = document.createElement('script');
@@ -183,73 +367,106 @@
     };
     var x = document.getElementsByTagName('script')[0];
     x.parentNode.insertBefore(s, x);
-    </script>
-
-  <!-- Rodapé -->
-  <footer class="bg-dark text-white pt-5 pb-3">
-    <div class="container">
-      <div class="row">
-        <!-- Sobre o Instituto -->
-        <div class="col-md-4 mb-4">
-          <h5>Sobre o Instituto</h5>
-          <p>
-            É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
-          </p>
-        </div>
-        <!-- Links Rápidos -->
-        <div class="col-md-4 mb-4">
-          <h5>Links Rápidos</h5>
-          <ul class="list-unstyled">
-            <li><a href="index.html" class="text-white text-decoration-none">Início</a></li>
-            <li><a href="quem-somos.html" class="text-white text-decoration-none">Quem Somos</a></li>
-            <li><a href="linha-atuacao.html" class="text-white text-decoration-none">Linha de Atuação</a></li>
-            <li><a href="galeria.html" class="text-white text-decoration-none">Galeria</a></li>
-            <li><a href="doe.html" class="text-white text-decoration-none">Doe</a></li>
-          </ul>
-        </div>
-        <!-- Localização -->
-        <div class="col-md-4 mb-4">
-          <h5>Localização</h5>
-          <div class="ratio ratio-4x3">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-        </div>
-      </div>
-      <hr class="border-light">
-      <div class="text-center">
-        <p class="mb-0">&copy; 2025 Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapettadev.site" class="text-white text-decoration-none">Iago Chiapetta</a></p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // JavaScript para ajustar a opacidade da navbar ao rolar a página
-    window.addEventListener("scroll", function() {
-     const nav = document.getElementById("mainNav");
-     if (window.scrollY > 50) {
-       nav.classList.add("opacity-75");
-     } else {
-       nav.classList.remove("opacity-75");
-     }
-   });
- </script>
-
-  <script
-  data-embed-id="89a26c8a-296d-468e-9d5f-33bee8d0e689"
-  data-chat-icon="chatBubble"
-  data-window-height="500px"
-  data-window-width="350px"
-  data-assistant-name="Isna"
-  data-brand-image-url="images/favicon.ico"
-  data-assistant-icon="images/favicon.ico"
-  data-greeting="Olá! Bem-vindo ao ISNA. Como posso ajudar?"
-  data-sponsor-text="Desenvolvido por Iago Chiapetta"
-  data-sponsor-link="https://chiapettadev.site"
-  data-base-api-url="https://ia.chiapettadev.site/api/embed"
-  src="https://ia.chiapettadev.site/embed/anythingllm-chat-widget.min.js"></script>
+  </script>
 
   <script src="script.js"></script>
   <!-- Bootstrap JS (inclui Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // JavaScript para o funcionamento do player de vídeo estilo Netflix
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('donation-video');
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      const muteBtn = document.getElementById('mute-btn');
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      const currentTimeLabel = document.getElementById('current-time');
+      const durationLabel = document.getElementById('duration');
+      const volumeControl = document.getElementById('volume-control');
+      const videoProgress = document.getElementById('video-progress');
+      const playButtonOverlay = document.querySelector('.play-button-overlay');
+
+      let isPlaying = false;
+      let isMuted = false;
+
+      // Adicionar evento de clique ao botão de play centralizado
+      if (playButtonOverlay) {
+        playButtonOverlay.addEventListener('click', function() {
+          video.play();
+          playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+          isPlaying = true;
+          // Oculta o botão de play grande quando o vídeo começar a ser reproduzido
+          playButtonOverlay.style.display = 'none';
+        });
+      }
+
+      // Quando o vídeo for pausado, mostrar o botão de play grande novamente
+      video.addEventListener('pause', function() {
+        playButtonOverlay.style.display = 'flex';
+      });
+
+      // Quando o vídeo terminar, resetar tudo
+      video.addEventListener('ended', function() {
+        playButtonOverlay.style.display = 'flex';
+        playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+        isPlaying = false;
+      });
+
+      // Atualar a duração do vídeo quando os metadados forem carregados
+      video.addEventListener('loadedmetadata', function() {
+        durationLabel.textContent = formatTime(video.duration);
+      });
+
+      // Reproduzir ou pausar o vídeo
+      playPauseBtn.addEventListener('click', function() {
+        if (isPlaying) {
+          video.pause();
+          playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+          playButtonOverlay.style.display = 'flex';
+        } else {
+          video.play();
+          playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+          playButtonOverlay.style.display = 'none';
+        }
+        isPlaying = !isPlaying;
+      });
+
+      // Mudar o estado do som (mudo / som ligado)
+      muteBtn.addEventListener('click', function() {
+        if (isMuted) {
+          video.muted = false;
+          muteBtn.innerHTML = '<i class="bi bi-volume-up-fill"></i>';
+        } else {
+          video.muted = true;
+          muteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
+        }
+        isMuted = !isMuted;
+      });
+
+      // Ir para o modo de tela cheia
+      fullscreenBtn.addEventListener('click', function() {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) { // Safari
+          video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { // IE11
+          video.msRequestFullscreen();
+        }
+      });
+
+      // Atualizar o tempo atual do vídeo
+      video.addEventListener('timeupdate', function() {
+        currentTimeLabel.textContent = formatTime(video.currentTime);
+        videoProgress.style.width = (video.currentTime / video.duration) * 100 + '%';
+      });
+
+      // Formatar o tempo em segundos para o formato mm:ss
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+    });
+  </script>
 </body>
 </html>

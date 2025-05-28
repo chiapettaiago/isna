@@ -147,4 +147,45 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Script para criar e controlar o botão de alternar tema (claro/escuro)
+document.addEventListener('DOMContentLoaded', function() {
+  // Criar o botão de alternar tema
+  const themeToggleBtn = document.createElement('button');
+  themeToggleBtn.className = 'theme-toggle';
+  themeToggleBtn.setAttribute('aria-label', 'Alternar tema claro/escuro');
+  themeToggleBtn.setAttribute('title', 'Alternar tema claro/escuro');
+  
+  // Verificar se há uma preferência salva no localStorage
+  const isDarkTheme = localStorage.getItem('dark-theme') === 'true';
+  
+  // Definir o ícone inicial com base na preferência
+  themeToggleBtn.innerHTML = isDarkTheme 
+    ? '<i class="bi bi-sun-fill"></i>' 
+    : '<i class="bi bi-moon-fill"></i>';
+  
+  // Aplicar tema escuro se estiver salvo no localStorage
+  if (isDarkTheme) {
+    document.body.classList.add('dark-theme');
+  }
+  
+  // Adicionar evento de clique para alternar tema
+  themeToggleBtn.addEventListener('click', function() {
+    document.body.classList.toggle('dark-theme');
+    
+    // Verificar se o tema está ativado após o toggle
+    const isDarkMode = document.body.classList.contains('dark-theme');
+    
+    // Atualizar o ícone com base no tema atual
+    this.innerHTML = isDarkMode 
+      ? '<i class="bi bi-sun-fill"></i>' 
+      : '<i class="bi bi-moon-fill"></i>';
+    
+    // Salvar preferência no localStorage
+    localStorage.setItem('dark-theme', isDarkMode);
+  });
+  
+  // Adicionar o botão ao corpo da página
+  document.body.appendChild(themeToggleBtn);
+});
+
 

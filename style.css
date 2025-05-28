@@ -112,3 +112,93 @@ body {
 .carousel-control-prev:hover, .carousel-control-next:hover {
   opacity: 1;
 }
+
+/* Estilos existentes */
+
+/* Botão de alternar tema (modo claro/escuro) */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #343a40;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Tema Escuro */
+.dark-theme {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Ajustes para elementos no tema escuro */
+.dark-theme .navbar-dark {
+  background-color: #000000 !important;
+}
+
+.dark-theme .bg-light {
+  background-color: #1e1e1e !important;
+}
+
+.dark-theme .card {
+  background-color: #252525;
+  border-color: #333;
+}
+
+.dark-theme .card-body {
+  color: #e0e0e0;
+}
+
+.dark-theme hr {
+  border-color: #444;
+}
+
+.dark-theme .text-dark {
+  color: #e0e0e0 !important;
+}
+
+.dark-theme .form-control,
+.dark-theme .form-select {
+  background-color: #333;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+.dark-theme .btn-outline-secondary {
+  color: #adb5bd;
+  border-color: #6c757d;
+}
+
+.dark-theme .btn-outline-secondary:hover {
+  background-color: #4e5256;
+  color: #fff;
+}
+
+.dark-theme footer {
+  background-color: #000000 !important;
+}
+
+/* Transição suave entre temas */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card, .navbar, .bg-light, footer, .form-control {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
