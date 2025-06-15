@@ -81,6 +81,9 @@ RewriteRule ^(.*)$ index.php [L,QSA]
 
 # Configuração de CORS para permitir acesso de diferentes origens às imagens
 <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
     <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp)$">
         Header set Access-Control-Allow-Origin "*"
     </FilesMatch>
