@@ -12,18 +12,18 @@
         <div class="col-lg-10">
           <div class="card sobre-card shadow-lg border-0 mb-4 bg-white bg-opacity-75">
             <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-secondary"><i class="bi bi-stars me-2"></i>Recursos do site</h2>
-              <ul class="fs-5 mb-4">
-                <li><i class="bi bi-phone me-2 text-primary"></i>Design responsivo e moderno com Bootstrap 5</li>
-                <li><i class="bi bi-images me-2 text-primary"></i>Galeria de fotos com visualização em carrossel e modal</li>
-                <li><i class="bi bi-cash-coin me-2 text-primary"></i>Página de doações com múltiplas opções (banco, PayPal, internacional)</li>
-                <li><i class="bi bi-shield-check me-2 text-info"></i>Seção de transparência e documentos</li>
-                <li><i class="bi bi-people me-2 text-warning"></i>Seção de parceiros e projetos</li>
-                <li><i class="bi bi-whatsapp me-2 text-success"></i>Botão de contato via WhatsApp integrado</li>
-                <li><i class="bi bi-geo-alt me-2 text-danger"></i>Mapa de localização integrado via Google Maps</li>
-                <li><i class="bi bi-lightning-charge me-2 text-primary"></i>Carregamento otimizado de imagens (lazy loading)</li>
+              <h2 class="h4 mb-4 text-secondary text-center"><i class="bi bi-stars me-2"></i>Recursos do site</h2>
+              <ul class="fs-5 mb-4 list-unstyled">
+                <li class="text-center py-2 border-bottom"><i class="bi bi-phone me-2 text-primary"></i>Design responsivo e moderno com Bootstrap 5</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-primary"></i>Galeria de fotos com visualização em carrossel e modal</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-cash-coin me-2 text-primary"></i>Página de doações com múltiplas opções (banco, PayPal, internacional)</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-check me-2 text-info"></i>Seção de transparência e documentos</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-people me-2 text-warning"></i>Seção de parceiros e projetos</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-whatsapp me-2 text-success"></i>Botão de contato via WhatsApp integrado</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-geo-alt me-2 text-danger"></i>Mapa de localização integrado via Google Maps</li>
+                <li class="text-center py-2"><i class="bi bi-lightning-charge me-2 text-primary"></i>Carregamento otimizado de imagens (lazy loading)</li>
               </ul>
-              <div class="alert alert-primary d-flex align-items-center" role="alert">
+              <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>
                   <strong>Versão do site:</strong> 1.1<br>
@@ -44,12 +44,12 @@
         <div class="col-lg-10">
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
             <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-success"><i class="bi bi-arrow-up-circle me-2"></i>Melhorias desta versão</h2>
-              <ul class="fs-5 mb-0">
-                <li><i class="bi bi-images me-2 text-primary"></i>O modal de imagens agora abre e fecha corretamente, proporcionando melhor experiência ao usuário</li>
-                <li><i class="bi bi-diagram-3 me-2 text-secondary"></i>Roteamento avançado para URLs amigáveis e navegação dinâmica</li>
-                <li><i class="bi bi-shield-lock me-2 text-info"></i>Melhorias de segurança (validação de entrada, proteção contra ataques comuns)</li>
-                <li><i class="bi bi-speedometer2 me-2 text-warning"></i>Otimizações de desempenho para carregamento mais rápido</li>
+              <h2 class="h4 mb-4 text-success text-center"><i class="bi bi-arrow-up-circle me-2"></i>Melhorias desta versão</h2>
+              <ul class="fs-5 mb-0 list-unstyled">
+                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-primary"></i>O modal de imagens agora abre e fecha corretamente, proporcionando melhor experiência ao usuário</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-diagram-3 me-2 text-secondary"></i>Roteamento avançado para URLs amigáveis e navegação dinâmica</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-lock me-2 text-info"></i>Melhorias de segurança (validação de entrada, proteção contra ataques comuns)</li>
+                <li class="text-center py-2"><i class="bi bi-speedometer2 me-2 text-warning"></i>Otimizações de desempenho para carregamento mais rápido</li>
               </ul>
             </div>
           </div>
