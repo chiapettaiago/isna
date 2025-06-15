@@ -257,3 +257,21 @@ body {
     font-size: 1.1rem;
   }
 }
+
+/* Listas listradas para cards da página sobre */
+.sobre-card ul.list-unstyled > li:nth-child(odd) {
+  background: #f8f9fa;
+}
+.sobre-card ul.list-unstyled > li:nth-child(even) {
+  background: #fff;
+}
+.sobre-card ul.list-unstyled > li {
+  transition: background 0.2s;
+  border-bottom: 3px solid #bdbdbd;
+  margin-bottom: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.sobre-card ul.list-unstyled > li:last-child {
+  border-bottom: none;
+}
