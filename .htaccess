@@ -4,7 +4,7 @@ RewriteEngine On
 Options -Indexes -MultiViews
 DirectoryIndex index.php
 
-# Definir tipos MIME para garantir carregamento correto de imagens e ícones
+# Tipos MIME
 <IfModule mod_mime.c>
     AddType image/x-icon .ico
     AddType image/svg+xml .svg
@@ -19,72 +19,67 @@ DirectoryIndex index.php
     AddType video/mp4 .mp4
 </IfModule>
 
-# Configurações de segurança
+# CONFIGURAÇÕES DE CACHE - MODIFICADO PARA PERMITIR CACHE DE PDFs
 <IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    # Configuração padrão - sem cache para a maioria do conteúdo
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
     
-    # Cache para arquivos estáticos
-    <FilesMatch "\.(ico|jpg|jpeg|png|gif|svg|webp|css|js|woff|woff2|ttf|eot)$">
-        Header set Cache-Control "max-age=2592000, public"
-        Header unset ETag
-        FileETag None
+    # Permitir cache para PDFs e outros recursos estáticos
+    <FilesMatch "\.(pdf|jpg|jpeg|png|gif|ico|css|js)$">
+        Header set Cache-Control "public, max-age=31536000"
+        Header unset Pragma
+        Header unset Expires
+    </FilesMatch>
+    
+    # Configurações específicas para PDFs - melhorar renderização
+    <FilesMatch "\.pdf$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
+        Header set Access-Control-Allow-Headers "Content-Type, Range"
+        Header set Access-Control-Expose-Headers "Content-Length, Content-Range, Accept-Ranges"
     </FilesMatch>
 </IfModule>
 
-# ==== REGRAS DE REESCRITA ====
-
-# 1. Permitir acesso direto a arquivos existentes (imagens, CSS, JS, etc)
+# REGRAS DE REESCRITA
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule \.(css|js|jpg|jpeg|png|gif|ico|pdf|svg|woff|woff2|ttf|eot|mp4|webp)$ - [L]
 
-# 2. Permitir acesso a diretórios de recursos
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} ^.+/(images|css|js|videos|docs)(/.*)?$ [NC]
 RewriteRule . - [L]
 
-# 3. Redirecionar todas as outras solicitações para o index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L,QSA]
 
-# Configuração adicional para compressão
+# Compressão
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
     SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip dont-vary
 </IfModule>
 
-# Definir cabeçalhos de segurança
+# Configurações específicas para PDFs - otimizações adicionais
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/pdf "access plus 1 year"
+</IfModule>
+
+# Permitir PDFs serem carregados em frames (necessário para PDF.js)
 <IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # Cache para arquivos estáticos (imagens, CSS, JS, etc)
-    <FilesMatch "\.(ico|jpg|jpeg|png|gif|svg|webp|css|js|woff|woff2|ttf|eot)$">
-        Header set Cache-Control "max-age=2592000, public"
-        Header unset ETag
-        FileETag None
+    <FilesMatch "\.pdf$">
+        Header set X-Frame-Options "SAMEORIGIN"
+        Header set X-Content-Type-Options "nosniff"
     </FilesMatch>
 </IfModule>
 
-# Habilitar compressão para melhorar desempenho
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
-    
-    # Não comprimir imagens binárias
-    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip dont-vary
-</IfModule>
-
-# Configuração de CORS para permitir acesso de diferentes origens às imagens
-<IfModule mod_headers.c>
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires 0
-    <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp)$">
-        Header set Access-Control-Allow-Origin "*"
-    </FilesMatch>
+# Aumentar limites de buffer para PDF grandes se necessário
+<IfModule mod_php.c>
+    php_value upload_max_filesize 16M
+    php_value post_max_size 16M
+    php_value memory_limit 128M
+    php_value max_execution_time 300
 </IfModule>

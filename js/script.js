@@ -187,3 +187,71 @@ document.addEventListener('DOMContentLoaded', function() {
   // Adicionar o botão ao corpo da página
   document.body.appendChild(themeToggleBtn);
 });
+
+// Funções para otimização de exibição de PDFs
+// ------------------------------------------
+
+// Função para verificar se estamos na página de títulos e documentos
+function isPdfPage() {
+  return window.location.pathname.includes('titulos-documentos');
+}
+
+// Pré-carregar o worker de PDF.js quando estiver na página de documentos
+document.addEventListener('DOMContentLoaded', function() {
+  if (isPdfPage()) {
+    // Pré-carregar os scripts PDF.js necessários
+    const preloadPdfJs = document.createElement('link');
+    preloadPdfJs.rel = 'preload';
+    preloadPdfJs.as = 'script';
+    preloadPdfJs.href = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    document.head.appendChild(preloadPdfJs);
+    
+    const preloadPdfJsWorker = document.createElement('link');
+    preloadPdfJsWorker.rel = 'preload';
+    preloadPdfJsWorker.as = 'script';
+    preloadPdfJsWorker.href = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    document.head.appendChild(preloadPdfJsWorker);
+  }
+});
+
+// Otimização para detectar dispositivos móveis e ajustar a qualidade do PDF de acordo
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Definir configurações de qualidade de PDF com base no dispositivo
+window.pdfQualitySettings = {
+  // Qualidades mais baixas para dispositivos móveis para melhor desempenho
+  mobile: {
+    canvasContextType: '2d',
+    enableWebGL: false,
+    useOnlyCssZoom: true,
+    maxCanvasPixels: 5242880, // 2.5 megapixels
+    disableFontFace: true,
+    disableRange: false,
+    disableStream: false,
+    disableAutoFetch: false
+  },
+  // Qualidades mais altas para desktop
+  desktop: {
+    canvasContextType: '2d',
+    enableWebGL: true,
+    useOnlyCssZoom: false,
+    maxCanvasPixels: 16777216, // 16 megapixels 
+    disableFontFace: false,
+    disableRange: false,
+    disableStream: false,
+    disableAutoFetch: false
+  }
+};
+
+// Auxiliar para detectar conexão lenta 
+function detectSlowConnection() {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection) {
+    const type = connection.effectiveType || connection.type;
+    // Considerar conexão lenta se for 3G ou menos
+    return ['slow-2g', '2g', '3g'].includes(type);
+  }
+  return false; // Se não conseguir detectar, assumir que não é lenta
+}

@@ -706,3 +706,7 @@
 [15-Jun-2025 16:59:31] ERROR: FPM initialization failed
 [15-Jun-2025 17:00:36] ERROR: Unable to create the PID file (/run/php-fpm/php-fpm.pid).: No such file or directory (2)
 [15-Jun-2025 17:00:36] ERROR: FPM initialization failed
+[18-Jun-2025 11:13:08] ERROR: Unable to create the PID file (/run/php-fpm/php-fpm.pid).: No such file or directory (2)
+[18-Jun-2025 11:13:08] ERROR: FPM initialization failed
+[18-Jun-2025 11:27:43] ERROR: Unable to create the PID file (/run/php-fpm/php-fpm.pid).: No such file or directory (2)
+[18-Jun-2025 11:27:43] ERROR: FPM initialization failed
