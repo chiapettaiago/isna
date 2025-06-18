@@ -26,7 +26,7 @@
               <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>
-                  <strong>Versão do site:</strong> 1.1<br>
+                  <strong>Versão do site:</strong> 1.2<br>
                   <strong>Data de lançamento:</strong> Junho de 2025
                 </div>
               </div>
@@ -49,6 +49,7 @@
                 <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-primary"></i>O modal de imagens agora abre e fecha corretamente, proporcionando melhor experiência ao usuário</li>
                 <li class="text-center py-2 border-bottom"><i class="bi bi-diagram-3 me-2 text-secondary"></i>Roteamento avançado para URLs amigáveis e navegação dinâmica</li>
                 <li class="text-center py-2 border-bottom"><i class="bi bi-shield-lock me-2 text-info"></i>Melhorias de segurança (validação de entrada, proteção contra ataques comuns)</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-file-earmark-pdf me-2 text-danger"></i>Sistema aprimorado de exibição de PDFs com visualização integrada e navegação facilitada</li>
                 <li class="text-center py-2"><i class="bi bi-speedometer2 me-2 text-warning"></i>Otimizações de desempenho para carregamento mais rápido</li>
               </ul>
             </div>
