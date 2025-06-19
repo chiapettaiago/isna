@@ -1,0 +1,157 @@
+2025-06-18 17:52:48,030 - INFO - Iniciando o processamento de PDFs
+2025-06-18 17:52:48,036 - INFO - Encontrados 10 arquivos PDF para processar
+2025-06-18 17:52:48,040 - INFO - Processando arquivo 1/10: CERTIFICADO CEBAS.pdf
+2025-06-18 17:52:48,041 - INFO - Processando: CERTIFICADO CEBAS.pdf
+2025-06-18 17:52:48,044 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,058 - ERROR - Erro ao processar CERTIFICADO CEBAS.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,065 - INFO - Processando arquivo 2/10: ISNA_Declaração.pdf
+2025-06-18 17:52:48,066 - INFO - Processando: ISNA_Declaração.pdf
+2025-06-18 17:52:48,068 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,081 - ERROR - Erro ao processar ISNA_Declaração.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,085 - INFO - Processando arquivo 3/10: ISNA_Declara├з├гo.pdf
+2025-06-18 17:52:48,087 - INFO - Processando: ISNA_Declara├з├гo.pdf
+2025-06-18 17:52:48,088 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,102 - ERROR - Erro ao processar ISNA_Declara├з├гo.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,105 - INFO - Processando arquivo 4/10: OSCIP.pdf
+2025-06-18 17:52:48,109 - INFO - Processando: OSCIP.pdf
+2025-06-18 17:52:48,109 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,125 - ERROR - Erro ao processar OSCIP.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,128 - INFO - Processando arquivo 5/10: Titulo de Utilidade publica municipal.pdf
+2025-06-18 17:52:48,130 - INFO - Processando: Titulo de Utilidade publica municipal.pdf
+2025-06-18 17:52:48,133 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,148 - ERROR - Erro ao processar Titulo de Utilidade publica municipal.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,158 - INFO - Processando arquivo 6/10: Titulo de Utilidade publica.pdf
+2025-06-18 17:52:48,160 - INFO - Processando: Titulo de Utilidade publica.pdf
+2025-06-18 17:52:48,161 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,175 - ERROR - Erro ao processar Titulo de Utilidade publica.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,181 - INFO - Processando arquivo 7/10: cmas.pdf
+2025-06-18 17:52:48,182 - INFO - Processando: cmas.pdf
+2025-06-18 17:52:48,190 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,211 - ERROR - Erro ao processar cmas.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,223 - INFO - Processando arquivo 8/10: utilidade publica.pdf
+2025-06-18 17:52:48,234 - INFO - Processando: utilidade publica.pdf
+2025-06-18 17:52:48,251 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,290 - ERROR - Erro ao processar utilidade publica.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,304 - INFO - Processando arquivo 9/10: ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf
+2025-06-18 17:52:48,306 - INFO - Processando: ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf
+2025-06-18 17:52:48,311 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,328 - ERROR - Erro ao processar ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,336 - INFO - Processando arquivo 10/10: CertificadoSiconv.pdf
+2025-06-18 17:52:48,339 - INFO - Processando: CertificadoSiconv.pdf
+2025-06-18 17:52:48,347 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:52:48,377 - ERROR - Erro ao processar CertificadoSiconv.pdf: Unable to get page count. Is poppler installed and in PATH?
+2025-06-18 17:52:48,384 - INFO - Processamento de PDFs concluído!
+2025-06-18 17:56:50,846 - INFO - Iniciando o processamento de PDFs
+2025-06-18 17:56:50,961 - INFO - Encontrados 10 arquivos PDF para processar
+2025-06-18 17:56:50,963 - INFO - Processando arquivo 1/10: CERTIFICADO CEBAS.pdf
+2025-06-18 17:56:50,965 - INFO - Processando: CERTIFICADO CEBAS.pdf
+2025-06-18 17:56:50,968 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:56:57,167 - INFO - Processando página 1/1
+2025-06-18 17:56:58,815 - INFO - Rotacionando imagem em 180 graus
+2025-06-18 17:57:04,985 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:57:05,902 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/CERTIFICADO CEBAS.pdf
+2025-06-18 17:57:05,915 - INFO - Processando arquivo 2/10: ISNA_Declaração.pdf
+2025-06-18 17:57:05,918 - INFO - Processando: ISNA_Declaração.pdf
+2025-06-18 17:57:05,921 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:57:07,135 - INFO - Processando página 1/2
+2025-06-18 17:57:08,856 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:57:14,143 - INFO - Processando página 2/2
+2025-06-18 17:57:15,991 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:57:20,940 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:57:21,882 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/ISNA_Declaração.pdf
+2025-06-18 17:57:21,909 - INFO - Processando arquivo 3/10: ISNA_Declara├з├гo.pdf
+2025-06-18 17:57:21,914 - INFO - Processando: ISNA_Declara├з├гo.pdf
+2025-06-18 17:57:21,918 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:57:23,014 - INFO - Processando página 1/2
+2025-06-18 17:57:24,411 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:57:29,754 - INFO - Processando página 2/2
+2025-06-18 17:57:30,878 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:57:35,489 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:57:36,177 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/ISNA_Declara├з├гo.pdf
+2025-06-18 17:57:36,235 - INFO - Processando arquivo 4/10: OSCIP.pdf
+2025-06-18 17:57:36,243 - INFO - Processando: OSCIP.pdf
+2025-06-18 17:57:36,245 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:57:40,248 - INFO - Processando página 1/1
+2025-06-18 17:57:41,863 - INFO - Rotacionando imagem em 90 graus
+2025-06-18 17:57:47,841 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:57:48,313 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/OSCIP.pdf
+2025-06-18 17:57:48,346 - INFO - Processando arquivo 5/10: Titulo de Utilidade publica municipal.pdf
+2025-06-18 17:57:48,348 - INFO - Processando: Titulo de Utilidade publica municipal.pdf
+2025-06-18 17:57:48,356 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:57:54,921 - INFO - Processando página 1/1
+2025-06-18 17:58:01,991 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:02,563 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/Titulo de Utilidade publica municipal.pdf
+2025-06-18 17:58:02,583 - INFO - Processando arquivo 6/10: Titulo de Utilidade publica.pdf
+2025-06-18 17:58:02,584 - INFO - Processando: Titulo de Utilidade publica.pdf
+2025-06-18 17:58:02,588 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:58:12,141 - INFO - Processando página 1/1
+2025-06-18 17:58:13,400 - INFO - Rotacionando imagem em 90 graus
+2025-06-18 17:58:18,051 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:18,368 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/Titulo de Utilidade publica.pdf
+2025-06-18 17:58:18,374 - INFO - Processando arquivo 7/10: cmas.pdf
+2025-06-18 17:58:18,375 - INFO - Processando: cmas.pdf
+2025-06-18 17:58:18,376 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:58:21,536 - INFO - Processando página 1/1
+2025-06-18 17:58:26,224 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:26,571 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/cmas.pdf
+2025-06-18 17:58:26,576 - INFO - Processando arquivo 8/10: utilidade publica.pdf
+2025-06-18 17:58:26,577 - INFO - Processando: utilidade publica.pdf
+2025-06-18 17:58:26,578 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:58:29,787 - INFO - Processando página 1/1
+2025-06-18 17:58:34,557 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:34,825 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/utilidade publica.pdf
+2025-06-18 17:58:34,829 - INFO - Processando arquivo 9/10: ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf
+2025-06-18 17:58:34,830 - INFO - Processando: ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf
+2025-06-18 17:58:34,833 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:58:35,443 - INFO - Processando página 1/2
+2025-06-18 17:58:36,252 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:58:40,466 - INFO - Processando página 2/2
+2025-06-18 17:58:41,341 - INFO - Rotacionando imagem em 270 graus
+2025-06-18 17:58:45,214 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:45,736 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/ISNA_DeclaraтФЬ╨╖тФЬ╨│o.pdf
+2025-06-18 17:58:45,765 - INFO - Processando arquivo 10/10: CertificadoSiconv.pdf
+2025-06-18 17:58:45,767 - INFO - Processando: CertificadoSiconv.pdf
+2025-06-18 17:58:45,768 - INFO - Convertendo PDF para imagens...
+2025-06-18 17:58:48,502 - INFO - Processando página 1/1
+2025-06-18 17:58:53,666 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 17:58:54,035 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/CertificadoSiconv.pdf
+2025-06-18 17:58:54,046 - INFO - Processamento de PDFs concluído!
+2025-06-18 18:05:46,112 - INFO - Iniciando o processamento de PDFs (Rotação automática: DESATIVADA)
+2025-06-18 18:05:46,144 - INFO - Encontrados 1 arquivos PDF para processar
+2025-06-18 18:05:46,144 - INFO - Processando arquivo 1/1: CertificadoSiconv.pdf
+2025-06-18 18:05:46,144 - INFO - Processando: CertificadoSiconv.pdf
+2025-06-18 18:05:46,146 - INFO - Convertendo PDF para imagens...
+2025-06-18 18:05:49,122 - INFO - Processando página 1/1
+2025-06-18 18:05:49,123 - INFO - Correção automática de orientação desativada
+2025-06-18 18:05:54,225 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 18:05:54,832 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/CertificadoSiconv.pdf
+2025-06-18 18:05:54,884 - INFO - Processamento de PDFs concluído!
+2025-06-18 18:18:02,980 - INFO - Iniciando o processamento de PDFs (Rotação automática: DESATIVADA)
+2025-06-18 18:18:03,020 - INFO - Encontrados 1 arquivos PDF para processar
+2025-06-18 18:18:03,021 - INFO - Processando arquivo 1/1: CertificadoSiconv.pdf
+2025-06-18 18:18:03,021 - INFO - Processando: CertificadoSiconv.pdf
+2025-06-18 18:18:03,022 - INFO - Convertendo PDF para imagens...
+2025-06-18 18:18:05,244 - INFO - Processando página 1/1
+2025-06-18 18:18:05,245 - INFO - Correção automática de orientação desativada
+2025-06-18 18:18:10,640 - INFO - Iniciando o processamento de PDFs (Rotação automática: ATIVADA)
+2025-06-18 18:18:10,685 - INFO - Encontrados 10 arquivos PDF para processar
+2025-06-18 18:18:10,686 - INFO - Processando arquivo 1/10: CERTIFICADO CEBAS.pdf
+2025-06-18 18:18:10,686 - INFO - Processando: CERTIFICADO CEBAS.pdf
+2025-06-18 18:18:10,691 - INFO - Convertendo PDF para imagens...
+2025-06-18 18:18:15,076 - INFO - Processando página 1/1
+2025-06-18 18:18:18,715 - INFO - Rotacionando imagem em 90 graus (confiança: 2.18x)
+2025-06-18 18:18:23,414 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 18:18:23,989 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/CERTIFICADO CEBAS.pdf
+2025-06-18 18:18:24,004 - INFO - Processando arquivo 2/10: CertificadoSiconv.pdf
+2025-06-18 18:18:24,005 - INFO - Processando: CertificadoSiconv.pdf
+2025-06-18 18:18:24,007 - INFO - Convertendo PDF para imagens...
+2025-06-18 18:18:26,305 - INFO - Processando página 1/1
+2025-06-18 18:18:29,699 - INFO - Rotacionando imagem em 270 graus (confiança: 2.01x)
+2025-06-18 18:18:35,012 - INFO - Salvando imagens otimizadas como PDF...
+2025-06-18 18:18:36,030 - INFO - PDF otimizado salvo: /home/iagochiapetta/isna/docs/CertificadoSiconv.pdf
+2025-06-18 18:18:36,074 - INFO - Processando arquivo 3/10: ISNA_Declaração.pdf
+2025-06-18 18:18:36,079 - INFO - Processando: ISNA_Declaração.pdf
+2025-06-18 18:18:36,091 - INFO - Convertendo PDF para imagens...
+2025-06-18 18:18:38,057 - INFO - Processando página 1/2
+2025-06-18 18:18:41,689 - INFO - Rotacionando imagem em 270 graus (confiança: 7.77x)
+2025-06-18 18:18:46,309 - INFO - Processando página 2/2
