@@ -52,6 +52,7 @@
               </div>
               <ul class="fs-5 mb-0 list-unstyled">
                 <li class="text-center py-2"><i class="bi bi-file-earmark-pdf me-2 text-danger"></i>Sistema aprimorado de exibição de PDFs com visualização integrada e navegação facilitada</li>
+                <li class="text-center py-2"><i class="bi bi-instagram me-2 text-danger"></i>Botão do Instagram no footer</li>
               </ul>
             </div>
           </div>

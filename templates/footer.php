@@ -7,6 +7,11 @@
         <p>
           É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
         </p>
+        <div class="social-media mt-3">
+          <a href="https://www.instagram.com/isnasocial/" target="_blank" class="btn btn-outline-light me-2" title="Siga-nos no Instagram">
+            <i class="bi bi-instagram"></i> Instagram
+          </a>
+        </div>
       </div>
       <!-- Links Rápidos -->
       <div class="col-md-4 mb-4">
