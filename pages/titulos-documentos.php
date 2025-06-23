@@ -134,7 +134,7 @@
     <div class="container">
       <h1 class="text-center mb-5">Títulos e Documentos</h1>
 
-      <div class="row g-4">
+      <div class="row pdf-grid row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         <!-- Card: CERTIFICADO CEBAS -->
         <div class="col-12 col-sm-6 col-md-4">
           <div class="card h-100 shadow-sm">
