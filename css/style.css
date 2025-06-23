@@ -194,6 +194,129 @@ body {
   background-color: #000000 !important;
 }
 
+/* Modo escuro para a página sobre */
+.dark-theme .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark-theme .text-secondary {
+  color: #e5e7eb !important;
+}
+
+.dark-theme .text-success {
+  color: #10b981 !important;
+}
+
+.dark-theme .text-info {
+  color: #06b6d4 !important;
+}
+
+.dark-theme .text-primary {
+  color: #3b82f6 !important;
+}
+
+.dark-theme .text-danger {
+  color: #ef4444 !important;
+}
+
+.dark-theme .text-warning {
+  color: #f59e0b !important;
+}
+
+.dark-theme .border-bottom {
+  border-color: #4b5563 !important;
+}
+
+.dark-theme .alert-primary {
+  background-color: #1e3a8a !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .alert-success {
+  background-color: #166534 !important;
+  border-color: #15803d !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .alert-info {
+  background-color: #1e3a8a !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+/* Correção para texto dos itens de lista no modo escuro */
+.dark-theme .card-body li {
+  color: #e5e7eb !important;
+}
+
+.dark-theme .card-body p {
+  color: #e5e7eb !important;
+}
+
+.dark-theme .card-body h2 {
+  color: #e5e7eb !important;
+}
+
+.dark-theme .card-body h2.text-success {
+  color: #10b981 !important;
+}
+
+.dark-theme .card-body h2.text-info {
+  color: #06b6d4 !important;
+}
+
+.dark-theme .card-body h2.text-secondary {
+  color: #9ca3af !important;
+}
+
+/* Regras mais específicas para modo escuro na página sobre */
+.dark-theme .sobre-card {
+  background: rgba(37, 37, 37, 0.95) !important;
+  color: #e5e7eb !important;
+}
+
+.dark-theme .sobre-card .card-body * {
+  color: #e5e7eb !important;
+}
+
+.dark-theme .sobre-card .card-body .text-primary {
+  color: #3b82f6 !important;
+}
+
+.dark-theme .sobre-card .card-body .text-success {
+  color: #10b981 !important;
+}
+
+.dark-theme .sobre-card .card-body .text-info {
+  color: #06b6d4 !important;
+}
+
+.dark-theme .sobre-card .card-body .text-warning {
+  color: #f59e0b !important;
+}
+
+.dark-theme .sobre-card .card-body .text-danger {
+  color: #ef4444 !important;
+}
+
+.dark-theme .sobre-card .card-body .text-secondary {
+  color: #9ca3af !important;
+}
+
+/* Contraste e fundo dos itens de lista no modo escuro - página sobre */
+.dark-theme .sobre-card .card-body li {
+  color: #fff !important;
+  background: rgba(30,30,30,0.92) !important;
+  border-bottom: 1px solid #444 !important;
+}
+.dark-theme .sobre-card .card-body li:last-child {
+  border-bottom: none !important;
+}
+.dark-theme .sobre-card .card-body ul {
+  background: transparent !important;
+}
+
 /* Transição suave entre temas */
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -274,4 +397,88 @@ body {
 }
 .sobre-card ul.list-unstyled > li:last-child {
   border-bottom: none;
+}
+
+/* Estilos para o aviso de atualização do sistema */
+.update-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  animation: fadeIn 0.5s ease;
+}
+
+.update-alert h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.update-alert p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 80%;
+  color: #e0e0e0;
+}
+
+.update-progress {
+  width: 80%;
+  max-width: 500px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.update-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a6bff, #2196f3);
+  border-radius: 5px;
+  animation: progress 2s infinite ease-in-out;
+  background-size: 200% 100%;
+}
+
+.update-status {
+  font-size: 1rem;
+  color: #aaa;
+  margin-top: 0.5rem;
+}
+
+.git-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #f05033;
+}
+
+@keyframes progress {
+  0% {
+    background-position: 0% 50%;
+    width: 10%;
+  }
+  50% {
+    background-position: 100% 50%;
+    width: 80%;
+  }
+  100% {
+    background-position: 0% 50%;
+    width: 10%;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
