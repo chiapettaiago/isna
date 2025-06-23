@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
       alertElement.className = 'update-alert';
       
       alertElement.innerHTML = `
-        <i class="bi bi-git git-icon"></i>
+        <img src="/images/logo.png" alt="Logo do Instituto" class="site-logo-update" style="height: 80px; margin-bottom: 20px;">
         <h2>Atualizando o Sistema</h2>
         <p>O site está sendo atualizado para a versão mais recente. Por favor, aguarde alguns instantes.</p>
         <div class="update-progress">
