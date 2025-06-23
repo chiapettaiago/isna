@@ -255,3 +255,89 @@ function detectSlowConnection() {
   }
   return false; // Se não conseguir detectar, assumir que não é lenta
 }
+
+// Sistema de detecção e aviso de atualização (git pull)
+document.addEventListener('DOMContentLoaded', function() {
+  // Função para verificar se o sistema está sendo atualizado
+  function checkForSystemUpdate() {
+    fetch('/check-update-status.php', {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Se há uma atualização em andamento
+      if (data.updating) {
+        showUpdateAlert(data.progress, data.message);
+        
+        // Continua verificando até a atualização terminar
+        setTimeout(checkForSystemUpdate, 2000);
+      } else {
+        hideUpdateAlert();
+      }
+    })
+    .catch(error => {
+      // Se o servidor estiver incontactável, assume que está atualizando
+      if (!document.getElementById('system-update-alert')) {
+        showUpdateAlert(30, "Conectando ao servidor...");
+        setTimeout(checkForSystemUpdate, 3000);
+      }
+    });
+  }
+
+  // Função para mostrar o alerta de atualização
+  function showUpdateAlert(progress, message) {
+    let alertElement = document.getElementById('system-update-alert');
+    
+    // Se o alerta ainda não existe, cria ele
+    if (!alertElement) {
+      alertElement = document.createElement('div');
+      alertElement.id = 'system-update-alert';
+      alertElement.className = 'update-alert';
+      
+      alertElement.innerHTML = `
+        <i class="bi bi-git git-icon"></i>
+        <h2>Atualizando o Sistema</h2>
+        <p>O site está sendo atualizado para a versão mais recente. Por favor, aguarde alguns instantes.</p>
+        <div class="update-progress">
+          <div class="update-progress-bar" id="update-progress-bar"></div>
+        </div>
+        <div class="update-status" id="update-status-message"></div>
+      `;
+      
+      document.body.appendChild(alertElement);
+    }
+    
+    // Atualiza a barra de progresso
+    const progressBar = document.getElementById('update-progress-bar');
+    if (progressBar && typeof progress === 'number') {
+      progressBar.style.width = progress + '%';
+    }
+    
+    // Atualiza a mensagem de status
+    const statusMsg = document.getElementById('update-status-message');
+    if (statusMsg && message) {
+      statusMsg.textContent = message;
+    }
+  }
+  
+  // Função para esconder o alerta
+  function hideUpdateAlert() {
+    const alertElement = document.getElementById('system-update-alert');
+    if (alertElement) {
+      alertElement.style.animation = 'fadeOut 0.5s ease forwards';
+      setTimeout(() => {
+        if (alertElement.parentNode) {
+          alertElement.parentNode.removeChild(alertElement);
+        }
+      }, 500);
+    }
+  }
+
+  // Verifica na carga da página e a cada 30 segundos
+  checkForSystemUpdate();
+  setInterval(checkForSystemUpdate, 30000);
+});
