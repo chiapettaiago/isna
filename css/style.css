@@ -521,3 +521,22 @@ body {
   height: 300px !important;
   max-height: 300px !important;
 }
+
+/* Estilo para os botões de redes sociais no footer */
+footer .social-media .btn-outline-light {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+footer .social-media .btn-outline-light:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Modo escuro para os botões de redes sociais */
+.dark-theme footer .social-media .btn-outline-light:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
