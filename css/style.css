@@ -457,10 +457,14 @@ body {
   margin-top: 0.5rem;
 }
 
-.git-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  color: #f05033;
+/* Removido o estilo para o ícone do Git, substituído pelo logo do site */
+
+/* Estilo para o logo no aviso de atualização */
+.site-logo-update {
+  max-height: 100px;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  animation: pulseGlow 2s infinite ease-in-out;
 }
 
 @keyframes progress {
@@ -481,6 +485,12 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0% { filter: drop-shadow(0 4px 8px rgba(255,255,255,0.2)); transform: scale(1); }
+  50% { filter: drop-shadow(0 4px 12px rgba(255,255,255,0.5)); transform: scale(1.05); }
+  100% { filter: drop-shadow(0 4px 8px rgba(255,255,255,0.2)); transform: scale(1); }
 }
 
 /* Cards iguais na página Títulos e Documentos */
