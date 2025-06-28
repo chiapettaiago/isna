@@ -178,7 +178,7 @@
         <div class="col-12 col-sm-6 col-md-4">
           <div class="card h-100 shadow-sm">
             <div class="pdf-preview">
-              <iframe data-src="/docs/ISNA_Declaração.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
+              <iframe data-src="/docs/ISNA_Declaracao.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
             <div class="card-body">
               <h5 class="card-title">Declaração ISNA</h5>
