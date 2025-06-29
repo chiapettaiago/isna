@@ -155,31 +155,3 @@
     </div>
   </div>
 </div>
-
-
-  <!-- Seção Parceiros -->
-  <section id="parceiros" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">Parceiros</h2>
-      <div class="text-center mb-4">
-        <a href="<?php echo $site_url; ?>/parceiros" class="btn btn-outline-secondary">
-          Veja todos os nossos parceiros
-        </a>
-      </div>
-      <div class="row justify-content-center mt-4">
-        <!-- Exemplo de logos de parceiros -->
-        <div class="col-md-3 mb-3 text-center">
-          <img src="/images/parceiros/coca-cola.png" class="img-fluid" alt="Parceiro 1">
-        </div>
-        <div class="col-md-3 mb-3 text-center">
-          <img src="/images/parceiros/prefeitura-itaborai.png" class="img-fluid" alt="Parceiro 2">
-        </div>
-        <div class="col-md-3 mb-3 text-center">
-          <img src="/images/parceiros/google.png" class="img-fluid" alt="Parceiro 3">
-        </div>
-        <div class="col-md-3 mb-3 text-center">
-          <img src="/images/parceiros/banco-de-alimentos.png" class="img-fluid" alt="Parceiro 4">
-        </div>
-      </div>
-    </div>
-  </section>
