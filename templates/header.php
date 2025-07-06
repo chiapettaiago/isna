@@ -43,7 +43,12 @@
           <li class="nav-item">
             <a class="nav-link" href="<?php echo $site_url; ?>/titulos-documentos">Títulos e Documentos</a>
           </li>
-          <li class="nav-item"><a class="nav-link" href="<?php echo $site_url; ?>/doe">Doe</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?php echo $site_url; ?>/sobre">Sobre</a></li>
+          <li class="nav-item ms-3">
+            <a class="nav-link fw-semibold text-warning" href="<?php echo $site_url; ?>/doe">
+              <i class="bi bi-heart-fill me-1"></i> Doe
+            </a>
+          </li>
 
         </ul>
       </div>

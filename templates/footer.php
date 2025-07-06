@@ -13,22 +13,6 @@
           </a>
         </div>
       </div>
-      <!-- Links Rápidos -->
-      <div class="col-md-4 mb-4">
-        <h5>Links Rápidos</h5>
-        <ul class="list-unstyled">
-          <li><a href="<?php echo $site_url; ?>/" class="text-white text-decoration-none">Início</a></li>
-          <li><a href="<?php echo $site_url; ?>/quem-somos" class="text-white text-decoration-none">Quem Somos</a></li>
-          <li><a href="<?php echo $site_url; ?>/linha-atuacao" class="text-white text-decoration-none">Linha de Atuação</a></li>
-          <li><a href="<?php echo $site_url; ?>/galeria" class="text-white text-decoration-none">Galeria</a></li>
-          <li><a href="<?php echo $site_url; ?>/doe" class="text-white text-decoration-none">Doe</a></li>
-          <li><a href="<?php echo $site_url; ?>/galeria" class="text-white text-decoration-none">Projetos em Execução</a></li>
-          <li><a href="<?php echo $site_url; ?>/parceiros" class="text-white text-decoration-none">Parceiros</a></li>
-          <li><a href="<?php echo $site_url; ?>/transparencia" class="text-white text-decoration-none">Transparência</a></li>
-          <li><a href="<?php echo $site_url; ?>/titulos-documentos" class="text-white text-decoration-none">Títulos e Documentos</a></li>
-          <li><a href="<?php echo $site_url; ?>/sobre" class="text-white text-decoration-none">Sobre</a></li>
-        </ul>
-      </div>
       <!-- Localização -->
       <div class="col-md-4 mb-4">
         <h5>Localização</h5>
