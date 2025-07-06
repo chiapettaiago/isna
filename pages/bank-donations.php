@@ -70,7 +70,7 @@
     <!-- Santander -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/santander.png'); ?>" class="card-img-top" alt="Santander">
+        <img src="<?php echo asset('images/santander.jpg'); ?>" class="card-img-top" alt="Santander">
         <div class="card-body text-center">
           <h5 class="card-title">Santander</h5>
           <ul class="list-unstyled">
@@ -84,13 +84,13 @@
     <!-- Banco do Brasil -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/bb.png'); ?>" class="card-img-top" alt="Banco do Brasil">
+        <img src="<?php echo asset('images/banco-do-brasil.png'); ?>" class="card-img-top" alt="Banco do Brasil">
         <div class="card-body text-center">
           <h5 class="card-title">Banco do Brasil</h5>
           <ul class="list-unstyled">
             <li><strong>Agência:</strong> 850-8</li>
             <li><strong>Conta Corrente:</strong> 70350-8</li>
-            <li><strong>Pix:</strong> contato@@isna.org.br</li>
+            <li><strong>Pix:</strong> contato@isna.org.br</li>
           </ul>
         </div>
       </div>
