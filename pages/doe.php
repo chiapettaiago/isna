@@ -112,22 +112,13 @@
       Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
     </p>
     <div class="row justify-content-center">
-      <!-- Card 1: Depósito Bancário - Caixa Econômica Federal -->
+      <!-- Card 1: Doações Bancárias -->
       <div class="col-md-4 mb-4">
-        <div class="card shadow h-100">
-          <img src="/images/caixa.png" class="card-img-top" alt="Depósito Bancário - Caixa">
-          <div class="card-body">
-            <h5 class="card-title">Depósito Bancário</h5>
-            <p class="card-text">
-              Realize sua doação por meio de depósito ou transferência bancária utilizando os dados abaixo:
-            </p>
-            <ul class="list-unstyled">
-              <li><strong>Banco:</strong> Caixa Econômica Federal</li>
-              <li><strong>Agência:</strong> 0769</li>
-              <li><strong>Operação:</strong> 003</li>
-              <li><strong>Conta Corrente:</strong> 54213-6</li>
-              <li><strong>CNPJ:</strong> 08.912.758/0001-08</li>
-            </ul>
+        <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
+          <img src="<?php echo asset('images/caixa.png'); ?>" class="card-img-top" alt="Doações Bancárias">
+          <div class="card-body text-center">
+            <h5 class="card-title">Doações Bancárias</h5>
+            <a href="<?php echo url('doacoes-bancarias'); ?>" class="btn btn-primary btn-lg">Ver opções Bancárias</a>
           </div>
         </div>
       </div>

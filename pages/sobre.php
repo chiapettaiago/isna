@@ -26,8 +26,8 @@
               <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>
-                  <strong>Versão do site:</strong> 1.2<br>
-                  <strong>Data de lançamento:</strong> Junho de 2025
+                  <strong>Versão do site:</strong> 1.3<br>
+                  <strong>Data de lançamento:</strong> Julho de 2025
                 </div>
               </div>
               <p class="mt-4 fs-5 text-center">Este site foi desenvolvido para facilitar o acesso às informações do Instituto Social Novo Amanhecer, promover a transparência e incentivar a participação da comunidade em nossos projetos sociais.</p>
@@ -38,14 +38,41 @@
     </div>
   </section>
 
+  <style>
+    /* Timeline styles */
+    .timeline { position: relative; margin: 2rem 0; padding: 0; }
+    .timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: #ddd; }
+    .timeline-item { position: relative; width: 50%; padding: 1rem 2rem; box-sizing: border-box; }
+    .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+    .timeline-item:nth-child(even) { left: 50%; }
+    .timeline-item::before { content: ''; position: absolute; top: 1.5rem; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 4px solid #0d6efd; }
+    .timeline-item:nth-child(odd)::before { right: -12px; }
+    .timeline-item:nth-child(even)::before { left: -12px; }
+  </style>
+
   <section class="py-5 bg-white">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
+      <div class="timeline">
+        <!-- Card da versão 1.3 -->
+        <div class="timeline-item">
+          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
+            <div class="card-body p-5">
+              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-bank me-2"></i>Melhorias da versão 1.3 (atual)</h2>
+              <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                <div>Versão lançada em Julho de 2025</div>
+              </div>
+              <ul class="fs-5 mb-0 list-unstyled">
+                <li class="text-center py-2"><i class="bi bi-cash-stack me-2 text-success"></i>Opção de Doações Bancárias adicionada na página de Doação</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
           <!-- Card da versão 1.2 (atual) -->
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
             <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-success text-center"><i class="bi bi-arrow-up-circle me-2"></i>Melhorias da versão 1.2 (atual)</h2>
+              <h2 class="h4 mb-4 text-success text-center"><i class="bi bi-arrow-up-circle me-2"></i>Melhorias da versão 1.2</h2>
               <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
                 <i class="bi bi-check-circle-fill me-2 fs-4"></i>
                 <div>Versão lançada em Junho de 2025</div>
@@ -56,7 +83,8 @@
               </ul>
             </div>
           </div>
-
+        </div>
+        <div class="timeline-item">
           <!-- Card da versão 1.1 -->
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
             <div class="card-body p-5">
