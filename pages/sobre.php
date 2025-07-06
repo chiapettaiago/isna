@@ -48,6 +48,24 @@
     .timeline-item::before { content: ''; position: absolute; top: 1.5rem; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 4px solid #0d6efd; }
     .timeline-item:nth-child(odd)::before { right: -12px; }
     .timeline-item:nth-child(even)::before { left: -12px; }
+
+    /* Responsividade para dispositivos móveis */
+    @media (max-width: 767px) {
+      .timeline::before {
+        left: 8px;
+      }
+      .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        text-align: left !important;
+        padding: 1rem 1rem 1rem 2.5rem;
+      }
+      .timeline-item::before {
+        top: 1rem;
+        left: 0;
+        right: auto;
+      }
+    }
   </style>
 
   <section class="py-5 bg-white">

@@ -115,9 +115,12 @@
       <!-- Card 1: Doações Bancárias -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
-          <img src="<?php echo asset('images/caixa.png'); ?>" class="card-img-top" alt="Doações Bancárias">
+          <img src="<?php echo asset('images/depositos.png'); ?>" class="card-img-top" alt="Doações Bancárias">
           <div class="card-body text-center">
             <h5 class="card-title">Doações Bancárias</h5>
+             <p class="card-text">
+              Contribua fazendo uma transferência bancária ou Pix:
+            </p>
             <a href="<?php echo url('doacoes-bancarias'); ?>" class="btn btn-primary btn-lg">Ver opções Bancárias</a>
           </div>
         </div>
