@@ -97,6 +97,7 @@ $routes = [
     '/transparencia' => ['file' => 'pages/transparencia.php', 'title' => 'Transparência - ISNA'],
     '/titulos-documentos' => ['file' => 'pages/titulos-documentos.php', 'title' => 'Títulos e Documentos - ISNA'],
     '/doe' => ['file' => 'pages/doe.php', 'title' => 'Doe - ISNA'],
+    '/doacoes-bancarias' => ['file' => 'pages/bank-donations.php', 'title' => 'Doações Bancárias - ISNA'],
     '/sobre' => ['file' => 'pages/sobre.php', 'title' => 'Sobre o Site - ISNA'],
 ];
 
