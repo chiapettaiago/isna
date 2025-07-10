@@ -48,7 +48,7 @@
             <li><strong>Agência:</strong> 0769</li>
             <li><strong>Operação:</strong> 003</li>
             <li><strong>Conta Corrente:</strong> 54213-6</li>
-            <li><strong>Pix:</strong> projetos@isna.org.br</li>
+            <li><strong>Pix:</strong> 08.912.758/0001-08</li>
           </ul>
         </div>
       </div>
