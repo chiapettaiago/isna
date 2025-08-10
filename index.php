@@ -1,23 +1,69 @@
+
 <?php
 // Carregar configurações do ambiente
 $config = include 'config.php';
 
-// Detectar automaticamente o protocolo e domínio do site
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-$domain = $_SERVER['HTTP_HOST'];
+// Detectar protocolo/host considerando proxy (Codespaces) e padronizar base URL
+// 1) Tenta usar cabeçalho Forwarded: proto=..., host=...
+$forwarded = isset($_SERVER['HTTP_FORWARDED']) ? $_SERVER['HTTP_FORWARDED'] : '';
+$f_proto = null;
+$f_host = null;
+if ($forwarded) {
+    if (preg_match('/proto=([^;\s]+)/i', $forwarded, $m)) $f_proto = $m[1];
+    if (preg_match('/host=([^;\s]+)/i', $forwarded, $m)) $f_host = $m[1];
+}
+
+// 2) Fallback para X-Forwarded-Proto/Host (pode vir com múltiplos valores separados por vírgula)
+$xf_proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'])[0]) : null;
+$xf_host  = isset($_SERVER['HTTP_X_FORWARDED_HOST'])  ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])[0])  : null;
+
+// 3) Caso não haja cabeçalhos de proxy, usa HTTPS/HTTP_HOST normais
+$protocol = $f_proto ?: ($xf_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http'));
+$domain   = $f_host  ?: ($xf_host  ?: (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost'));
+
+// 4) Fallback: se ainda vier localhost/0.0.0.0, tenta extrair do Origin/Referer (ex.: *.github.dev)
+if (preg_match('/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/', $domain)) {
+    $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    $cand = $origin ?: $referer;
+    if ($cand) {
+        $h = parse_url($cand, PHP_URL_HOST);
+        $p = parse_url($cand, PHP_URL_SCHEME);
+        if ($h && preg_match('/(github\.dev|app\.github\.dev|githubpreview\.dev)$/', $h)) {
+            $domain = $h;
+            if ($p) $protocol = $p; else $protocol = 'https';
+        }
+    }
+}
+
+// 5) Fallback final: construir domínio via variáveis do Codespaces
+if ((preg_match('/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/', $domain))) {
+    $is_codespaces = getenv('CODESPACES');
+    $cs_name = getenv('CODESPACE_NAME');
+    $pf_domain = getenv('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN');
+    $fwd_port = isset($_SERVER['HTTP_X_FORWARDED_PORT']) ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PORT'])[0]) : null;
+    $srv_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : null;
+    if ($is_codespaces && $cs_name) {
+        $protocol = 'https';
+        $pf_domain = $pf_domain ?: 'github.dev';
+        $port = $fwd_port ?: ($srv_port ?: '8080');
+        $domain = $cs_name . '-' . $port . '.' . $pf_domain;
+    }
+}
 
 // Detectar o diretório base automaticamente
-$script_name = $_SERVER['SCRIPT_NAME'];
+$script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
 $base_path = dirname($script_name);
 
 // Normalizar o base_path
-if ($base_path === '/' || $base_path === '\\' || $base_path === '.') {
+if ($base_path === '/' || $base_path === '\\' || $base_path === '.' || $base_path === false) {
     $base_path = '';
 }
 
 // Garantir que o base_path não termine com /
 $base_path = rtrim($base_path, '/');
 
+// Montar base_url SEM barra final para evitar // ao concatenar
 $base_url = $protocol . '://' . $domain . $base_path;
 
 // Para uso em templates e links

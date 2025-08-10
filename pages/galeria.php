@@ -16,6 +16,59 @@
     </div>
   </section>
 
+  <!-- Seção: Recital -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center mb-4">Recital</h2>
+      <div class="row g-4">
+        <?php
+          $recitalDir = __DIR__ . '/../images/recital';
+          $recitalUrlBase = '/images/recital';
+          // Extensões exibíveis e prioridade (preferir WebP quando existir)
+          $allowedExt = ['jpg','jpeg','png','gif','webp','JPG','JPEG','PNG','GIF','WEBP'];
+          $priority = ['webp','jpg','jpeg','png','gif'];
+          $byBase = [];
+          $recitalFiles = [];
+          if (is_dir($recitalDir)) {
+            foreach (scandir($recitalDir) as $fname) {
+              if ($fname === '.' || $fname === '..') continue;
+              $ext = pathinfo($fname, PATHINFO_EXTENSION);
+              if (!in_array($ext, $allowedExt, true)) continue;
+              $base = pathinfo($fname, PATHINFO_FILENAME);
+              $lowerExt = strtolower($ext);
+              $byBase[$base][$lowerExt] = $fname;
+            }
+          }
+          // Escolhe um arquivo por nome-base com base na prioridade
+          foreach ($byBase as $base => $extMap) {
+            foreach ($priority as $p) {
+              if (isset($extMap[$p])) { $recitalFiles[] = $extMap[$p]; break; }
+            }
+          }
+          natcasesort($recitalFiles);
+          $recitalFiles = array_values($recitalFiles);
+          if (count($recitalFiles) === 0):
+        ?>
+          <p class="text-center text-muted">Nenhuma foto disponível no momento.</p>
+        <?php else: ?>
+          <?php foreach ($recitalFiles as $i => $fname): ?>
+            <div class="col-sm-6 col-md-4 col-lg-4">
+              <div class="ratio ratio-1x1">
+                <img src="<?php echo $recitalUrlBase . '/' . htmlspecialchars($fname); ?>"
+                     class="w-100 h-100 rounded shadow-sm galeria-img"
+                     alt="Recital <?php echo $i + 1; ?>"
+                     style="object-fit: cover; cursor: pointer;"
+                     data-bs-target="#imageModalRecital"
+                     data-index="<?php echo $i; ?>"
+                     loading="lazy">
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
+    </div>
+  </section>
+
   <!-- Seção 1: Projeto Notas Culturais -->
   <section class="py-5">
     <div class="container">
@@ -289,6 +342,40 @@
   </section>
 
   <!-- Modal & Carousel Seção 1 -->
+  <!-- Modal & Carousel Recital -->
+  <div class="modal fade" id="imageModalRecital" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content bg-dark bg-opacity-75 border-0 rounded">
+        <div class="modal-header border-0 p-2">
+          <span class="text-white contador-imagens me-auto ms-2">1/1</span>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div id="carouselRecital" class="carousel slide carousel-fade" data-bs-ride="false" data-bs-touch="true">
+            <div class="carousel-inner">
+              <?php if (!empty($recitalFiles)): ?>
+                <?php foreach ($recitalFiles as $i => $fname): ?>
+                  <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>">
+                    <img src="<?php echo $recitalUrlBase . '/' . htmlspecialchars($fname); ?>" class="d-block mx-auto img-fluid carousel-img" alt="Recital <?php echo $i + 1; ?>">
+                    <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
+                      <h5>Recital <?php echo $i + 1; ?></h5>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecital" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span><span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselRecital" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span><span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="imageModal1" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content bg-dark bg-opacity-75 border-0 rounded">
@@ -479,15 +566,17 @@
   document.addEventListener('DOMContentLoaded', function() {
     // Inicializa os carrosséis explicitamente
     if (typeof bootstrap !== 'undefined') {
-      const carousel1 = document.getElementById('carousel1');
-      const carousel2 = document.getElementById('carousel2');
+  const carouselRecital = document.getElementById('carouselRecital');
+  const carousel1 = document.getElementById('carousel1');
+  const carousel2 = document.getElementById('carousel2');
       
       let lastScrollPosition = 0;
       let lastHash = '';
       let lastModal = null;
 
-      if (carousel1) new bootstrap.Carousel(carousel1, { interval: false, ride: false, touch: true });
-      if (carousel2) new bootstrap.Carousel(carousel2, { interval: false, ride: false, touch: true });
+  if (carouselRecital) new bootstrap.Carousel(carouselRecital, { interval: false, ride: false, touch: true });
+  if (carousel1) new bootstrap.Carousel(carousel1, { interval: false, ride: false, touch: true });
+  if (carousel2) new bootstrap.Carousel(carousel2, { interval: false, ride: false, touch: true });
 
       // Configuração para clicar nas imagens
       document.querySelectorAll('.galeria-img').forEach(function(img) {
@@ -503,7 +592,9 @@
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
 
-            const carouselId = target === '#imageModal1' ? 'carousel1' : 'carousel2';
+            let carouselId = 'carouselRecital';
+            if (target === '#imageModal1') carouselId = 'carousel1';
+            if (target === '#imageModal2') carouselId = 'carousel2';
             const carouselEl = document.getElementById(carouselId);
             if (carouselEl) {
               const carouselInstance = bootstrap.Carousel.getInstance(carouselEl) || 
