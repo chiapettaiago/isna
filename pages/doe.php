@@ -1,98 +1,50 @@
 <style>
-    /* Estilização adicional para os cards */
-    .card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .card-img-top {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-    .card-title {
-      font-size: 1.25rem;
-      margin-bottom: 10px;
-    }
-    .card-text {
-      font-size: 1rem;
-      margin-bottom: 15px;
-    }
+  /* Cards */
+  .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,.1); transition: transform .3s; }
+  .card:hover { transform: translateY(-5px); }
+  .card-img-top { width: 100%; height: 200px; object-fit: cover; }
+  .card-title { font-size: 1.25rem; margin-bottom: 10px; }
+  .card-text { font-size: 1rem; margin-bottom: 15px; }
 
-    /* Estilos para o player de vídeo estilo Netflix */
-    .netflix-player {
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      background-color: #000; /* Fundo preto para a área do player */
-    }
-    .netflix-player::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Camada escura sobreposta à thumbnail */
-      z-index: 1;
-      pointer-events: none;
-    }
-    .netflix-player video {
-      position: relative;
-      z-index: 0;
-    }
-    .video-controls-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 2; /* Acima da camada escura */
-    }
-    .video-info {
-      pointer-events: all;
-    }
-    .video-controls {
-      pointer-events: all;
-    }
-    .progress {
-      height: 4px;
-      cursor: pointer;
-    }
+  /* Player estilo Netflix */
+  .netflix-player { position: relative; overflow: hidden; border-radius: 8px; background-color: #000; }
+  .netflix-player::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.35); z-index: 1; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+  .netflix-player video { position: relative; z-index: 0; width: 100%; height: 100%; }
+  .video-controls-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; z-index: 2; opacity: 1; transition: opacity .2s ease; }
+  /* Mostrar overlay escuro apenas quando pausado */
+  .netflix-player.paused::before { opacity: .4; }
 
-    /* Estilo adicional para o botão de play centralizado na thumbnail */
-    .play-button-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(255, 0, 0, 0.7);
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 3;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .play-button-overlay:hover {
-      background-color: rgba(255, 0, 0, 0.9);
-    }
-    .play-button-overlay i {
-      color: white;
-      font-size: 24px;
-    }
+  .gradient-top, .gradient-bottom { position: absolute; left: 0; width: 100%; pointer-events: none; z-index: 1; }
+  .gradient-top { top: 0; height: 25%; background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,0)); }
+  .gradient-bottom { bottom: 0; height: 35%; background: linear-gradient(0deg, rgba(0,0,0,.85), rgba(0,0,0,0)); }
+
+  .video-info { pointer-events: all; }
+  .video-controls { pointer-events: all; background: linear-gradient(0deg, rgba(0,0,0,.9), rgba(0,0,0,.4) 60%, rgba(0,0,0,0) 100%); padding: 6px 0 8px; }
+
+  /* Seekbar */
+  .seekbar { position: relative; z-index: 2; height: 6px; margin: 6px 0 10px; cursor: pointer; }
+  .seek-rail { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,.25); border-radius: 999px; }
+  .seek-buffer { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255,255,255,.35); border-radius: 999px; width: 0%; }
+  .seek-played { position: absolute; left: 0; top: 0; bottom: 0; background: #e50914; border-radius: 999px; width: 0%; }
+  .seek-handle { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,.4); display: none; }
+  .seekbar:hover .seek-handle { display: block; }
+  .seek-tooltip { position: absolute; bottom: 100%; transform: translateX(-50%); background: rgba(0,0,0,.95); color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 4px; white-space: nowrap; display: none; border: 1px solid rgba(255,255,255,.2); }
+
+  /* Controles inferiores */
+  .controls-bar { position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; color: #fff; }
+  .controls-left, .controls-right { display: flex; align-items: center; gap: 10px; }
+  .control-btn { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+  .control-btn i { font-size: 1.9rem; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,.9); }
+  .control-btn:hover { background: rgba(255,255,255,.24); color: #fff; border-color: rgba(255,255,255,.8); }
+  .time-label { font-size: 1rem; opacity: 1; background: rgba(0,0,0,.9); padding: 6px 12px; border-radius: 8px; color: #fff; border: 1px solid rgba(255,255,255,.5); box-shadow: 0 2px 6px rgba(0,0,0,.6); }
+  .volume-container { display: inline-flex; align-items: center; gap: 6px; }
+  .volume-range { width: 0; height: 4px; opacity: 0; transition: width .2s ease, opacity .2s ease; }
+  .volume-container:hover .volume-range, .volume-range:focus { width: 90px; opacity: 1; }
+
+  /* Botão de play central */
+  .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(229, 9, 20, 0.9); border-radius: 50%; width: 64px; height: 64px; display: flex; justify-content: center; align-items: center; z-index: 3; cursor: pointer; transition: background-color .2s ease, transform .2s ease; }
+  .play-button-overlay:hover { background-color: rgba(229, 9, 20, 1); transform: translate(-50%, -50%) scale(1.05); }
+  .play-button-overlay i { color: white; font-size: 28px; }
 </style>
     <!-- Seção Hero -->
     <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
@@ -111,6 +63,61 @@
       Sua contribuição é essencial para continuarmos com nossos projetos sociais e ajudarmos mais pessoas.
       Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
     </p>
+    <!-- Player de Vídeo (antes das opções de doação) -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-10">
+        <div class="netflix-player ratio ratio-16x9">
+          <video id="donation-video" preload="metadata" poster="<?php echo asset('images/donation-thumbnail.png'); ?>">
+            <source src="<?php echo asset('videos/isna-impact-video.mp4'); ?>" type="video/mp4">
+            Seu navegador não suporta vídeo HTML5.
+          </video>
+
+          <!-- Botão de play central -->
+          <div class="play-button-overlay" aria-label="Reproduzir vídeo">
+            <i class="bi bi-play-fill"></i>
+          </div>
+
+          <!-- Overlay com informações e controles -->
+          <div class="video-controls-overlay p-3">
+            <div class="gradient-top"></div>
+            <div class="gradient-bottom"></div>
+            <div class="video-info text-white d-flex justify-content-start align-items-start px-2 pt-1">
+              <span class="fw-semibold small">Impacto Social ISNA</span>
+            </div>
+            <div class="video-controls px-2 pb-1">
+              <div class="px-1 pb-2">
+                <div id="seekbar" class="seekbar" aria-label="Linha do tempo do vídeo">
+                  <div class="seek-rail"></div>
+                  <div id="seek-buffer" class="seek-buffer"></div>
+                  <div id="seek-played" class="seek-played"></div>
+                  <div id="seek-handle" class="seek-handle"></div>
+                  <div id="seek-tooltip" class="seek-tooltip">00:00</div>
+                </div>
+              </div>
+              <div class="controls-bar">
+                <div class="controls-left">
+                  <button id="play-pause-btn" class="control-btn" type="button" aria-label="Reproduzir/Pausar">
+                    <i class="bi bi-play-fill"></i>
+                  </button>
+                  <div class="volume-container">
+                    <button id="mute-btn" class="control-btn" type="button" aria-label="Ativar/Desativar som">
+                      <i class="bi bi-volume-up-fill"></i>
+                    </button>
+                    <input id="volume-range" class="volume-range" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+                  </div>
+                </div>
+                <div class="controls-right ms-auto">
+                  <span class="time-label"><span id="current-time">00:00</span> / <span id="duration">00:00</span></span>
+                  <button id="fullscreen-btn" class="control-btn" type="button" aria-label="Tela cheia">
+                    <i class="bi bi-arrows-fullscreen"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row justify-content-center">
       <!-- Card 1: Doações Bancárias -->
       <div class="col-md-4 mb-4">
@@ -128,7 +135,7 @@
       <!-- Card 2: Doação via PayPal -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
-          <img src="/images/paypal.jpg" class="card-img-top" alt="Doação via PayPal">
+          <img src="<?php echo asset('images/paypal.jpg'); ?>" class="card-img-top" alt="Doação via PayPal">
           <div class="card-body">
             <h5 class="card-title">Doação via PayPal</h5>
             <p class="card-text">
@@ -153,7 +160,7 @@
       <!-- Card 3: Doações Internacionais -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
-          <img src="/images/international-gifts.png" class="card-img-top" alt="Doações Internacionais">
+          <img src="<?php echo asset('images/international-gifts.png'); ?>" class="card-img-top" alt="Doações Internacionais">
           <div class="card-body">
             <h5 class="card-title">Doações Internacionais</h5>
             <p class="card-text">
@@ -170,92 +177,204 @@
   <script>
     // JavaScript para o funcionamento do player de vídeo estilo Netflix
     document.addEventListener('DOMContentLoaded', function() {
+      const player = document.querySelector('.netflix-player');
       const video = document.getElementById('donation-video');
       const playPauseBtn = document.getElementById('play-pause-btn');
       const muteBtn = document.getElementById('mute-btn');
+      const volumeRange = document.getElementById('volume-range');
       const fullscreenBtn = document.getElementById('fullscreen-btn');
       const currentTimeLabel = document.getElementById('current-time');
       const durationLabel = document.getElementById('duration');
-      // const volumeControl = document.getElementById('volume-control'); // Not used in current HTML
-      // const videoProgress = document.getElementById('video-progress'); // Not used in current HTML
       const playButtonOverlay = document.querySelector('.play-button-overlay');
+      const seekbar = document.getElementById('seekbar');
+      const seekBuffer = document.getElementById('seek-buffer');
+      const seekPlayed = document.getElementById('seek-played');
+      const seekHandle = document.getElementById('seek-handle');
+      const seekTooltip = document.getElementById('seek-tooltip');
 
       let isPlaying = false;
       let isMuted = false;
+      let isSeeking = false;
 
-      if (video && playButtonOverlay) { // Check if video and overlay exist
-        playButtonOverlay.addEventListener('click', function() {
-          video.play();
-          if(playPauseBtn) playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-          isPlaying = true;
-          playButtonOverlay.style.display = 'none';
-        });
-
-        video.addEventListener('pause', function() {
-          playButtonOverlay.style.display = 'flex';
-        });
-
-        video.addEventListener('ended', function() {
-          playButtonOverlay.style.display = 'flex';
-          if(playPauseBtn) playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-          isPlaying = false;
-        });
-
-        video.addEventListener('loadedmetadata', function() {
-          if(durationLabel) durationLabel.textContent = formatTime(video.duration);
-        });
-
-        video.addEventListener('timeupdate', function() {
-          if(currentTimeLabel) currentTimeLabel.textContent = formatTime(video.currentTime);
-          // if(videoProgress) videoProgress.style.width = (video.currentTime / video.duration) * 100 + '%'; // Uncomment if progress bar is added
-        });
+      function updateTimeLabels() {
+        if (currentTimeLabel) currentTimeLabel.textContent = formatTime(video.currentTime || 0);
+        if (durationLabel) durationLabel.textContent = formatTime(video.duration || 0);
       }
 
-
-      if(playPauseBtn){
-        playPauseBtn.addEventListener('click', function() {
-          if (isPlaying) {
-            video.pause();
-            playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-            if(playButtonOverlay) playButtonOverlay.style.display = 'flex';
-          } else {
-            video.play();
-            playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-            if(playButtonOverlay) playButtonOverlay.style.display = 'none';
-          }
-          isPlaying = !isPlaying;
-        });
+      function updateProgress() {
+        if (!video.duration) return;
+        const playedPct = (video.currentTime / video.duration) * 100;
+        seekPlayed.style.width = playedPct + '%';
+        seekHandle.style.left = playedPct + '%';
       }
 
-      if(muteBtn && video){
-        muteBtn.addEventListener('click', function() {
-          if (isMuted) {
-            video.muted = false;
-            muteBtn.innerHTML = '<i class="bi bi-volume-up-fill"></i>';
-          } else {
-            video.muted = true;
-            muteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
-          }
-          isMuted = !isMuted;
-        });
+      function updateBuffered() {
+        if (!video.duration || video.buffered.length === 0) return;
+        const end = video.buffered.end(video.buffered.length - 1);
+        const bufPct = Math.min(100, (end / video.duration) * 100);
+        seekBuffer.style.width = bufPct + '%';
       }
 
-      if(fullscreenBtn && video){
-        fullscreenBtn.addEventListener('click', function() {
-          if (video.requestFullscreen) {
-            video.requestFullscreen();
-          } else if (video.webkitRequestFullscreen) { // Safari
-            video.webkitRequestFullscreen();
-          } else if (video.msRequestFullscreen) { // IE11
-            video.msRequestFullscreen();
-          }
-        });
+      function seekToClientX(clientX) {
+        const rect = seekbar.getBoundingClientRect();
+        const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+        const pct = x / rect.width;
+        video.currentTime = pct * (video.duration || 0);
       }
 
       function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
+        const s = Math.max(0, seconds || 0);
+        const minutes = Math.floor(s / 60);
+        const secs = Math.floor(s % 60);
         return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+
+      if (player && video && playButtonOverlay) {
+        // Estado inicial (pausado -> overlay ativo)
+        player.classList.add('paused');
+        updateTimeLabels();
+        updateBuffered();
+
+        playButtonOverlay.addEventListener('click', function() {
+          video.play();
+        });
+
+        // Play/pause
+        if (playPauseBtn) {
+          playPauseBtn.addEventListener('click', function() {
+            if (video.paused) {
+              video.play();
+            } else {
+              video.pause();
+            }
+          });
+        }
+
+        // Mute/volume
+        if (muteBtn) {
+          muteBtn.addEventListener('click', function() {
+            video.muted = !video.muted;
+            isMuted = video.muted;
+            muteBtn.innerHTML = isMuted ? '<i class="bi bi-volume-mute-fill"></i>' : '<i class="bi bi-volume-up-fill"></i>';
+          });
+        }
+        if (volumeRange) {
+          volumeRange.addEventListener('input', function() {
+            video.volume = parseFloat(volumeRange.value);
+            if (video.volume === 0) {
+              video.muted = true;
+              muteBtn && (muteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>');
+            } else {
+              video.muted = false;
+              muteBtn && (muteBtn.innerHTML = '<i class="bi bi-volume-up-fill"></i>');
+            }
+          });
+        }
+
+        // Fullscreen
+        if (fullscreenBtn) {
+          fullscreenBtn.addEventListener('click', function() {
+            const el = player;
+            if (document.fullscreenElement) {
+              document.exitFullscreen && document.exitFullscreen();
+            } else {
+              el.requestFullscreen && el.requestFullscreen();
+            }
+          });
+        }
+
+        // Progresso/seek
+        if (seekbar) {
+          seekbar.addEventListener('mousemove', function(e) {
+            const rect = seekbar.getBoundingClientRect();
+            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            const pct = x / rect.width;
+            const time = pct * (video.duration || 0);
+            if (seekTooltip) {
+              seekTooltip.style.display = 'block';
+              seekTooltip.style.left = (pct * 100) + '%';
+              seekTooltip.textContent = formatTime(time);
+            }
+          });
+          seekbar.addEventListener('mouseleave', function() {
+            if (seekTooltip) seekTooltip.style.display = 'none';
+          });
+          seekbar.addEventListener('mousedown', function(e) {
+            isSeeking = true;
+            seekToClientX(e.clientX);
+          });
+          document.addEventListener('mousemove', function(e) {
+            if (isSeeking) seekToClientX(e.clientX);
+          });
+          document.addEventListener('mouseup', function() {
+            isSeeking = false;
+          });
+          seekbar.addEventListener('click', function(e) {
+            seekToClientX(e.clientX);
+          });
+        }
+
+        // Eventos do vídeo
+        video.addEventListener('play', function() {
+          isPlaying = true;
+          player.classList.remove('paused');
+          playButtonOverlay.style.display = 'none';
+          playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>');
+        });
+        video.addEventListener('pause', function() {
+          isPlaying = false;
+          player.classList.add('paused');
+          playButtonOverlay.style.display = 'flex';
+          playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>');
+        });
+        video.addEventListener('ended', function() {
+          isPlaying = false;
+          player.classList.add('paused');
+          playButtonOverlay.style.display = 'flex';
+          playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>');
+        });
+        video.addEventListener('loadedmetadata', function() {
+          updateTimeLabels();
+          updateBuffered();
+        });
+        video.addEventListener('timeupdate', function() {
+          updateTimeLabels();
+          updateProgress();
+        });
+        video.addEventListener('progress', updateBuffered);
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+          if (!player.contains(document.activeElement)) {
+            // Permite atalhos mesmo sem foco em controles
+          }
+          switch (e.key.toLowerCase()) {
+            case ' ':
+              e.preventDefault();
+              video.paused ? video.play() : video.pause();
+              break;
+            case 'm':
+              muteBtn && muteBtn.click();
+              break;
+            case 'f':
+              fullscreenBtn && fullscreenBtn.click();
+              break;
+            case 'arrowright':
+              video.currentTime = Math.min((video.currentTime || 0) + 5, video.duration || 0);
+              break;
+            case 'arrowleft':
+              video.currentTime = Math.max((video.currentTime || 0) - 5, 0);
+              break;
+            case 'arrowup':
+              video.volume = Math.min(1, (video.volume || 0) + 0.05);
+              volumeRange && (volumeRange.value = String(video.volume));
+              break;
+            case 'arrowdown':
+              video.volume = Math.max(0, (video.volume || 0) - 0.05);
+              volumeRange && (volumeRange.value = String(video.volume));
+              break;
+          }
+        });
       }
     });
   </script>

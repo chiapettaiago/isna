@@ -26,8 +26,8 @@
               <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>
-                  <strong>Versão do site:</strong> 1.3<br>
-                  <strong>Data de lançamento:</strong> Julho de 2025
+                  <strong>Versão do site:</strong> 1.4<br>
+                  <strong>Data de lançamento:</strong> Agosto de 2025
                 </div>
               </div>
               <p class="mt-4 fs-5 text-center">Este site foi desenvolvido para facilitar o acesso às informações do Instituto Social Novo Amanhecer, promover a transparência e incentivar a participação da comunidade em nossos projetos sociais.</p>
@@ -71,6 +71,21 @@
   <section class="py-5 bg-white">
     <div class="container">
       <div class="timeline">
+        <!-- Card da versão 1.4 -->
+        <div class="timeline-item">
+          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
+            <div class="card-body p-5">
+              <h2 class="h4 mb-4 text-danger text-center"><i class="bi bi-play-circle me-2"></i>Melhorias da versão 1.4 (em desenvolvimento)</h2>
+              <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                <div>Versão lançada em Agosto de 2025</div>
+              </div>
+              <ul class="fs-5 mb-0 list-unstyled">
+                <li class="text-center py-2"><i class="bi bi-play-circle-fill me-2 text-danger"></i>Vídeos interativos na página de doação (player com controles aprimorados estilo Netflix)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <!-- Card da versão 1.3 -->
         <div class="timeline-item">
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
