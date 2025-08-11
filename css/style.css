@@ -40,6 +40,35 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+/* Pinch-to-zoom imagens */
+.pinch-zoom-wrapper {
+  position: relative;
+  overflow: hidden; /* evita que a imagem ampliada extrapole visualmente */
+  display: inline-block;
+  touch-action: none; /* controla pinch manualmente */
+  max-width: 100%;
+}
+/* Quando aplicado em carousel-item, manter display block para ocupar toda a área */
+.carousel-item.pinch-zoom-wrapper { display: block; text-align: center; }
+.carousel-item.pinch-zoom-wrapper img.pinch-zoom-target { margin-left: auto; margin-right: auto; }
+.pinch-zoom-wrapper img.pinch-zoom-target {
+  transform-origin: 0 0; /* Usamos origem 0,0 para cálculo simplificado */
+  will-change: transform;
+  transition: transform .18s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  max-width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+.pinch-zoom-wrapper img.pinch-zoom-target.zoomed-in {
+  cursor: grab;
+}
+.pinch-zoom-wrapper img.pinch-zoom-target.grabbing { cursor: grabbing; }
+@media (pointer: coarse) {
+  .pinch-zoom-wrapper img.pinch-zoom-target { transition: none; }
+}
+
 /* Estilos para a galeria de imagens */
 .galeria-img, .galeria-home-img {
   transition: transform 0.3s ease, opacity 0.3s ease;

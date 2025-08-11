@@ -30,6 +30,174 @@ window.addEventListener("scroll", function() {
 
 // Inicialização do carrossel e funções de galeria
 document.addEventListener('DOMContentLoaded', () => {
+  // ----- Pinch-to-Zoom para imagens -----
+  (function enablePinchZoom() {
+    // Apenas imagens dentro de modais/carrosséis
+    const candidates = document.querySelectorAll('.modal .carousel-item img');
+    candidates.forEach(img => {
+      if (img.classList.contains('pinch-zoom-target') || img.width < 80 || /logo|icon|favicon/i.test(img.src)) return;
+      // Usar o próprio .carousel-item como wrapper para não quebrar layout Bootstrap
+      const carouselItem = img.closest('.carousel-item');
+      if (!carouselItem) return;
+      carouselItem.classList.add('pinch-zoom-wrapper');
+      img.classList.add('pinch-zoom-target');
+      const wrapper = carouselItem; // Mantém interface usada abaixo
+
+      let scale = 1;
+      let minScale = 1;
+      let maxScale = 4;
+      let startDistance = 0;
+      let startScale = 1;
+      let originX = 0;
+      let originY = 0;
+      let translateX = 0;
+      let translateY = 0;
+      let lastTranslateX = 0;
+      let lastTranslateY = 0;
+      let isPointerDown = false;
+      let lastTouchEnd = 0;
+
+      function getDistance(t1, t2) {
+        const dx = t2.clientX - t1.clientX;
+        const dy = t2.clientY - t1.clientY;
+        return Math.hypot(dx, dy);
+      }
+      function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+      function applyTransform() {
+        img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      }
+      function setOriginFromTouches(t1, t2) {
+        const rect = img.getBoundingClientRect();
+        originX = ( (t1.clientX + t2.clientX) / 2 ) - rect.left;
+        originY = ( (t1.clientY + t2.clientY) / 2 ) - rect.top;
+      }
+      function onPointerDown(e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        // Em carrossel, só inicia arrasto se já estiver com zoom (>1)
+        if (scale === 1) return;
+        isPointerDown = true;
+        img.classList.add('grabbing');
+      }
+      function onPointerUp() {
+        isPointerDown = false;
+        img.classList.remove('grabbing');
+        lastTranslateX = translateX;
+        lastTranslateY = translateY;
+      }
+      function onPointerMove(e) {
+  if (!isPointerDown || scale === 1) return; // só arrasta quando ampliado
+        translateX = lastTranslateX + e.movementX;
+        translateY = lastTranslateY + e.movementY;
+        limitPan();
+        applyTransform();
+      }
+      function limitPan() {
+        const rect = wrapper.getBoundingClientRect();
+        const imgW = img.naturalWidth * scale;
+        const imgH = img.naturalHeight * scale;
+        const maxX = Math.max(0, (imgW - rect.width) / 2);
+        const maxY = Math.max(0, (imgH - rect.height) / 2);
+        translateX = clamp(translateX, -maxX, maxX);
+        translateY = clamp(translateY, -maxY, maxY);
+      }
+      function onTouchStart(e) {
+        if (e.touches.length === 2) {
+          e.preventDefault();
+          startDistance = getDistance(e.touches[0], e.touches[1]);
+          startScale = scale;
+          setOriginFromTouches(e.touches[0], e.touches[1]);
+          img.style.transformOrigin = `${originX}px ${originY}px`;
+        } else if (e.touches.length === 1) {
+          // Se com zoom, habilita pan; se sem zoom, deixa swipe do carrossel funcionar
+          if (scale > 1) {
+            isPointerDown = true;
+          } else {
+            isPointerDown = false; // não interferir no swipe do carrossel
+          }
+        }
+      }
+      function onTouchMove(e) {
+        if (e.touches.length === 2) {
+          e.preventDefault();
+          const dist = getDistance(e.touches[0], e.touches[1]);
+          let newScale = startScale * (dist / startDistance);
+          newScale = clamp(newScale, minScale, maxScale);
+          // ajustar translate para manter centro aparente
+          const scaleRatio = newScale / scale;
+          translateX *= scaleRatio;
+          translateY *= scaleRatio;
+          scale = newScale;
+          limitPan();
+          applyTransform();
+          if (scale > 1) img.classList.add('zoomed-in'); else img.classList.remove('zoomed-in');
+        } else if (e.touches.length === 1 && isPointerDown && scale > 1) {
+          e.preventDefault();
+          translateX += e.movementX || 0; // movementX não existe em touch, tratamos abaixo
+          translateY += e.movementY || 0;
+          // fallback calculando delta manual
+          const touch = e.touches[0];
+          if (!img._lastTouch) img._lastTouch = {x: touch.clientX, y: touch.clientY};
+          const dx = touch.clientX - img._lastTouch.x;
+          const dy = touch.clientY - img._lastTouch.y;
+          translateX += dx;
+          translateY += dy;
+          img._lastTouch = {x: touch.clientX, y: touch.clientY};
+          limitPan();
+          applyTransform();
+        }
+      }
+      function onTouchEnd(e) {
+        delete img._lastTouch;
+        if (scale <= 1) { scale = 1; translateX = 0; translateY = 0; applyTransform(); img.classList.remove('zoomed-in'); }
+        isPointerDown = false;
+        lastTranslateX = translateX;
+        lastTranslateY = translateY;
+        const now = Date.now();
+        if (e.touches.length === 0 && now - lastTouchEnd < 280) {
+          // duplo toque: alterna zoom
+          if (scale === 1) { scale = 2; img.classList.add('zoomed-in'); } else { scale = 1; translateX = 0; translateY = 0; img.classList.remove('zoomed-in'); }
+          applyTransform();
+        }
+        if (e.touches.length === 0) lastTouchEnd = now;
+      }
+      function onWheel(e) {
+        if (!e.ctrlKey) return; // só permitir pinch-zoom simulado (trackpad) com ctrl
+        e.preventDefault();
+        const rect = img.getBoundingClientRect();
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+        img.style.transformOrigin = `${cx}px ${cy}px`;
+        const delta = -e.deltaY;
+        let newScale = scale * (delta > 0 ? 1.08 : 0.92);
+        newScale = clamp(newScale, minScale, maxScale);
+        const ratio = newScale / scale;
+        translateX *= ratio;
+        translateY *= ratio;
+        scale = newScale;
+        limitPan();
+        if (scale > 1) img.classList.add('zoomed-in'); else { img.classList.remove('zoomed-in'); translateX = 0; translateY = 0; }
+        applyTransform();
+      }
+
+      // Eventos
+      img.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointermove', onPointerMove);
+      img.addEventListener('touchstart', onTouchStart, { passive: false });
+      img.addEventListener('touchmove', onTouchMove, { passive: false });
+      img.addEventListener('touchend', onTouchEnd, { passive: true });
+      img.addEventListener('wheel', onWheel, { passive: false });
+
+      // Reset em duplo clique desktop
+      img.addEventListener('dblclick', e => {
+        e.preventDefault();
+        if (scale === 1) { scale = 2; img.classList.add('zoomed-in'); }
+        else { scale = 1; translateX = 0; translateY = 0; img.classList.remove('zoomed-in'); }
+        applyTransform();
+      });
+    });
+  })();
+
   // Função para atualizar o contador de imagens
   function atualizarContador(carouselElement, activeIndex) {
     const totalItems = carouselElement.querySelectorAll('.carousel-item').length;
