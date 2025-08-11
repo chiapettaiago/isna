@@ -1,4 +1,12 @@
 <style>
+  :root {
+    --isna-accent: #ffc107; /* amarelo do instituto (Bootstrap warning) */
+    --isna-text: #fff;
+    --isna-rail: rgba(255,255,255,.25);
+    --isna-buffer: rgba(255,255,255,.4);
+    --isna-bg: rgba(0,0,0,.6);
+    --isna-bg-strong: rgba(0,0,0,.85);
+  }
   /* Cards */
   .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,.1); transition: transform .3s; }
   .card:hover { transform: translateY(-5px); }
@@ -8,11 +16,11 @@
 
   /* Player estilo Netflix */
   .netflix-player { position: relative; overflow: hidden; border-radius: 8px; background-color: #000; }
-  .netflix-player::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.35); z-index: 1; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
-  .netflix-player video { position: relative; z-index: 0; width: 100%; height: 100%; }
-  .video-controls-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; z-index: 2; opacity: 1; transition: opacity .2s ease; }
-  /* Mostrar overlay escuro apenas quando pausado */
-  .netflix-player.paused::before { opacity: .4; }
+  /* Importante: dentro de .ratio, os filhos devem ser absolute para ocupar o espaço do player */
+  .netflix-player video { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; background:#000; object-fit: cover; }
+  .video-controls-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; z-index: 2; opacity: 1; transition: opacity .2s ease; }
+  /* Barra inferior ao estilo YouTube */
+  .video-controls { pointer-events: all; padding: 10px 8px 8px; background: linear-gradient(180deg, transparent, rgba(0,0,0,.2) 40%, rgba(0,0,0,.35) 80%); }
 
   .gradient-top, .gradient-bottom { position: absolute; left: 0; width: 100%; pointer-events: none; z-index: 1; }
   .gradient-top { top: 0; height: 25%; background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,0)); }
@@ -23,28 +31,43 @@
 
   /* Seekbar */
   .seekbar { position: relative; z-index: 2; height: 6px; margin: 6px 0 10px; cursor: pointer; }
-  .seek-rail { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,.25); border-radius: 999px; }
-  .seek-buffer { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255,255,255,.35); border-radius: 999px; width: 0%; }
-  .seek-played { position: absolute; left: 0; top: 0; bottom: 0; background: #e50914; border-radius: 999px; width: 0%; }
-  .seek-handle { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,.4); display: none; }
-  .seekbar:hover .seek-handle { display: block; }
-  .seek-tooltip { position: absolute; bottom: 100%; transform: translateX(-50%); background: rgba(0,0,0,.95); color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 4px; white-space: nowrap; display: none; border: 1px solid rgba(255,255,255,.2); }
+  .seek-rail { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: var(--isna-rail); border-radius: 999px; }
+  .seek-buffer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--isna-buffer); border-radius: 999px; width: 0%; }
+  .seek-played { position: absolute; left: 0; top: 0; bottom: 0; background: var(--isna-accent); border-radius: 999px; width: 0%; }
+  .seek-handle { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,.4); opacity: 0; transition: opacity .15s ease; }
+  .seekbar:hover .seek-handle, .seekbar:focus-within .seek-handle { opacity: 1; }
+  .seek-tooltip { position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%); background: rgba(0,0,0,.95); color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 4px; white-space: nowrap; display: none; border: 1px solid rgba(255,255,255,.2); }
 
   /* Controles inferiores */
-  .controls-bar { position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; color: #fff; }
+  .controls-bar { position: relative; z-index: 3; display: flex; align-items: center; gap: 12px; color: var(--isna-text); }
   .controls-left, .controls-right { display: flex; align-items: center; gap: 10px; }
-  .control-btn { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: 10px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
-  .control-btn i { font-size: 1.9rem; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,.9); }
-  .control-btn:hover { background: rgba(255,255,255,.24); color: #fff; border-color: rgba(255,255,255,.8); }
-  .time-label { font-size: 1rem; opacity: 1; background: rgba(0,0,0,.9); padding: 6px 12px; border-radius: 8px; color: #fff; border: 1px solid rgba(255,255,255,.5); box-shadow: 0 2px 6px rgba(0,0,0,.6); }
+  .control-btn { background: transparent; border: none; color: var(--isna-text); padding: 6px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
+  .control-btn i { font-size: 1.4rem; line-height: 1; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
+  .control-btn:hover { color: var(--isna-accent); }
+  .time-label { font-size: .95rem; opacity: .95; background: rgba(0,0,0,.6); padding: 4px 8px; border-radius: 4px; color: #fff; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 2px 6px rgba(0,0,0,.3); }
   .volume-container { display: inline-flex; align-items: center; gap: 6px; }
   .volume-range { width: 0; height: 4px; opacity: 0; transition: width .2s ease, opacity .2s ease; }
   .volume-container:hover .volume-range, .volume-range:focus { width: 90px; opacity: 1; }
 
   /* Botão de play central */
-  .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(229, 9, 20, 0.9); border-radius: 50%; width: 64px; height: 64px; display: flex; justify-content: center; align-items: center; z-index: 3; cursor: pointer; transition: background-color .2s ease, transform .2s ease; }
-  .play-button-overlay:hover { background-color: rgba(229, 9, 20, 1); transform: translate(-50%, -50%) scale(1.05); }
-  .play-button-overlay i { color: white; font-size: 28px; }
+  .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.7); border-radius: 50%; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; z-index: 3; cursor: pointer; transition: background-color .2s ease, transform .2s ease; border:1px solid rgba(255,255,255,.25) }
+  .play-button-overlay:hover { background-color: rgba(0, 0, 0, 0.85); transform: translate(-50%, -50%) scale(1.05); }
+  .play-button-overlay i { color: #fff; font-size: 28px; }
+
+  /* Removidos: zonas de pulo e menu de configurações para estabilidade */
+
+  /* Melhorias mobile/touch */
+  @media (max-width: 576px), (pointer: coarse) {
+    .card-img-top { height: 160px; }
+    .seekbar { height: 8px; margin: 8px 0 12px; }
+    .seek-handle { width: 16px; height: 16px; }
+    .control-btn { padding: 8px; }
+    .control-btn i { font-size: 1.4rem; }
+    .time-label { font-size: .9rem; padding: 6px 10px; }
+    .volume-container .volume-range { width: 90px; opacity: 1; }
+    .play-button-overlay { width: 56px; height: 56px; }
+    .play-button-overlay i { font-size: 24px; }
+  }
 </style>
     <!-- Seção Hero -->
     <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
@@ -66,9 +89,9 @@
     <!-- Player de Vídeo (antes das opções de doação) -->
     <div class="row justify-content-center mb-5">
       <div class="col-lg-10">
-        <div class="netflix-player ratio ratio-16x9">
-          <video id="donation-video" preload="metadata" poster="<?php echo asset('images/donation-thumbnail.png'); ?>">
-            <source src="<?php echo asset('videos/isna-impact-video.mp4'); ?>" type="video/mp4">
+        <div class="netflix-player ratio ratio-16x9" id="yt-like-player">
+          <video id="donation-video" preload="auto" playsinline webkit-playsinline poster="<?php $thumb='images/donation-thumbnail.jpg'; echo asset($thumb) . '?v=' . (file_exists($thumb)?filemtime($thumb):time()); ?>" disablepictureinpicture controlslist="noplaybackrate nodownload noremoteplayback">
+            <source src="<?php $vid='videos/ISNA - Doações.mp4'; echo asset($vid) . '?v=' . (file_exists($vid)?filemtime($vid):time()); ?>" type="video/mp4">
             Seu navegador não suporta vídeo HTML5.
           </video>
 
@@ -79,9 +102,8 @@
 
           <!-- Overlay com informações e controles -->
           <div class="video-controls-overlay p-3">
-            <div class="gradient-top"></div>
-            <div class="gradient-bottom"></div>
-            <div class="video-info text-white d-flex justify-content-start align-items-start px-2 pt-1">
+            <!-- Info minimal como no YouTube -->
+            <div class="video-info text-white d-flex justify-content-start align-items-start px-2 pt-1" style="pointer-events: none;">
               <span class="fw-semibold small">Impacto Social ISNA</span>
             </div>
             <div class="video-controls px-2 pb-1">
@@ -113,6 +135,7 @@
                   </button>
                 </div>
               </div>
+              <!-- Menu de configurações removido para evitar conflitos de layout -->
             </div>
           </div>
         </div>
@@ -176,7 +199,7 @@
   </div>
   <script>
     // JavaScript para o funcionamento do player de vídeo estilo Netflix
-    document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
       const player = document.querySelector('.netflix-player');
       const video = document.getElementById('donation-video');
       const playPauseBtn = document.getElementById('play-pause-btn');
@@ -191,6 +214,8 @@
       const seekPlayed = document.getElementById('seek-played');
       const seekHandle = document.getElementById('seek-handle');
       const seekTooltip = document.getElementById('seek-tooltip');
+  const sourceEl = video ? video.querySelector('source') : null;
+  // Simplificado: sem modo teatro, sem menu de configurações, sem zonas de pulo
 
       let isPlaying = false;
       let isMuted = false;
@@ -229,6 +254,8 @@
         return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
       }
 
+  // Lazy-load removido: src definido direto e preload=auto para carregar imediatamente
+
       if (player && video && playButtonOverlay) {
         // Estado inicial (pausado -> overlay ativo)
         player.classList.add('paused');
@@ -249,6 +276,11 @@
             }
           });
         }
+        // Clicar no vídeo também pausa/continua como no YouTube
+        video.addEventListener('click', () => {
+          if (settingsMenu) settingsMenu.classList.remove('active');
+          video.paused ? video.play() : video.pause();
+        });
 
         // Mute/volume
         if (muteBtn) {
@@ -283,6 +315,8 @@
           });
         }
 
+  // Modo teatro removido
+
         // Progresso/seek
         if (seekbar) {
           seekbar.addEventListener('mousemove', function(e) {
@@ -314,22 +348,23 @@
           });
         }
 
+  // Menu de configurações removido
+
+  // Zonas de pulo removidas
+
         // Eventos do vídeo
         video.addEventListener('play', function() {
           isPlaying = true;
-          player.classList.remove('paused');
           playButtonOverlay.style.display = 'none';
           playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>');
         });
         video.addEventListener('pause', function() {
           isPlaying = false;
-          player.classList.add('paused');
           playButtonOverlay.style.display = 'flex';
           playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>');
         });
         video.addEventListener('ended', function() {
           isPlaying = false;
-          player.classList.add('paused');
           playButtonOverlay.style.display = 'flex';
           playPauseBtn && (playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>');
         });
@@ -352,6 +387,16 @@
             case ' ':
               e.preventDefault();
               video.paused ? video.play() : video.pause();
+              break;
+            case 'k':
+              e.preventDefault();
+              video.paused ? video.play() : video.pause();
+              break;
+            case 'j':
+              video.currentTime = Math.max((video.currentTime || 0) - 10, 0);
+              break;
+            case 'l':
+              video.currentTime = Math.min((video.currentTime || 0) + 10, video.duration || 0);
               break;
             case 'm':
               muteBtn && muteBtn.click();
