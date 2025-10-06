@@ -23,7 +23,7 @@
     </div>
     <hr class="border-light">
     <div class="text-center">
-      <p class="mb-0">&copy; <?php echo date("Y"); ?> Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapettadev.site" class="text-white text-decoration-none">Iago Chiapetta</a></p>
+      <p class="mb-0">&copy; <?php echo date("Y"); ?> Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapetta.dev" class="text-white text-decoration-none">Iago Chiapetta</a></p>
     </div>
   </div>
 </footer>
