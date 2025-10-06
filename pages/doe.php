@@ -15,7 +15,7 @@
   .card-text { font-size: 1rem; margin-bottom: 15px; }
 
   /* Player estilo Netflix */
-  .netflix-player { position: relative; overflow: hidden; border-radius: 8px; background-color: #000; }
+  .netflix-player { position: relative; overflow: hidden; border-radius: 8px; background-color: #000; display: none; }
   /* Importante: dentro de .ratio, os filhos devem ser absolute para ocupar o espaço do player */
   .netflix-player video { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; background:#000; object-fit: cover; }
   .video-controls-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; z-index: 2; opacity: 1; transition: opacity .2s ease; }
@@ -87,7 +87,7 @@
       Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
     </p>
     <!-- Player de Vídeo (antes das opções de doação) -->
-    <div class="row justify-content-center mb-5">
+    <div class="row justify-content-center mb-5 ">
       <div class="col-lg-10">
         <div class="netflix-player ratio ratio-16x9" id="yt-like-player">
           <video id="donation-video" preload="auto" playsinline webkit-playsinline poster="<?php $thumb='images/donation-thumbnail.jpg'; echo asset($thumb) . '?v=' . (file_exists($thumb)?filemtime($thumb):time()); ?>" disablepictureinpicture controlslist="noplaybackrate nodownload noremoteplayback">
