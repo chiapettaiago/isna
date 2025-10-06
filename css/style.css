@@ -228,6 +228,27 @@ body {
   background-color: #1f2937 !important;
 }
 
+/* Modo escuro específico para página de galeria */
+.dark-theme section.py-5 {
+  background-color: #1e1e1e !important;
+}
+
+.dark-theme section.py-5.bg-light {
+  background-color: #252525 !important;
+}
+
+.dark-theme section.py-5.bg-white {
+  background-color: #1e1e1e !important;
+}
+
+.dark-theme .container h2 {
+  color: #e0e0e0 !important;
+}
+
+.dark-theme .text-center h2 {
+  color: #e0e0e0 !important;
+}
+
 .dark-theme .text-secondary {
   color: #e5e7eb !important;
 }
