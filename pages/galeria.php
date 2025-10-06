@@ -7,6 +7,28 @@
       display: block;
       margin: 0 auto;     /* centraliza */
     }
+
+    /* Estilos específicos para modo escuro na galeria */
+    .dark-theme h2 {
+      color: #e0e0e0 !important;
+    }
+
+    .dark-theme .text-center h2 {
+      color: #e0e0e0 !important;
+    }
+
+    /* Seções com fundos apropriados para modo escuro */
+    .dark-theme section.py-5:not(.bg-light):not(.bg-white) {
+      background-color: #1e1e1e !important;
+    }
+
+    .dark-theme section.py-5.bg-light {
+      background-color: #252525 !important;
+    }
+
+    .dark-theme section.py-5.bg-white {
+      background-color: #1e1e1e !important;
+    }
 </style>
 
   <!-- Hero -->
