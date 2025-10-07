@@ -137,7 +137,7 @@
       <div class="row pdf-grid row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         <!-- Card: CERTIFICADO CEBAS -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/CERTIFICADO CEBAS.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -150,7 +150,7 @@
 
         <!-- Card: CertificadoSiconv -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/CertificadoSiconv.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -163,7 +163,7 @@
 
         <!-- Card: cmas -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/cmas.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -176,7 +176,7 @@
 
         <!-- Card: ISNA_Declaração -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/ISNA_Declaracao.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -189,7 +189,7 @@
 
         <!-- Card: OSCIP -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/OSCIP.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -202,7 +202,7 @@
 
         <!-- Card: Titulo de Utilidade publica municipal -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/Titulo de Utilidade publica municipal.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -215,7 +215,7 @@
 
         <!-- Card: Titulo de Utilidade publica -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/Titulo de Utilidade publica.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>
@@ -228,7 +228,7 @@
 
         <!-- Card: utilidade publica -->
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card h-100 shadow-sm">
+          <div class="card h-100 shadow">
             <div class="pdf-preview">
               <iframe data-src="/docs/utilidade publica.pdf#toolbar=0&navpanes=0&view=Fit" type="application/pdf"></iframe>
             </div>

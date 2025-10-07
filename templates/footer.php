@@ -32,10 +32,24 @@
     // JavaScript para ajustar a opacidade da navbar ao rolar a página
     window.addEventListener("scroll", function() {
       const nav = document.getElementById("mainNav");
-      if (window.scrollY > 50) {
-        nav.classList.add("opacity-75");
+      const isMobile = window.innerWidth <= 991.98;
+      
+      if (isMobile) {
+        // Efeito para mobile - navbar se afasta do fundo
+        if (window.scrollY > 50) {
+          nav.classList.add("scrolled");
+          document.body.classList.add("navbar-scrolled");
+        } else {
+          nav.classList.remove("scrolled");
+          document.body.classList.remove("navbar-scrolled");
+        }
       } else {
-        nav.classList.remove("opacity-75");
+        // Efeito para desktop - opacidade
+        if (window.scrollY > 50) {
+          nav.classList.add("opacity-75");
+        } else {
+          nav.classList.remove("opacity-75");
+        }
       }
     });
 
@@ -56,14 +70,18 @@
     s.type = 'text/javascript';
     s.async = true;
     s.src = url;
+    
+    // Configurações diferentes para mobile e desktop
+    var isMobile = window.innerWidth <= 991.98;
+    
     var options = {
     "enabled": true,
     "chatButtonSetting": {
-    "backgroundColor": "#16BE45",
-    "ctaText": "Fale Conosco",
-    "borderRadius": "8",
+    "backgroundColor": "#25D366",
+    "ctaText": isMobile ? "" : "Fale Conosco",
+    "borderRadius": "50",
     "marginLeft": "20",
-    "marginBottom": "20",
+    "marginBottom": isMobile ? "90" : "20",
     "marginRight": "20",
     "position": "left",
     "textColor": "#ffffff",
