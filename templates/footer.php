@@ -63,6 +63,7 @@
     // Commented out the force reload script as it might cause issues in a PHP setup.
   </script>
 
+  <?php if (empty($currentUser)): ?>
   <!-- Script do WhatsApp -->
   <script>
     var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
@@ -96,6 +97,7 @@
     var x = document.getElementsByTagName('script')[0];
     x.parentNode.insertBefore(s, x);
   </script>
+  <?php endif; ?>
 
   <!-- Bootstrap JS (inclui Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

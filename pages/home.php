@@ -1,3 +1,8 @@
+<?php
+$blogData = blog_load();
+$latestPosts = array_slice($blogData['posts'], 0, 3);
+?>
+
 <!-- Seção Hero -->
   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
   background-position: center; /* Centraliza a imagem no elemento */
@@ -8,6 +13,61 @@
       <a href="<?php echo $site_url; ?>/quem-somos" class="btn btn-warning btn-lg mt-3">Saiba Mais</a>
     </div>
   </section>
+
+<?php if (!empty($latestPosts)): ?>
+  <section id="blog" class="py-5 bg-white">
+    <div class="container">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4">
+        <div>
+          <h2 class="mb-2">Últimas do Blog</h2>
+          <p class="text-muted mb-0">Confira as novidades e histórias publicadas pela equipe ISNA.</p>
+        </div>
+        <?php if (auth_user_is_admin()): ?>
+          <a class="btn btn-outline-secondary mt-3 mt-lg-0" href="<?php echo $site_url; ?>/gestao-blog">
+            <i class="bi bi-pencil-square me-1"></i> Publicar novo conteúdo
+          </a>
+        <?php endif; ?>
+      </div>
+
+      <div class="row g-4">
+        <?php foreach ($latestPosts as $post): ?>
+          <?php
+            $excerptSource = $post['summary'] !== '' ? $post['summary'] : $post['content'];
+            if (function_exists('mb_substr')) {
+                $excerpt = mb_substr($excerptSource, 0, 200);
+                $needsEllipsis = mb_strlen($excerptSource) > mb_strlen($excerpt);
+            } else {
+                $excerpt = substr($excerptSource, 0, 200);
+                $needsEllipsis = strlen($excerptSource) > strlen($excerpt);
+            }
+            if ($needsEllipsis) {
+                $excerpt .= '...';
+            }
+            $collapseId = 'blog-collapse-' . $post['id'];
+          ?>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body d-flex flex-column">
+                <p class="text-muted small mb-1"><?php echo date('d/m/Y', strtotime($post['published_at'])); ?></p>
+                <h3 class="h5 fw-semibold"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p class="text-muted mb-3">por <?php echo htmlspecialchars($post['author'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="mb-3"><?php echo nl2br(htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8')); ?></p>
+                <button class="btn btn-link p-0 align-self-start" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="false" aria-controls="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>">
+                  <i class="bi bi-journal-text me-1"></i> Ler mais
+                </button>
+                <div class="collapse mt-3" id="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>">
+                  <div class="card card-body border-0 bg-light">
+                    <?php echo nl2br(htmlspecialchars($post['content'], ENT_QUOTES, 'UTF-8')); ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+<?php endif; ?>
 
   <!-- Seção Quem Somos -->
   <section id="quem-somos" class="py-5">

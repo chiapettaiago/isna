@@ -27,6 +27,46 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
+        <?php if ($currentUser): ?>
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <span class="navbar-text text-light me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
+              <i class="bi bi-person-circle me-1"></i>
+              <?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?>
+            </span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia">
+              <i class="bi bi-graph-up"></i> Relatórios
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios">
+              <i class="bi bi-people-gear"></i> Usuários
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria">
+              <i class="bi bi-images"></i> Gerenciar galeria
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog">
+              <i class="bi bi-journal-text"></i> Gerenciar blog
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $site_url; ?>/logout">
+              <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+          </li>
+        </ul>
+        <?php else: ?>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a class="nav-link<?php echo ($path === '/') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/">
@@ -68,8 +108,44 @@
               <i class="bi bi-gift-fill me-1"></i> Doe
             </a>
           </li>
-
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/login') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/login">
+              <i class="bi bi-box-arrow-in-right"></i> Entrar
+            </a>
+          </li>
         </ul>
+        <?php endif; ?>
       </div>
     </div>
-  </nav>s
+  </nav>
+
+  <?php
+    $flashBanners = [];
+    $flashTypes = [
+        'success' => 'success',
+        'error' => 'danger',
+        'warning' => 'warning',
+        'info' => 'info',
+    ];
+
+    foreach ($flashTypes as $bucket => $cssClass) {
+        $messages = auth_flash_messages($bucket);
+
+        if (!empty($messages)) {
+            $flashBanners[] = ['class' => $cssClass, 'messages' => $messages];
+        }
+    }
+  ?>
+
+  <?php if (!empty($flashBanners)): ?>
+    <div class="container mt-3">
+      <?php foreach ($flashBanners as $flash): ?>
+        <?php foreach ($flash['messages'] as $message): ?>
+          <div class="alert alert-<?php echo $flash['class']; ?> alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+          </div>
+        <?php endforeach; ?>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>

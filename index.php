@@ -116,6 +116,13 @@ function replaceStaticPaths($content) {
     return $content;
 }
 
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/gallery.php';
+require_once __DIR__ . '/blog.php';
+
+// Inicia a sessão para recursos de autenticação
+auth_start_session();
+
 // Buffer de saída reativado com função mais simples
 ob_start("replaceStaticPaths");
 
@@ -133,6 +140,423 @@ if (empty($path) || $path[0] !== '/') {
     $path = '/' . $path;
 }
 
+$currentUser = null;
+$protectedRoutes = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/sobre'];
+
+if ($path === '/logout') {
+    auth_logout();
+    auth_flash_message('success', 'Sessão encerrada com sucesso.');
+    auth_redirect('login');
+}
+
+if ($path === '/login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = isset($_POST['username']) ? (string) $_POST['username'] : '';
+    $password = isset($_POST['password']) ? (string) $_POST['password'] : '';
+    $csrfToken = $_POST['csrf_token'] ?? '';
+
+    if (!auth_validate_csrf_token('login', $csrfToken)) {
+        auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+        auth_flash_value('old_username', $username);
+        auth_redirect('login');
+    }
+
+    if (auth_attempt($username, $password)) {
+        $redirectTo = auth_take_intended(url('area-restrita'));
+        auth_flash_message('success', 'Login realizado com sucesso.');
+        header('Location: ' . $redirectTo);
+        exit;
+    }
+
+    auth_flash_message('error', 'Usuário ou senha inválidos.');
+    auth_flash_value('old_username', $username);
+    auth_redirect('login');
+}
+
+if (in_array($path, $protectedRoutes, true) && !auth_check()) {
+    auth_flash_message('warning', 'Faça login para acessar a página solicitada.');
+    $intended = $path;
+    $queryString = parse_url($requestUri, PHP_URL_QUERY);
+
+    if ($queryString) {
+        $intended .= '?' . $queryString;
+    }
+
+    auth_remember_intended($intended);
+    auth_redirect('login');
+}
+
+if ($path === '/gestao-usuarios' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!auth_check()) {
+        auth_redirect('login');
+    }
+
+    $action = isset($_POST['action']) ? trim((string) $_POST['action']) : '';
+
+    if ($action === 'update_password') {
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!auth_validate_csrf_token('update_password', $token)) {
+            auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $currentPassword = isset($_POST['current_password']) ? (string) $_POST['current_password'] : '';
+        $newPassword = isset($_POST['new_password']) ? (string) $_POST['new_password'] : '';
+        $confirmPassword = isset($_POST['new_password_confirmation']) ? (string) $_POST['new_password_confirmation'] : '';
+
+        if ($currentPassword === '' || $newPassword === '' || $confirmPassword === '') {
+            auth_flash_message('error', 'Preencha todos os campos para alterar a senha.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            auth_flash_message('error', 'A confirmação da nova senha não confere.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if (strlen($newPassword) < 8) {
+            auth_flash_message('error', 'A nova senha deve conter pelo menos 8 caracteres.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $username = auth_user_username();
+
+        if ($username === null) {
+            auth_flash_message('error', 'Não foi possível identificar o usuário autenticado.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $users = auth_users();
+
+        if (!isset($users[$username])) {
+            auth_flash_message('error', 'Registro de usuário não encontrado.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $currentHash = $users[$username]['password'] ?? '';
+
+        if (!is_string($currentHash) || $currentHash === '' || !password_verify($currentPassword, $currentHash)) {
+            auth_flash_message('error', 'Senha atual incorreta.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $users[$username]['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        if (!auth_users_save($users)) {
+            auth_flash_message('error', 'Não foi possível atualizar a senha. Verifique as permissões do arquivo.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        auth_flash_message('success', 'Senha atualizada com sucesso.');
+        auth_redirect('gestao-usuarios');
+    } elseif ($action === 'create_user') {
+        if (!auth_user_is_admin()) {
+            auth_flash_message('error', 'Você não tem permissão para criar usuários.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!auth_validate_csrf_token('create_user', $token)) {
+            auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $usernameInput = isset($_POST['username']) ? trim((string) $_POST['username']) : '';
+        $displayName = isset($_POST['name']) ? trim((string) $_POST['name']) : '';
+        $password = isset($_POST['password']) ? (string) $_POST['password'] : '';
+        $passwordConfirmation = isset($_POST['password_confirmation']) ? (string) $_POST['password_confirmation'] : '';
+        $isAdminRequested = isset($_POST['is_admin']) && $_POST['is_admin'] === '1';
+
+        $preserveFormState = static function () use ($usernameInput, $displayName, $isAdminRequested): void {
+            auth_flash_value('create_user_username', $usernameInput);
+            auth_flash_value('create_user_name', $displayName);
+            auth_flash_value('create_user_is_admin', $isAdminRequested ? '1' : '0');
+        };
+
+        if ($usernameInput === '') {
+            $preserveFormState();
+            auth_flash_message('error', 'Informe um nome de usuário.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $usernameNormalized = auth_normalize_username($usernameInput);
+
+        if ($usernameNormalized === '') {
+            $preserveFormState();
+            auth_flash_message('error', 'O nome de usuário informado é inválido.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if (!preg_match('/^[a-z0-9._-]{4,}$/', $usernameNormalized)) {
+            $preserveFormState();
+            auth_flash_message('error', 'Use pelo menos 4 caracteres (letras minúsculas, números, ponto, hífen ou sublinhado).');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if ($password === '' || $passwordConfirmation === '') {
+            $preserveFormState();
+            auth_flash_message('error', 'Defina uma senha e confirme-a.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if ($password !== $passwordConfirmation) {
+            $preserveFormState();
+            auth_flash_message('error', 'A confirmação da senha não confere.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        if (strlen($password) < 8) {
+            $preserveFormState();
+            auth_flash_message('error', 'A senha deve conter pelo menos 8 caracteres.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $users = auth_users();
+
+        if (isset($users[$usernameNormalized])) {
+            $preserveFormState();
+            auth_flash_message('error', 'Já existe um usuário com esse login.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        $users[$usernameNormalized] = [
+            'name' => $displayName !== '' ? $displayName : $usernameInput,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'roles' => $isAdminRequested ? ['admin'] : [],
+        ];
+
+        if (!auth_users_save($users)) {
+            $preserveFormState();
+            auth_flash_message('error', 'Não foi possível criar o usuário. Verifique as permissões do arquivo.');
+            auth_redirect('gestao-usuarios');
+        }
+
+        auth_flash_message('success', 'Usuário criado com sucesso.');
+        auth_redirect('gestao-usuarios');
+    }
+}
+
+if ($path === '/gestao-galeria' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!auth_check()) {
+        auth_redirect('login');
+    }
+
+    if (!auth_user_is_admin()) {
+        auth_flash_message('error', 'Apenas administradores podem alterar a galeria.');
+        auth_redirect('area-restrita');
+    }
+
+    $action = isset($_POST['action']) ? trim((string) $_POST['action']) : '';
+
+    if ($action === 'create_section') {
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!auth_validate_csrf_token('gallery_create_section', $token)) {
+            auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            auth_redirect('gestao-galeria');
+        }
+
+        $title = isset($_POST['title']) ? trim((string) $_POST['title']) : '';
+        $background = isset($_POST['background']) ? trim((string) $_POST['background']) : '';
+        $description = isset($_POST['description']) ? trim((string) $_POST['description']) : '';
+
+        auth_flash_value('gallery_create_title', $title);
+        auth_flash_value('gallery_create_background', $background);
+        auth_flash_value('gallery_create_description', $description);
+
+        if ($title === '') {
+            auth_flash_message('error', 'Informe um título para a nova seção.');
+            auth_redirect('gestao-galeria');
+        }
+
+        $allowedBackgrounds = ['', 'bg-light', 'bg-white'];
+        if (!in_array($background, $allowedBackgrounds, true)) {
+            $background = '';
+        }
+
+        $config = gallery_load();
+        $existingIds = array_map(static function ($section) {
+            return $section['id'];
+        }, $config['sections']);
+
+        $baseSlug = gallery_slug($title);
+        $slug = $baseSlug;
+        $suffix = 1;
+        while (in_array($slug, $existingIds, true)) {
+            $suffix++;
+            $slug = $baseSlug . '-' . $suffix;
+        }
+
+        $config['sections'][] = [
+            'id' => $slug,
+            'title' => $title,
+            'type' => 'grid',
+            'background' => $background,
+            'description' => $description,
+            'items' => [],
+        ];
+
+        if (!gallery_save($config)) {
+            auth_flash_message('error', 'Não foi possível salvar a nova seção. Verifique as permissões do arquivo.');
+            auth_redirect('gestao-galeria');
+        }
+
+        auth_flash_message('success', 'Seção criada com sucesso. Agora adicione itens para populá-la.');
+        auth_redirect('gestao-galeria');
+    } elseif ($action === 'add_item') {
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!auth_validate_csrf_token('gallery_add_item', $token)) {
+            auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            auth_redirect('gestao-galeria');
+        }
+
+        $sectionId = isset($_POST['section_id']) ? trim((string) $_POST['section_id']) : '';
+        $src = isset($_POST['src']) ? trim((string) $_POST['src']) : '';
+        $alt = isset($_POST['alt']) ? trim((string) $_POST['alt']) : '';
+        $caption = isset($_POST['caption']) ? trim((string) $_POST['caption']) : '';
+
+        auth_flash_value('gallery_item_section', $sectionId);
+        auth_flash_value('gallery_item_src', $src);
+        auth_flash_value('gallery_item_alt', $alt);
+        auth_flash_value('gallery_item_caption', $caption);
+
+        if ($sectionId === '') {
+            auth_flash_message('error', 'Escolha uma seção para adicionar o item.');
+            auth_redirect('gestao-galeria');
+        }
+
+        if ($src === '') {
+            auth_flash_message('error', 'Informe o caminho ou URL da imagem.');
+            auth_redirect('gestao-galeria');
+        }
+
+        $config = gallery_load();
+        $found = false;
+
+        foreach ($config['sections'] as &$section) {
+            if ($section['id'] !== $sectionId) {
+                continue;
+            }
+
+            $found = true;
+
+            if ($section['type'] !== 'grid') {
+                auth_flash_message('error', 'Não é possível adicionar itens diretamente em seções automáticas.');
+                auth_redirect('gestao-galeria');
+            }
+
+            if (!isset($section['items']) || !is_array($section['items'])) {
+                $section['items'] = [];
+            }
+
+            $section['items'][] = [
+                'type' => 'image',
+                'src' => $src,
+                'alt' => $alt !== '' ? $alt : $section['title'],
+                'caption' => $caption,
+            ];
+            break;
+        }
+        unset($section);
+
+        if (!$found) {
+            auth_flash_message('error', 'Seção selecionada não encontrada.');
+            auth_redirect('gestao-galeria');
+        }
+
+        if (!gallery_save($config)) {
+            auth_flash_message('error', 'Não foi possível salvar o item. Verifique as permissões do arquivo.');
+            auth_redirect('gestao-galeria');
+        }
+
+        auth_flash_message('success', 'Item adicionado à galeria com sucesso.');
+        auth_redirect('gestao-galeria');
+    } else {
+        auth_flash_message('error', 'Ação da galeria desconhecida.');
+        auth_redirect('gestao-galeria');
+    }
+}
+if ($path === '/gestao-blog' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!auth_check()) {
+        auth_redirect('login');
+    }
+
+    if (!auth_user_is_admin()) {
+        auth_flash_message('error', 'Apenas administradores podem gerenciar o blog.');
+        auth_redirect('area-restrita');
+    }
+
+    $action = isset($_POST['action']) ? trim((string) $_POST['action']) : '';
+
+    if ($action === 'create_post') {
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!auth_validate_csrf_token('blog_create_post', $token)) {
+            auth_flash_message('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            auth_redirect('gestao-blog');
+        }
+
+        $title = isset($_POST['title']) ? trim((string) $_POST['title']) : '';
+        $summary = isset($_POST['summary']) ? trim((string) $_POST['summary']) : '';
+        $content = isset($_POST['content']) ? trim((string) $_POST['content']) : '';
+        $author = isset($_POST['author']) ? trim((string) $_POST['author']) : '';
+
+        auth_flash_value('blog_post_title', $title);
+        auth_flash_value('blog_post_summary', $summary);
+        auth_flash_value('blog_post_content', $content);
+        auth_flash_value('blog_post_author', $author);
+
+        if ($title === '' || $content === '') {
+            auth_flash_message('error', 'Informe pelo menos o título e o conteúdo do post.');
+            auth_redirect('gestao-blog');
+        }
+
+        $config = blog_load();
+        $posts = $config['posts'];
+
+        $baseSlug = blog_slug($title);
+        $slug = $baseSlug;
+        $suffix = 1;
+
+        $existingIds = array_map(static function ($post) {
+            return $post['id'];
+        }, $posts);
+
+        while (in_array($slug, $existingIds, true)) {
+            $suffix++;
+            $slug = $baseSlug . '-' . $suffix;
+        }
+
+        $posts[] = [
+            'id' => $slug,
+            'title' => $title,
+            'summary' => $summary,
+            'content' => $content,
+            'author' => $author !== '' ? $author : 'Equipe ISNA',
+            'published_at' => date('c'),
+        ];
+
+        $savePayload = ['posts' => $posts];
+
+        if (!blog_save($savePayload)) {
+            auth_flash_message('error', 'Não foi possível salvar o post. Verifique as permissões do arquivo.');
+            auth_redirect('gestao-blog');
+        }
+
+        auth_flash_message('success', 'Post publicado com sucesso!');
+        auth_redirect('gestao-blog');
+    } else {
+        auth_flash_message('error', 'Ação do blog desconhecida.');
+        auth_redirect('gestao-blog');
+    }
+}
+
+
+
+$currentUser = auth_user();
+
 // Define routes
 $routes = [
     '/' => ['file' => 'pages/home.php', 'title' => 'ISNA - Impacto Social'],
@@ -145,6 +569,11 @@ $routes = [
     '/doe' => ['file' => 'pages/doe.php', 'title' => 'Doe - ISNA'],
     '/doacoes-bancarias' => ['file' => 'pages/bank-donations.php', 'title' => 'Doações Bancárias - ISNA'],
     '/sobre' => ['file' => 'pages/sobre.php', 'title' => 'Sobre o Site - ISNA'],
+    '/login' => ['file' => 'pages/login.php', 'title' => 'Entrar - ISNA'],
+    '/area-restrita' => ['file' => 'pages/area-restrita.php', 'title' => 'Área Restrita - ISNA'],
+    '/gestao-usuarios' => ['file' => 'pages/gestao-usuarios.php', 'title' => 'Gestão de Usuários - ISNA'],
+    '/gestao-galeria' => ['file' => 'pages/gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA'],
+    '/gestao-blog' => ['file' => 'pages/gestao-blog.php', 'title' => 'Gestão do Blog - ISNA'],
 ];
 
 // Default page title and content file
