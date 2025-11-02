@@ -122,6 +122,94 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
   </section>
 
+  <!-- Seção Realizações (Blog em Vídeo) -->
+  <section id="realizacoes" class="py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="mb-2">Realizações</h2>
+        <p class="text-muted mb-0">Acompanhe, em vídeo, os destaques e conquistas do instituto a cada mês.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Player 1 -->
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="realizacoes-player">
+              <video
+                class="realizacoes-video"
+                controls
+                preload="metadata"
+                src="/videos/realizacao-1-horizontal.mp4"
+                poster="/images/realizacoes/realizacao-1-horizontal.jpg"
+                data-src-desktop="/videos/realizacao-1-horizontal.mp4"
+                data-src-mobile="/videos/realizacao-1-vertical.mp4"
+                data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
+              >
+                Seu navegador não suporta o elemento de vídeo.
+              </video>
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Realizações de Outubro de 2025</h3>
+              <p class="text-muted small mb-0">Veja o que realizamos no mês que passou</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="col-md-4 d-none">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="realizacoes-player">
+              <video
+                class="realizacoes-video"
+                controls
+                preload="metadata"
+                src="/videos/realizacao-2-horizontal.mp4"
+                poster="/images/realizacoes/realizacao-2-horizontal.jpg"
+                data-src-desktop="/videos/realizacao-2-horizontal.mp4"
+                data-src-mobile="/videos/realizacao-2-vertical.mp4"
+                data-poster-desktop="/images/realizacoes/realizacao-2-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-2-vertical.jpg"
+              >
+                Seu navegador não suporta o elemento de vídeo.
+              </video>
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Realizações do mês</h3>
+              <p class="text-muted small mb-0">Atualize as versões horizontal e vertical em <code>/videos/realizacao-2-horizontal.mp4</code> e <code>/videos/realizacao-2-vertical.mp4</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player 3 -->
+        <div class="col-md-4 d-none">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="realizacoes-player">
+              <video
+                class="realizacoes-video"
+                controls
+                preload="metadata"
+                src="/videos/realizacao-3-horizontal.mp4"
+                poster="/images/realizacoes/realizacao-3-horizontal.jpg"
+                data-src-desktop="/videos/realizacao-3-horizontal.mp4"
+                data-src-mobile="/videos/realizacao-3-vertical.mp4"
+                data-poster-desktop="/images/realizacoes/realizacao-3-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-3-vertical.jpg"
+              >
+                Seu navegador não suporta o elemento de vídeo.
+              </video>
+            </div>
+            <div class="card-body">
+              <h3 class="h6 mb-1">Realizações do mês</h3>
+              <p class="text-muted small mb-0">Atualize as versões horizontal e vertical em <code>/videos/realizacao-3-horizontal.mp4</code> e <code>/videos/realizacao-3-vertical.mp4</code>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Seção Galeria -->
 <section id="galeria" class="py-5">
   <div class="container">

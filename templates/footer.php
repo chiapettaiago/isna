@@ -102,6 +102,86 @@
   <!-- Bootstrap JS (inclui Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Plyr JS (Player de vídeo com UI moderna) -->
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
+
+  <!-- Inicialização do Plyr apenas na seção Realizações -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var mqMobile = window.matchMedia('(max-width: 767.98px)');
+      var videos = Array.prototype.slice.call(document.querySelectorAll('#realizacoes video.realizacoes-video'));
+
+      function applyVideoSources(isMobileView) {
+        videos.forEach(function (el) {
+          var srcDesktop = el.dataset.srcDesktop || el.getAttribute('src');
+          var srcMobile = el.dataset.srcMobile || srcDesktop;
+          var posterDesktop = el.dataset.posterDesktop || el.getAttribute('poster') || '';
+          var posterMobile = el.dataset.posterMobile || posterDesktop;
+          var targetSrc = isMobileView ? srcMobile : srcDesktop;
+          var targetPoster = isMobileView ? posterMobile : posterDesktop;
+          var sourceChanged = false;
+
+          if (targetSrc && el.getAttribute('src') !== targetSrc) {
+            el.setAttribute('src', targetSrc);
+            sourceChanged = true;
+          }
+          if (targetPoster && el.getAttribute('poster') !== targetPoster) {
+            el.setAttribute('poster', targetPoster);
+          }
+
+          if (isMobileView && srcMobile && srcMobile !== srcDesktop && !el.dataset.mobileFallbackBound) {
+            var fallbackSrc = srcDesktop;
+            var fallbackPoster = posterDesktop;
+            var handleVideoError = function () {
+              el.removeEventListener('error', handleVideoError);
+              el.setAttribute('src', fallbackSrc);
+              if (fallbackPoster) {
+                el.setAttribute('poster', fallbackPoster);
+              }
+              el.load();
+            };
+            el.addEventListener('error', handleVideoError, { once: true });
+            el.dataset.mobileFallbackBound = '1';
+          }
+
+          if (sourceChanged) {
+            el.load();
+          }
+        });
+      }
+
+      applyVideoSources(mqMobile.matches);
+
+      if (typeof mqMobile.addEventListener === 'function') {
+        mqMobile.addEventListener('change', function (event) {
+          applyVideoSources(event.matches);
+        });
+      } else if (typeof mqMobile.addListener === 'function') {
+        mqMobile.addListener(function (event) {
+          applyVideoSources(event.matches);
+        });
+      }
+
+      if (window.Plyr) {
+        var options = {
+          // Mantém a UI semelhante ao YouTube
+          controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
+          settings: ['speed'],
+          speed: { options: [0.5, 0.75, 1, 1.25, 1.5, 2] },
+          loadSprite: true // carrega os ícones do CDN
+        };
+
+        videos.forEach(function (el) {
+          try {
+            new Plyr(el, options);
+          } catch (e) {
+            /* segue com nativo se falhar */
+          }
+        });
+      }
+    });
+  </script>
+
   <!-- Script customizado -->
   <script src="<?php echo $site_url; ?>/js/script.js"></script>
 </body>

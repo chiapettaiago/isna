@@ -1,0 +1,19 @@
+ @charset "UTF-8";@keyframes plyr-progress{to{background-position:25px
+0;background-position:var(--plyr-progress-loading-size,25px) 0}}@keyframes
+plyr-popup{0%{o
+acity:.5;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes
+plyr-fade-in{0%{opacity:0}to{opacity:1}}.plyr{-moz-osx-font-smoothing:gray
+cale;-webkit-font-smoothing:antialiased;align-items:center;direction:ltr;displa
+:flex;flex-direction:column;font-family:inherit;font-family:var(--plyr-font-fam
+ly,inherit);font-variant-numeric:tabular-nums;font-weight:400;font-weight:var(-
+plyr-font-weight-regular,400);line-height:1.7;line-height:var(--plyr-line-heigh
+...,1.7);max-width:100%;min-width:200px;position:relative;text-shadow:none;transition:box-shadow .3s ease;z-index:0}.plyr audio,.plyr iframe,.plyr
+video{display:block;height:100%;width:100%}.plyr
+button{font:inherit;line-height:inherit;width:auto}.plyr:focus{outline:0}.plyr--full-ui{box-sizing:border-box}.plyr--full-ui
+*,.plyr--full-ui :after,.plyr--full-ui :before{box-sizing:inherit}.plyr--full-ui
+a,.plyr--full-ui button,.plyr--full-ui input,.plyr--full-ui
+label{touch-action:m
+nipulation}.plyr__badge{background:#4a5464;background:var(--plyr-badge-backgrou
+d,#4a5464);border-radius:2px;border-radius:var(--plyr-badge-border-radius,2px);
+...
+[truncated for brevity due to size]

@@ -39,6 +39,15 @@
   .popover {
     z-index: 9970 !important;
   }
+  
+  /* Exceção para controles do Plyr - precisam ficar visíveis acima do vídeo */
+  .plyr,
+  .plyr__controls,
+  .plyr__control,
+  .plyr__menu,
+  .plyr__tooltip {
+    z-index: 3 !important;
+  }
 }
 
 /* Efeito de sobreposição na seção Hero para melhorar a legibilidade do texto */
@@ -956,4 +965,58 @@ footer .social-media .btn-outline-light:hover {
 /* Modo escuro para os botões de redes sociais */
 .dark-theme footer .social-media .btn-outline-light:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* Seção Realizações (blog em vídeo) */
+#realizacoes .realizacoes-player {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#realizacoes .realizacoes-player::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+@media (max-width: 767.98px) {
+  #realizacoes .realizacoes-player::before {
+    padding-top: 177.7778%; /* 9:16 */
+  }
+}
+
+#realizacoes .realizacoes-player > .plyr,
+#realizacoes .realizacoes-player > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#realizacoes .plyr__video-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#realizacoes .plyr__video-wrapper video,
+#realizacoes .realizacoes-player > video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Melhorar foco do player para acessibilidade */
+#realizacoes video:focus {
+  outline: 3px solid rgba(255, 193, 7, 0.6);
+  outline-offset: 2px;
+}
+
+/* Cor principal do player (amarelo da marca) */
+#realizacoes {
+  --plyr-color-main: #ffc107;
 }
