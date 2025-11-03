@@ -62,6 +62,13 @@
   z-index: 1;
 }
 
+/* Reduz a escuridão do hero em dispositivos móveis */
+@media (max-width: 767.98px) {
+  .hero::before {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
 /* Garante que o conteúdo da seção Hero fique acima da sobreposição */
 .hero .container {
   position: relative;
@@ -195,6 +202,17 @@ body {
     margin-bottom: 0;
   }
   
+  /* Logo na navbar mobile - primeiro item */
+  .navbar-mobile-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
   /* Oculta o texto em mobile */
   .navbar-nav .nav-link {
     font-size: 0 !important;
@@ -212,6 +230,11 @@ body {
     font-size: 24px;
   }
   
+  /* Item ativo em mobile - logo destacada */
+  .navbar-nav .nav-link.active .navbar-mobile-logo {
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(255, 193, 7, 0.6));
+  }
+  
   /* Item ativo em mobile */
   .navbar-nav .nav-link.active {
     background: rgba(255, 193, 7, 0.2) !important;
@@ -227,7 +250,7 @@ body {
   }
   
   /* Oculta o ícone do coração no texto para "Doe" (agora desnecessário) */
-  .navbar-nav .nav-item:nth-child(8) .nav-link .bi-heart-fill {
+  .navbar-nav .nav-item:nth-child(9) .nav-link .bi-heart-fill {
     display: none;
   }
   
@@ -235,6 +258,10 @@ body {
   @media (max-width: 480px) {
     .navbar-nav .nav-link i {
       font-size: 20px;
+    }
+    
+    .navbar-mobile-logo {
+      height: 32px;
     }
   }
 }
@@ -252,6 +279,16 @@ body {
     display: none;
   }
   
+  /* Exceção: mostra apenas o ícone de "Entrar" e oculta o texto em desktop */
+  .navbar-nav .nav-link .nav-text-entrar {
+    display: none;
+  }
+  
+  .navbar-nav .nav-link i.bi-box-arrow-in-right {
+    display: inline-block !important;
+    font-size: 1.2rem;
+  }
+  
   /* Restaura o texto normal no desktop */
   .navbar-nav .nav-link {
     font-size: inherit !important;
@@ -261,6 +298,34 @@ body {
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+  }
+  
+  /* Remove efeitos de brilho em desktop - apenas sublinhado */
+  .navbar-nav .nav-link.active {
+    position: relative;
+    background: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Sublinhado para link ativo em desktop */
+  .navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffffff 20%, #ffffff 80%, transparent);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+  
+  /* Sublinhado amarelo para o item "Doe" */
+  .navbar-nav .nav-link.text-warning.active::after {
+    background: linear-gradient(90deg, transparent, #ffc107 20%, #ffc107 80%, transparent);
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
   }
   
   /* Evita que imagens/carousels sobreponham */
@@ -493,11 +558,11 @@ body {
     transition: all 0.3s ease;
   }
   
-  /* Ajusta posição dos botões quando navbar está "scrolled" */
-  .navbar.scrolled ~ .theme-toggle,
+  /* Ajusta posição dos botões quando navbar está "scrolled" - removido para manter posição fixa */
+  /* .navbar.scrolled ~ .theme-toggle,
   body.navbar-scrolled .theme-toggle {
     bottom: 100px;
-  }
+  } */
   
   /* Botão do WhatsApp - posicionamento acima da navbar em mobile, alinhado */
   div[id*="waplus"] {
@@ -508,10 +573,10 @@ body {
     transition: all 0.3s ease !important;
   }
   
-  /* Ajusta posição do WhatsApp quando navbar está "scrolled" */
-  body.navbar-scrolled div[id*="waplus"] {
+  /* Ajusta posição do WhatsApp quando navbar está "scrolled" - removido para manter posição fixa */
+  /* body.navbar-scrolled div[id*="waplus"] {
     bottom: 100px !important;
-  }
+  } */
   
   div[id*="waplus"] button,
   div[id*="waplus"] > div {
@@ -766,14 +831,22 @@ body {
     padding: 1.5rem 1rem;
   }
   .hero {
-    height: 320px !important;
-    min-height: 220px;
+    height: 380px !important;
+    min-height: 280px;
+    padding-top: 50px;
   }
   .hero h1 {
     font-size: 2rem;
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
   .hero p.lead {
     font-size: 1rem;
+    color: #f8f9fa !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  }
+  .hero .btn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 }
 @media (max-width: 575.98px) {
@@ -785,14 +858,22 @@ body {
     padding: 1rem 0.5rem;
   }
   .hero {
-    height: 180px !important;
-    min-height: 120px;
+    height: 240px !important;
+    min-height: 200px;
+    padding-top: 30px;
   }
   .hero h1 {
     font-size: 1.2rem;
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
   .hero p.lead {
     font-size: 0.9rem;
+    color: #f8f9fa !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  }
+  .hero .btn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -1019,4 +1100,68 @@ footer .social-media .btn-outline-light:hover {
 /* Cor principal do player (amarelo da marca) */
 #realizacoes {
   --plyr-color-main: #ffc107;
+}
+
+/* Seção Parceiros do Bairro */
+#parceiros-bairro .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #ffffff;
+}
+
+#parceiros-bairro .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+#parceiros-bairro .parceiro-logo-container {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#parceiros-bairro .parceiro-logo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+#parceiros-bairro .card:hover .parceiro-logo {
+  transform: scale(1.05);
+}
+
+/* Modo escuro para seção de parceiros */
+.dark-theme #parceiros-bairro .card {
+  background-color: #252525;
+  border-color: #333;
+}
+
+.dark-theme #parceiros-bairro .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-theme #parceiros-bairro .card-title {
+  color: #e0e0e0;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 767.98px) {
+  #parceiros-bairro .parceiro-logo-container {
+    height: 100px;
+  }
+  
+  #parceiros-bairro .card-body {
+    padding: 1.5rem 1rem !important;
+  }
+  
+  #parceiros-bairro .card-title {
+    font-size: 0.9rem;
+  }
+  
+  #parceiros-bairro .card-text {
+    font-size: 0.75rem;
+  }
 }

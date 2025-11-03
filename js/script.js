@@ -268,6 +268,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Ocultar navbar, botão de tema e WhatsApp quando modal de galeria estiver aberto
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('show.bs.modal', function() {
+      // Oculta navbar
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        navbar.style.display = 'none';
+      }
+      
+      // Oculta botão de tema
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.style.display = 'none';
+      }
+      
+      // Oculta botão do WhatsApp - tenta múltiplos seletores
+      const whatsappSelectors = [
+        '[id*="waplus"]',
+        '[class*="waplus"]',
+        '[id*="whatsapp"]',
+        '[class*="whatsapp"]',
+        'div[style*="whatsapp"]',
+        'a[href*="wa.me"]',
+        'a[href*="whatsapp"]'
+      ];
+      
+      whatsappSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          el.style.display = 'none';
+          el.setAttribute('data-hidden-by-modal', 'true');
+        });
+      });
+    });
+    
+    modal.addEventListener('hide.bs.modal', function() {
+      // Mostra navbar
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        navbar.style.display = '';
+      }
+      
+      // Mostra botão de tema
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.style.display = '';
+      }
+      
+      // Mostra botão do WhatsApp - restaura todos os elementos marcados
+      const hiddenElements = document.querySelectorAll('[data-hidden-by-modal="true"]');
+      hiddenElements.forEach(el => {
+        el.style.display = '';
+        el.removeAttribute('data-hidden-by-modal');
+      });
+    });
+    
+    // Garante que o backdrop seja removido e o scroll restaurado quando o modal fechar completamente
+    modal.addEventListener('hidden.bs.modal', function() {
+      // Remove qualquer backdrop que possa ter ficado preso
+      const backdrops = document.querySelectorAll('.modal-backdrop');
+      backdrops.forEach(backdrop => backdrop.remove());
+      
+      // Remove a classe modal-open do body
+      document.body.classList.remove('modal-open');
+      
+      // Restaura o scroll do body
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    });
+  });
+
   // Adiciona navegação por teclado nos modais de galeria
   document.querySelectorAll('.modal').forEach(modal => {
     modal.addEventListener('keydown', function(e) {

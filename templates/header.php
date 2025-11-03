@@ -70,9 +70,10 @@
         </ul>
         <?php else: ?>
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
+          <!-- Logo para voltar ao início - visível apenas em mobile -->
+          <li class="nav-item d-lg-none">
             <a class="nav-link<?php echo ($path === '/') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/">
-              <i class="bi bi-house-fill"></i>Início
+              <img src="<?php echo $site_url; ?>/images/logo.png" alt="Início" class="navbar-mobile-logo">
             </a>
           </li>
           <li class="nav-item">
@@ -112,7 +113,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link<?php echo ($path === '/login') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/login">
-              <i class="bi bi-box-arrow-in-right"></i> Entrar
+              <i class="bi bi-box-arrow-in-right"></i> <span class="nav-text-entrar">Entrar</span>
             </a>
           </li>
         </ul>

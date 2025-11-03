@@ -168,12 +168,81 @@
           controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
           settings: ['speed'],
           speed: { options: [0.5, 0.75, 1, 1.25, 1.5, 2] },
-          loadSprite: true // carrega os ícones do CDN
+          loadSprite: true, // carrega os ícones do CDN
+          fullscreen: { enabled: true, fallback: true, iosNative: true }
         };
 
         videos.forEach(function (el) {
           try {
-            new Plyr(el, options);
+            var player = new Plyr(el, options);
+            
+            // Detectar quando o vídeo entrar em fullscreen em mobile
+            player.on('play', function() {
+              // Verifica se é mobile
+              if (window.innerWidth <= 767.98) {
+                // Pequeno delay para garantir que o play foi processado
+                setTimeout(function() {
+                  // Entra em fullscreen automaticamente
+                  if (player.fullscreen && !player.fullscreen.active) {
+                    player.fullscreen.enter();
+                  }
+                }, 100);
+              }
+            });
+            
+            // Ocultar navbar e botões quando entrar em fullscreen
+            player.on('enterfullscreen', function() {
+              // Oculta navbar
+              var navbar = document.querySelector('.navbar');
+              if (navbar) {
+                navbar.style.display = 'none';
+              }
+              
+              // Oculta botão de tema
+              var themeToggle = document.querySelector('.theme-toggle');
+              if (themeToggle) {
+                themeToggle.style.display = 'none';
+              }
+              
+              // Oculta botão do WhatsApp
+              var whatsappSelectors = [
+                '[id*="waplus"]',
+                '[class*="waplus"]',
+                '[id*="whatsapp"]',
+                '[class*="whatsapp"]'
+              ];
+              
+              whatsappSelectors.forEach(function(selector) {
+                var elements = document.querySelectorAll(selector);
+                elements.forEach(function(elem) {
+                  elem.style.display = 'none';
+                  elem.setAttribute('data-hidden-by-video', 'true');
+                });
+              });
+            });
+            
+            // Mostrar navbar e botões quando sair do fullscreen
+            player.on('exitfullscreen', function() {
+              // Mostra navbar
+              var navbar = document.querySelector('.navbar');
+              if (navbar) {
+                navbar.style.display = '';
+              }
+              
+              // Mostra botão de tema
+              var themeToggle = document.querySelector('.theme-toggle');
+              if (themeToggle) {
+                themeToggle.style.display = '';
+              }
+              
+              // Mostra botão do WhatsApp
+              var hiddenElements = document.querySelectorAll('[data-hidden-by-video="true"]');
+              hiddenElements.forEach(function(elem) {
+                elem.style.display = '';
+                elem.removeAttribute('data-hidden-by-video');
+              });
+            });
+            
           } catch (e) {
             /* segue com nativo se falhar */
           }

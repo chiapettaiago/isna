@@ -222,7 +222,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
     <div class="row g-4">
       <!-- Imagem 1: Projeto de Escola Música e Cidadania -->
-      <div class="col-md-4">
+      <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
           <img src="/images/projeto-escola-musica-e-cidadania/1.jpg"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
@@ -234,7 +234,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       </div>
 
       <!-- Imagem 2: Projeto Notas Culturais -->
-      <div class="col-md-4">
+      <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
           <img src="/images/projeto-notas-culturais/1.jpg"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
@@ -246,7 +246,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       </div>
 
       <!-- Imagem 3: Projetos Realizados -->
-      <div class="col-md-4">
+      <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
           <img src="/images/projetos-realizados/1.jpg"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
@@ -303,3 +303,77 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
   </div>
 </div>
+
+<!-- Seção Parceiros do Bairro -->
+<section id="parceiros-bairro" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">Parceiros do Bairro</h2>
+    <p class="text-center text-muted mb-5">Conheça os parceiros locais que apoiam nossas iniciativas</p>
+    
+    <div class="row g-4 justify-content-center align-items-center">
+      <!-- Parceiro 1: AF Fitness -->
+      <div class="col-md-3 col-6">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
+            <div class="parceiro-logo-container mb-3">
+              <img src="/images/parceiros/af-fitness.png" 
+                   class="img-fluid parceiro-logo" 
+                   alt="AF Fitness - Centro de Treinamento"
+                   style="max-height: 120px; object-fit: contain;">
+            </div>
+            <h5 class="card-title h6 mb-2">AF Fitness</h5>
+            <p class="card-text small text-muted mb-0">Centro de Treinamento</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parceiro 2: Centro de Treinamento Elvis Hernandez -->
+      <div class="col-md-3 col-6">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
+            <div class="parceiro-logo-container mb-3">
+              <img src="/images/parceiros/elvis-hernandez.png" 
+                   class="img-fluid parceiro-logo" 
+                   alt="Centro de Treinamento Elvis Hernandez"
+                   style="max-height: 120px; object-fit: contain;">
+            </div>
+            <h5 class="card-title h6 mb-2">Centro de Treinamento</h5>
+            <p class="card-text small text-muted mb-0">Elvis Hernandez</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parceiro 3: Além do Disfarce - Barber Shop -->
+      <div class="col-md-3 col-6">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
+            <div class="parceiro-logo-container mb-3">
+              <img src="/images/parceiros/alem-do-disfarce.png" 
+                   class="img-fluid parceiro-logo" 
+                   alt="Além do Disfarce - Barber Shop"
+                   style="max-height: 120px; object-fit: contain;">
+            </div>
+            <h5 class="card-title h6 mb-2">Além do Disfarce</h5>
+            <p class="card-text small text-muted mb-0">Barber Shop</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parceiro 4: Mercadinho Felpão -->
+      <div class="col-md-3 col-6">
+        <div class="card h-100 border-0 shadow-sm text-center">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
+            <div class="parceiro-logo-container mb-3">
+              <img src="/images/parceiros/mercadinho-felpao.png" 
+                   class="img-fluid parceiro-logo" 
+                   alt="Mercadinho Felpão"
+                   style="max-height: 120px; object-fit: contain;">
+            </div>
+            <h5 class="card-title h6 mb-2">Mercadinho Felpão</h5>
+            <p class="card-text small text-muted mb-0">Desde 2015</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
