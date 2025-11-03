@@ -131,6 +131,36 @@ foreach ($rawSections as $section) {
   </div>
 </section>
 
+<!-- Seção Outubro Rosa -->
+<section class="py-5 bg-light" id="outubro-rosa">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="mb-3" style="color: #d63384;">Outubro Rosa</h2>
+      <p class="text-muted mb-4">Conscientização sobre a prevenção do câncer de mama</p>
+    </div>
+    
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="outubro-rosa-player">
+          <video
+            class="outubro-rosa-video"
+            controls
+            preload="metadata"
+            src="/videos/outubro_rosa-horizontal.mp4"
+            poster="/videos/outubro_rosa-horizontal.jpg"
+            data-src-desktop="/videos/outubro_rosa-horizontal.mp4"
+            data-src-mobile="/videos/outubro_rosa-vertical.mp4"
+            data-poster-desktop="/videos/outubro_rosa-horizontal.jpg"
+            data-poster-mobile="/videos/outubro_rosa-vertical.jpg"
+          >
+            Seu navegador não suporta o elemento de vídeo.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <?php foreach ($gallerySections as $section): ?>
   <section class="py-5 <?php echo htmlspecialchars($section['background'], ENT_QUOTES, 'UTF-8'); ?>" id="galeria-<?php echo htmlspecialchars($section['id'], ENT_QUOTES, 'UTF-8'); ?>">
     <div class="container">

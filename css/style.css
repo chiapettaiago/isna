@@ -1102,6 +1102,71 @@ footer .social-media .btn-outline-light:hover {
   --plyr-color-main: #ffc107;
 }
 
+/* Seção Outubro Rosa - player com Plyr */
+#outubro-rosa {
+  --plyr-color-main: #d63384; /* Rosa para o player */
+}
+
+#outubro-rosa .outubro-rosa-player {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#outubro-rosa .outubro-rosa-player::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+@media (max-width: 767.98px) {
+  #outubro-rosa .outubro-rosa-player::before {
+    padding-top: 177.7778%; /* 9:16 para mobile */
+  }
+}
+
+#outubro-rosa .outubro-rosa-player > .plyr,
+#outubro-rosa .outubro-rosa-player > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#outubro-rosa .plyr__video-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#outubro-rosa .plyr__video-wrapper video,
+#outubro-rosa .outubro-rosa-player > video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#outubro-rosa video:focus {
+  outline: 3px solid rgba(214, 51, 132, 0.6);
+  outline-offset: 2px;
+}
+
+#outubro-rosa h2 {
+  color: #d63384 !important;
+}
+
+/* Modo escuro para seção Outubro Rosa */
+.dark-theme #outubro-rosa {
+  background-color: #252525 !important;
+}
+
+.dark-theme #outubro-rosa h2 {
+  color: #ff69b4 !important;
+}
+
 /* Seção Parceiros do Bairro */
 #parceiros-bairro .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
