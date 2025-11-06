@@ -151,7 +151,7 @@ foreach ($rawSections as $section) {
             data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
             data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
             data-poster-desktop="/videos/outubro_rosa_poster.jpg"
-            data-poster-mobile="/videos/outubro_rosa_poster.jpg"
+            data-poster-mobile="/videos/outubro_rosa_poster_vertical.jpg"
           >
             Seu navegador não suporta o elemento de vídeo.
           </video>
