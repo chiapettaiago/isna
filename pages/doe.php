@@ -91,7 +91,7 @@
       <div class="col-lg-10">
         <div class="netflix-player ratio ratio-16x9" id="yt-like-player">
           <video id="donation-video" preload="auto" playsinline webkit-playsinline poster="<?php $thumb='images/donation-thumbnail.jpg'; echo asset($thumb) . '?v=' . (file_exists($thumb)?filemtime($thumb):time()); ?>" disablepictureinpicture controlslist="noplaybackrate nodownload noremoteplayback">
-            <source src="<?php $vid='videos/ISNA - Doações.mp4'; echo asset($vid) . '?v=' . (file_exists($vid)?filemtime($vid):time()); ?>" type="video/mp4">
+            <source src="https://api.chiapetta.dev/v/4N4uRF1EkEjnpxgx" type="video/mp4">
             Seu navegador não suporta vídeo HTML5.
           </video>
 

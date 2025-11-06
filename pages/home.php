@@ -139,10 +139,10 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 class="realizacoes-video"
                 controls
                 preload="metadata"
-                src="/videos/realizacao-1-horizontal.mp4"
+                src="https://api.chiapetta.dev/v/boKogI2kIyY6fieR"
                 poster="/images/realizacoes/realizacao-1-horizontal.jpg"
-                data-src-desktop="/videos/realizacao-1-horizontal.mp4"
-                data-src-mobile="/videos/realizacao-1-vertical.mp4"
+                data-src-desktop="https://api.chiapetta.dev/v/boKogI2kIyY6fieR"
+                data-src-mobile="https://api.chiapetta.dev/v/DU_q-YUklTb57i2Y"
                 data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
                 data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
               >

@@ -146,12 +146,12 @@ foreach ($rawSections as $section) {
             class="outubro-rosa-video"
             controls
             preload="metadata"
-            src="/videos/outubro_rosa-horizontal.mp4"
-            poster="/videos/outubro_rosa-horizontal.jpg"
-            data-src-desktop="/videos/outubro_rosa-horizontal.mp4"
-            data-src-mobile="/videos/outubro_rosa-vertical.mp4"
-            data-poster-desktop="/videos/outubro_rosa-horizontal.jpg"
-            data-poster-mobile="/videos/outubro_rosa-vertical.jpg"
+            src="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+            poster="/videos/outubro_rosa_poster.jpg"
+            data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+            data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
+            data-poster-desktop="/videos/outubro_rosa_poster.jpg"
+            data-poster-mobile="/videos/outubro_rosa_poster.jpg"
           >
             Seu navegador não suporta o elemento de vídeo.
           </video>
