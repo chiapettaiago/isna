@@ -190,7 +190,7 @@
               Para doações internacionais, utilize nossa plataforma segura que aceita diversas moedas e métodos de pagamento.
             </p>
             <div class="text-center mt-4">
-              <a href="https://donatehub.chiapettadev.site/donate" target="_blank" class="btn btn-primary btn-lg">Doar Agora</a>
+              <a href="https://donatehub.chiapetta.dev/donate" target="_blank" class="btn btn-primary btn-lg">Doar Agora</a>
             </div>
           </div>
         </div>
