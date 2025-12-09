@@ -13,14 +13,8 @@ if [ ! -f "$UPDATE_SCRIPT" ]; then
     exit 1
 fi
 
-# Inicia o processo de atualização
-"$UPDATE_SCRIPT" start
-
-# Executa o git pull
+# Executa o git pull (sem avisos de atualização)
 echo "Executando git pull..."
 git pull
-
-# Sinaliza o término
-"$UPDATE_SCRIPT" finish
 
 echo "Atualização concluída!"

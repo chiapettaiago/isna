@@ -11,18 +11,21 @@ $environment_config = [
     'localhost' => [
         'debug' => true,
         'force_https' => false,
+        'disable_update_check' => true,
     ],
     
     // Configuração para ambiente beta
     'isna.org.br' => [
         'debug' => false,
         'force_https' => true,
+        'disable_update_check' => false,
     ],
     
     // Configuração padrão
     'default' => [
         'debug' => false,
         'force_https' => false,
+        'disable_update_check' => false,
     ]
 ];
 
