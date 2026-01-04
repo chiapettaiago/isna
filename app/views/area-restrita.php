@@ -21,81 +21,7 @@ if ($fromDate > $toDate) {
 }
 
 $dailyCounts = [];
-$logReadError = null;
-
-if (is_readable($logFile)) {
-    $handle = fopen($logFile, 'r');
-
-    if ($handle !== false) {
-        while (($line = fgets($handle)) !== false) {
-            if (!preg_match('/"([A-Z]+) ([^\s]+) HTTP\/[0-9.]+" ([0-9]{3})/', $line, $requestMatches)) {
-                continue;
-            }
-
-            $method = $requestMatches[1];
-            $resource = $requestMatches[2];
-            $statusCode = (int) $requestMatches[3];
-
-            if ($method !== 'GET' || $statusCode >= 500) {
-                continue;
-            }
-
-            $path = parse_url($resource, PHP_URL_PATH);
-
-            if ($path === null) {
-                continue;
-            }
-
-            if (preg_match('/\.(css|js|png|jpe?g|gif|svg|ico|webp|pdf|mp4|mp3|zip|json|txt|xml)$/i', $path)) {
-                continue;
-            }
-
-            $excludedExact = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/login', '/logout'];
-            $excludedPrefixes = ['/gestao-', '/admin'];
-
-            if (in_array($path, $excludedExact, true)) {
-                continue;
-            }
-
-            $skip = false;
-            foreach ($excludedPrefixes as $prefix) {
-                if (strncmp($path, $prefix, strlen($prefix)) === 0) {
-                    $skip = true;
-                    break;
-                }
-            }
-
-            if ($skip) {
-                continue;
-            }
-
-            if (!preg_match('/\[(\d{2}\/[A-Za-z]{3}\/[0-9]{4}):(\d{2}:\d{2}:\d{2}) ([+\-]\d{4})\]/', $line, $dateMatches)) {
-                continue;
-            }
-
-            $dateTime = DateTimeImmutable::createFromFormat('d/M/Y H:i:s O', $dateMatches[1] . ' ' . $dateMatches[2] . ' ' . $dateMatches[3]);
-
-            if (!$dateTime) {
-                continue;
-            }
-
-            $dateTime = $dateTime->setTime(0, 0);
-
-            if ($dateTime < $fromDate || $dateTime > $toDate) {
-                continue;
-            }
-
-            $key = $dateTime->format('Y-m-d');
-            $dailyCounts[$key] = ($dailyCounts[$key] ?? 0) + 1;
-        }
-
-        fclose($handle);
-    } else {
-        $logReadError = 'Não foi possível abrir o arquivo de log.';
-    }
-} else {
-    $logReadError = 'Arquivo de log não encontrado ou sem permissão de leitura.';
-}
+$logReadError = null; // Não dependemos mais do arquivo de log; o frontend consulta /api/access-stats
 
 $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
 
@@ -183,20 +109,20 @@ if (!empty($chartValues)) {
             <div class="col-md-4">
               <div class="bg-light border rounded p-3 h-100">
                 <p class="text-muted mb-1">Total no período</p>
-                <p class="display-6 fw-semibold mb-0"><?php echo number_format($totalAccesses, 0, ',', '.'); ?></p>
+                <p id="totalAccesses" class="display-6 fw-semibold mb-0"><?php echo number_format($totalAccesses, 0, ',', '.'); ?></p>
               </div>
             </div>
             <div class="col-md-4">
               <div class="bg-light border rounded p-3 h-100">
                 <p class="text-muted mb-1">Média diária</p>
-                <p class="display-6 fw-semibold mb-0"><?php echo number_format($dailyAverage, 1, ',', '.'); ?></p>
+                <p id="dailyAverage" class="display-6 fw-semibold mb-0"><?php echo number_format($dailyAverage, 1, ',', '.'); ?></p>
               </div>
             </div>
             <div class="col-md-4">
               <div class="bg-light border rounded p-3 h-100">
                 <p class="text-muted mb-1">Dia com mais acessos</p>
-                <p class="display-6 fw-semibold mb-1"><?php echo $peakDayLabel ? $peakDayLabel : '—'; ?></p>
-                <small class="text-muted"><?php echo $peakDayLabel ? $peakDayValue . ' acessos' : 'Sem dados no intervalo'; ?></small>
+                <p id="peakDayLabel" class="display-6 fw-semibold mb-1"><?php echo $peakDayLabel ? $peakDayLabel : '—'; ?></p>
+                <small id="peakDaySmall" class="text-muted"><?php echo $peakDayLabel ? $peakDayValue . ' acessos' : 'Sem dados no intervalo'; ?></small>
               </div>
             </div>
           </div>
@@ -277,7 +203,7 @@ if (!empty($chartValues)) {
 </section>
 
 <?php if (!$logReadError): ?>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-FKeqFqipEykzoP/ZUPiULPPqE0t4GGBfWW1E4P8/5BqEMJ2UxDCXRxwEGs8Ys97o" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script>
     (function() {
       const ctx = document.getElementById('accessChart');
@@ -291,7 +217,19 @@ if (!empty($chartValues)) {
         if (fromInput && fromInput.value) params.set('from', fromInput.value);
         if (toInput && toInput.value) params.set('to', toInput.value);
 
-        const res = await fetch('<?php echo $site_url; ?>/api/access-stats?' + params.toString(), { credentials: 'same-origin' });
+        // Tenta o endpoint autenticado primeiro
+        let res = await fetch('<?php echo $site_url; ?>/api/access-stats?' + params.toString(), { credentials: 'same-origin' });
+        if (res.status === 401) {
+          // fallback para endpoint de debug (sem autenticação)
+          console.warn('api/access-stats retornou 401, tentando /api/access-stats-debug');
+          try {
+            res = await fetch('<?php echo $site_url; ?>/api/access-stats-debug?' + params.toString());
+          } catch (ex) {
+            console.error('Falha ao obter dados de debug', ex);
+            return null;
+          }
+        }
+
         if (!res.ok) {
           console.error('Falha ao obter dados de acessos', res.status);
           return null;
@@ -348,6 +286,23 @@ if (!empty($chartValues)) {
         if (!data) return;
         const labels = data.labels || [];
         const values = data.values || [];
+
+        // Atualiza os cards numericos
+        const totalEl = document.getElementById('totalAccesses');
+        const avgEl = document.getElementById('dailyAverage');
+        const peakLabelEl = document.getElementById('peakDayLabel');
+        const peakSmallEl = document.getElementById('peakDaySmall');
+
+        const total = (data.total || 0);
+        const average = (typeof data.average === 'number') ? data.average : 0;
+        const peakLabel = data.peakLabel || null;
+        const peakValue = data.peakValue || 0;
+
+        if (totalEl) totalEl.textContent = total.toLocaleString();
+        if (avgEl) avgEl.textContent = Number(average).toFixed(1).replace('.', ',');
+        if (peakLabelEl) peakLabelEl.textContent = peakLabel ? String(peakLabel) : '—';
+        if (peakSmallEl) peakSmallEl.textContent = peakLabel ? (String(peakValue) + ' acessos') : 'Sem dados no intervalo';
+
         if (chartInstance) chartInstance.destroy();
         chartInstance = renderChart(labels, values);
       }
