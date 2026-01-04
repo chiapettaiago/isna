@@ -132,11 +132,11 @@
     ];
 
     foreach ($flashTypes as $bucket => $cssClass) {
-        $messages = auth_flash_messages($bucket);
+      $messages = AuthService::flashMessages($bucket);
 
-        if (!empty($messages)) {
-            $flashBanners[] = ['class' => $cssClass, 'messages' => $messages];
-        }
+      if (!empty($messages)) {
+        $flashBanners[] = ['class' => $cssClass, 'messages' => $messages];
+      }
     }
   ?>
 
