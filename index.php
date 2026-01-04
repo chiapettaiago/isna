@@ -4,6 +4,8 @@ $config = include 'config.php';
 
 // Bootstrap centralizado
 require_once __DIR__ . '/app/bootstrap.php';
+// Access logger
+require_once __DIR__ . '/app/services/AccessLogger.php';
 
 // Inicia a sessão para recursos de autenticação
 AuthService::startSession();
@@ -28,6 +30,25 @@ if (empty($path) || $path[0] !== '/') {
 $currentUser = null;
 $protectedRoutes = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/sobre'];
 
+// Registrar acessos simples em SQLite (apenas GETs relevantes)
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $logPath = $path;
+    // excluir assets estáticos
+    if (!preg_match('/\.(css|js|png|jpe?g|gif|svg|ico|webp|pdf|mp4|mp3|zip|json|txt|xml)$/i', $logPath)) {
+        // excluir endpoints internos
+        $excludedExact = ['/api/access-stats'];
+        $excludedPrefixes = ['/gestao-', '/admin'];
+        $skip = false;
+        if (in_array($logPath, $excludedExact, true)) $skip = true;
+        foreach ($excludedPrefixes as $prefix) {
+            if (strncmp($logPath, $prefix, strlen($prefix)) === 0) { $skip = true; break; }
+        }
+        if (!$skip) {
+            @AccessLogger::record($logPath, 'GET');
+        }
+    }
+}
+
 if ($path === '/logout') {
     require_once __DIR__ . '/app/controllers/AuthController.php';
     $auth = new AuthController();
@@ -50,7 +71,6 @@ if ($path === '/api/access-stats' && $_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    $logFile = __DIR__ . '/logs/access_log';
     $today = new DateTimeImmutable('today');
     $defaultStart = $today->modify('-29 days');
 
@@ -67,51 +87,63 @@ if ($path === '/api/access-stats' && $_SERVER['REQUEST_METHOD'] === 'GET') {
         $temp = $fromDate; $fromDate = $toDate; $toDate = $temp;
     }
 
-    $dailyCounts = [];
-    if (is_readable($logFile)) {
-        $handle = fopen($logFile, 'r');
-        if ($handle !== false) {
-            while (($line = fgets($handle)) !== false) {
-                if (!preg_match('/"([A-Z]+) ([^\s]+) HTTP\/[0-9.]+" ([0-9]{3})/', $line, $requestMatches)) {
-                    continue;
-                }
+    // Consultar AccessLogger (SQLite)
+    $dailyCounts = AccessLogger::dailyCounts($fromDate->format('Y-m-d'), $toDate->format('Y-m-d')) ?: [];
 
-                $method = $requestMatches[1];
-                $resource = $requestMatches[2];
-                $statusCode = (int) $requestMatches[3];
+    $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
+    $labels = [];
+    $values = [];
+    foreach ($period as $day) {
+        $key = $day->format('Y-m-d');
+        $labels[] = $day->format('d/m');
+        $values[] = (int) ($dailyCounts[$key] ?? 0);
+    }
 
-                if ($method !== 'GET' || $statusCode >= 500) {
-                    continue;
-                }
-
-                $pathOnly = parse_url($resource, PHP_URL_PATH);
-                if ($pathOnly === null) continue;
-                if (preg_match('/\.(css|js|png|jpe?g|gif|svg|ico|webp|pdf|mp4|mp3|zip|json|txt|xml)$/i', $pathOnly)) continue;
-
-                $excludedExact = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/login', '/logout'];
-                $excludedPrefixes = ['/gestao-', '/admin'];
-                if (in_array($pathOnly, $excludedExact, true)) continue;
-                $skip = false;
-                foreach ($excludedPrefixes as $prefix) {
-                    if (strncmp($pathOnly, $prefix, strlen($prefix)) === 0) { $skip = true; break; }
-                }
-                if ($skip) continue;
-
-                if (!preg_match('/\[(\d{2}\/[^\/]{3}\/\d{4}):(\d{2}:\d{2}:\d{2}) ([+\-]\d{4})\]/', $line, $dateMatches)) {
-                    continue;
-                }
-
-                $dateTime = DateTimeImmutable::createFromFormat('d/M/Y H:i:s O', $dateMatches[1] . ' ' . $dateMatches[2] . ' ' . $dateMatches[3]);
-                if (!$dateTime) continue;
-                $dateTime = $dateTime->setTime(0, 0);
-                if ($dateTime < $fromDate || $dateTime > $toDate) continue;
-
-                $key = $dateTime->format('Y-m-d');
-                $dailyCounts[$key] = ($dailyCounts[$key] ?? 0) + 1;
-            }
-            fclose($handle);
+    $total = array_sum($values);
+    $count = count($values);
+    $average = $count > 0 ? ($total / $count) : 0;
+    $peakLabel = null; $peakValue = 0;
+    if (!empty($values)) {
+        $maxValue = max($values);
+        if ($maxValue > 0) {
+            $index = array_search($maxValue, $values, true);
+            if ($index !== false) { $peakLabel = $labels[$index]; $peakValue = $maxValue; }
         }
     }
+
+    echo json_encode([
+        'labels' => $labels,
+        'values' => $values,
+        'total' => $total,
+        'average' => $average,
+        'peakLabel' => $peakLabel,
+        'peakValue' => $peakValue,
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// Endpoint de debug: retorna as mesmas estatísticas sem exigir autenticação.
+// Apenas para diagnóstico — remover/proteger em produção.
+if ($path === '/api/access-stats-debug' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $today = new DateTimeImmutable('today');
+    $defaultStart = $today->modify('-29 days');
+
+    $fromParam = isset($_GET['from']) ? trim((string) $_GET['from']) : '';
+    $toParam = isset($_GET['to']) ? trim((string) $_GET['to']) : '';
+
+    $fromDate = DateTimeImmutable::createFromFormat('Y-m-d', $fromParam) ?: $defaultStart;
+    $toDate = DateTimeImmutable::createFromFormat('Y-m-d', $toParam) ?: $today;
+
+    $fromDate = $fromDate->setTime(0, 0);
+    $toDate = $toDate->setTime(0, 0);
+
+    if ($fromDate > $toDate) {
+        $temp = $fromDate; $fromDate = $toDate; $toDate = $temp;
+    }
+
+    $dailyCounts = AccessLogger::dailyCounts($fromDate->format('Y-m-d'), $toDate->format('Y-m-d')) ?: [];
 
     $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
     $labels = [];
