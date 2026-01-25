@@ -261,7 +261,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
 </section>
 
 <!-- Modal Galeria Home -->
-<div class="modal fade" id="modalGaleriaHome" tabindex="-1" aria-hidden="true">
+<div class="modal fade gallery-modal" id="modalGaleriaHome" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg-dark bg-opacity-75 border-0 rounded">
       <div class="modal-header border-0 p-2">

@@ -162,7 +162,7 @@
   </section>
 
   <!-- Modal & Carousel Seção 3 -->
-  <div class="modal fade" id="imageModal3" tabindex="-1" aria-hidden="true">
+  <div class="modal fade gallery-modal" id="imageModal3" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content bg-dark bg-opacity-75 border-0 rounded">
         <div class="modal-header border-0 p-2">

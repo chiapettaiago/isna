@@ -123,6 +123,104 @@ foreach ($rawSections as $section) {
     .dark-theme section.py-5.bg-white {
       background-color: #1e1e1e !important;
     }
+
+    /* Modal da galeria com fundo escuro */
+    .gallery-modal .modal-dialog {
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .gallery-modal .modal-content {
+      background-color: rgba(0, 0, 0, 0.85) !important;
+      border-radius: 0 !important;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .gallery-modal .modal-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: transparent !important;
+      padding: 1rem !important;
+    }
+
+    .gallery-modal .contador-imagens {
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .gallery-modal .btn-close-white {
+      opacity: 1;
+      filter: invert(1) brightness(2);
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .gallery-modal .btn-close-white:hover {
+      opacity: 0.8;
+    }
+
+    .gallery-modal .modal-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 0 !important;
+    }
+
+    .gallery-modal .carousel {
+      width: 100%;
+      height: 100%;
+    }
+
+    .gallery-modal .carousel-inner {
+      height: 100%;
+    }
+
+    .gallery-modal .carousel-item {
+      height: 100%;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-modal .carousel-item img {
+      max-height: 85vh;
+      max-width: 90vw;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .gallery-modal .carousel-control-prev,
+    .gallery-modal .carousel-control-next {
+      width: 60px;
+      opacity: 0.8;
+      z-index: 10;
+    }
+
+    .gallery-modal .carousel-control-prev:hover,
+    .gallery-modal .carousel-control-next:hover {
+      opacity: 1;
+    }
+
+    .gallery-modal .carousel-control-prev-icon,
+    .gallery-modal .carousel-control-next-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    }
+
+    .gallery-modal .carousel-caption {
+      display: none !important;
+    }
 </style>
 
 <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo htmlspecialchars($hero['background'], ENT_QUOTES, 'UTF-8'); ?>'); height: <?php echo (int) $hero['height']; ?>px; background-size: cover; background-position: center;">
