@@ -128,29 +128,13 @@
             <i class="bi bi-instagram"></i>
           </div>
           <h5 class="mb-2">Instagram</h5>
-          <p class="text-muted mb-3">@isna_oficial</p>
-          <a href="https://instagram.com/isna_oficial" target="_blank" class="btn btn-outline-dark">
+          <p class="text-muted mb-3">@isnasocial</p>
+          <a href="https://instagram.com/isnasocial" target="_blank" class="btn btn-outline-dark">
             <i class="bi bi-instagram me-2"></i>Seguir
           </a>
         </div>
       </div>
       
-      <!-- Facebook -->
-      <div class="col-md-4 col-6">
-        <div class="card h-100 border-0 shadow-sm contact-card text-center p-4">
-          <div class="contact-icon facebook">
-            <i class="bi bi-facebook"></i>
-          </div>
-          <h5 class="mb-2">Facebook</h5>
-          <p class="text-muted mb-3">/isnaoficial</p>
-          <a href="https://facebook.com/isnaoficial" target="_blank" class="btn btn-outline-primary">
-            <i class="bi bi-facebook me-2"></i>Curtir
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Seção CTA Doações -->
 <section class="py-5 text-center">
