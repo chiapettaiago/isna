@@ -168,6 +168,19 @@
           </div>
         </div>
       </div>
+      
+      <!-- Agência do Bem -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card h-100 border-0 shadow-sm parceiro-card">
+          <div class="parceiro-logo-wrapper">
+            <img src="/images/parceiros/agencia-do-bem.jpg" alt="Agência do Bem" class="img-fluid">
+          </div>
+          <div class="card-body text-center py-3">
+            <h5 class="card-title h6 mb-1">Agência do Bem</h5>
+            <p class="card-text small text-muted mb-0">Parceiro Social</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
