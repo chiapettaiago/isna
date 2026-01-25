@@ -228,6 +228,7 @@ $router->add('/area-restrita', ['file' => 'area-restrita.php', 'title' => 'Área
 $router->add('/gestao-usuarios', ['file' => 'gestao-usuarios.php', 'title' => 'Gestão de Usuários - ISNA']);
 $router->add('/gestao-galeria', ['file' => 'gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA']);
 $router->add('/gestao-blog', ['file' => 'gestao-blog.php', 'title' => 'Gestão do Blog - ISNA']);
+$router->add('/contato', ['file' => 'contato.php', 'title' => 'Contato - ISNA']);
 
 // Dispatch route
 $meta = $router->dispatch($path);

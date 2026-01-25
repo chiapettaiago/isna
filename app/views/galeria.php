@@ -3,7 +3,7 @@ $galleryConfig = gallery_load();
 $hero = $galleryConfig['hero'];
 $rawSections = $galleryConfig['sections'];
 $gallerySections = [];
-$projectRoot = dirname(__DIR__);
+$projectRoot = dirname(__DIR__, 2);
 
 foreach ($rawSections as $section) {
     $id = $section['id'];
