@@ -14,6 +14,23 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
   </section>
 
+  <!-- Seção Oficina Integrativas (anúncio) -->
+  <section id="oficina-integrativas" class="py-3" style="background-color: #083a76; color: #fff;">
+    <div class="container">
+      <div class="row align-items-center g-3">
+        <div class="col-md-3">
+          <img src="/images/oficina-integrativas.jpeg" alt="Oficinas de práticas integrativas" class="img-fluid rounded shadow-sm" style="width:100%; height:auto; object-fit:cover; max-height:180px;">
+        </div>
+        <div class="col-md-9">
+          <h2 class="h5 mb-2">OFICINA DE PRÁTICAS INTEGRATIVAS</h2>
+          <p class="small mb-1">É com imensa alegria que anunciamos nossa nova parceria com a VIVA Oficina de Saúde e a UFF, que traz como fruto uma belíssima ação social: <strong>OFICINA DE PRÁTICAS INTEGRATIVAS</strong>.</p>
+          <p class="small mb-1">Convidamos toda a comunidade e adjacentes para estar usufruindo de todas oficinas ofertadas: Yoga, Alongamento, Reiki, entre outras.</p>
+          <p class="small mb-0 opacity-75">07.03 — 09h-12h • Rua 08 - Quadra 19 - Lote 509 - Aldeia da Prata - Itaboraí - RJ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <?php if (!empty($latestPosts)): ?>
   <section id="blog" class="py-5 bg-white">
     <div class="container">
