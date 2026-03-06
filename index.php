@@ -229,6 +229,7 @@ $router->add('/gestao-usuarios', ['file' => 'gestao-usuarios.php', 'title' => 'G
 $router->add('/gestao-galeria', ['file' => 'gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA']);
 $router->add('/gestao-blog', ['file' => 'gestao-blog.php', 'title' => 'Gestão do Blog - ISNA']);
 $router->add('/contato', ['file' => 'contato.php', 'title' => 'Contato - ISNA']);
+$router->add('/mural', ['file' => 'mural.php', 'title' => 'Mural Informativo - ISNA']);
 
 // Dispatch route
 $meta = $router->dispatch($path);

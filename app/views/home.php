@@ -31,6 +31,73 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
   </section>
 
+  <!-- Chamada para o Mural Informativo do Mês -->
+  <?php
+    $mesMural = date('m');
+    $anoMural = date('Y');
+    $nomesMeses = [
+      '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março',
+      '04' => 'Abril',   '05' => 'Maio',      '06' => 'Junho',
+      '07' => 'Julho',   '08' => 'Agosto',    '09' => 'Setembro',
+      '10' => 'Outubro', '11' => 'Novembro',  '12' => 'Dezembro',
+    ];
+    $nomeMesMural = $nomesMeses[$mesMural] ?? 'Mês';
+
+    // Verifica se há imagens no mural para exibir ou não o banner
+    $muralDir  = $_SERVER['DOCUMENT_ROOT'] . '/images/mural/';
+    $muralExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    $muralImgs = [];
+    if (is_dir($muralDir)) {
+      foreach (scandir($muralDir) as $f) {
+        $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
+        if (in_array($ext, $muralExts)) {
+          $muralImgs[] = '/images/mural/' . $f;
+        }
+      }
+      sort($muralImgs);
+    }
+  ?>
+  <?php if (!empty($muralImgs)): ?>
+  <section id="mural-informativo" class="py-4" style="background-color: #fff8e1;">
+    <div class="container">
+      <div class="row align-items-center g-4">
+
+        <!-- Miniatura da primeira imagem do mural -->
+        <div class="col-md-3 text-center">
+          <a href="<?php echo $site_url; ?>/mural" title="Ver mural completo">
+            <img
+              src="<?php echo htmlspecialchars($muralImgs[0], ENT_QUOTES, 'UTF-8'); ?>"
+              alt="Prévia do mural de <?php echo $nomeMesMural . ' de ' . $anoMural; ?>"
+              class="img-fluid rounded shadow-sm"
+              style="max-height: 160px; object-fit: contain; background: #f5f5f5;"
+            >
+          </a>
+        </div>
+
+        <!-- Texto de chamada -->
+        <div class="col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-journal-richtext fs-4 text-warning"></i>
+            <h2 class="h4 mb-0">Mural Informativo de <?php echo $nomeMesMural; ?></h2>
+          </div>
+          <p class="text-muted mb-2">
+            Há <?php echo count($muralImgs); ?> aviso<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> publicado<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> este mês.
+            Fique por dentro das novidades do instituto.
+          </p>
+        </div>
+
+        <!-- Botão CTA -->
+        <div class="col-md-3 text-md-end text-center">
+          <a href="<?php echo $site_url; ?>/mural" class="btn btn-warning">
+            <i class="bi bi-journal-richtext me-1"></i> Ver mural completo
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <?php endif; ?>
+
 <?php if (!empty($latestPosts)): ?>
   <section id="blog" class="py-5 bg-white">
     <div class="container">
@@ -174,26 +241,26 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         </div>
 
         <!-- Player 2 -->
-        <div class="col-md-4 d-none">
+        <div class="col-md-4">
           <div class="card h-100 border-0 shadow-sm">
             <div class="realizacoes-player">
               <video
                 class="realizacoes-video"
                 controls
                 preload="metadata"
-                src="/videos/realizacao-2-horizontal.mp4"
-                poster="/images/realizacoes/realizacao-2-horizontal.jpg"
-                data-src-desktop="/videos/realizacao-2-horizontal.mp4"
-                data-src-mobile="/videos/realizacao-2-vertical.mp4"
-                data-poster-desktop="/images/realizacoes/realizacao-2-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-2-vertical.jpg"
+                src="/videos/realizacao-marco-horizontal.mp4"
+                poster="/images/realizacoes/realizacao-marco-horizontal.jpg"
+                data-src-desktop="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
+                data-src-mobile="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
+                data-poster-desktop="/images/realizacoes/realizacao-marco-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-marco-vertical.jpg"
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>
             </div>
             <div class="card-body">
-              <h3 class="h6 mb-1">Realizações do mês</h3>
-              <p class="text-muted small mb-0">Atualize as versões horizontal e vertical em <code>/videos/realizacao-2-horizontal.mp4</code> e <code>/videos/realizacao-2-vertical.mp4</code>.</p>
+              <h3 class="h6 mb-1">Retorno das atividades 2026</h3>
+              <p class="text-muted small mb-0">Veja o que preparamos</p>
             </div>
           </div>
         </div>
