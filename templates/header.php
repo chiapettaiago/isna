@@ -13,7 +13,11 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- CSS Personalizado -->
-  <link rel="stylesheet" href="<?php echo $site_url; ?>/css/style.css">
+  <?php
+    $cssPath = __DIR__ . '/../css/style.css';
+    $cssVer  = file_exists($cssPath) ? filemtime($cssPath) : '1';
+  ?>
+  <link rel="stylesheet" href="<?php echo $site_url; ?>/css/style.css?v=<?php echo $cssVer; ?>">
 </head>
 <body>
   <!-- Navbar -->
