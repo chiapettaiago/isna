@@ -1,55 +1,55 @@
 <footer class="bg-dark text-white pt-5 pb-3">
   <div class="container">
-    <div class="row">
+    <div class="row g-4">
       <!-- Sobre o Instituto -->
-      <div class="col-md-4 mb-4">
-        <h5>Sobre o Instituto</h5>
-        <p>
-          É uma organização de sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
+      <div class="col-12 col-md-4">
+        <h5 class="fw-semibold mb-3">Sobre o Instituto</h5>
+        <p class="text-white-50 small mb-3">
+          É uma organização da sociedade civil de interesse público, sem fins lucrativos, que busca através de seus projetos sociais qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
         </p>
-        <div class="social-media mt-3">
-          <a href="https://www.instagram.com/isnasocial/" target="_blank" class="btn btn-outline-light me-2" title="Siga-nos no Instagram">
-            <i class="bi bi-instagram"></i> Instagram
+        <div class="d-flex flex-wrap gap-2">
+          <a href="https://www.instagram.com/isnasocial/" target="_blank" rel="noopener" class="btn btn-outline-light btn-sm" title="Siga-nos no Instagram">
+            <i class="bi bi-instagram me-1"></i> Instagram
           </a>
         </div>
       </div>
       <!-- Localização -->
-      <div class="col-md-4 mb-4">
-        <h5>Localização</h5>
-        <div class="ratio ratio-4x3">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="col-12 col-md-4">
+        <h5 class="fw-semibold mb-3">Localização</h5>
+        <div class="ratio" style="--bs-aspect-ratio: 65%;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14715.341816010288!2d-42.939398!3d-22.771487!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9bf99b5d774f2d%3A0x4dd354624b51654f!2sInstituto%20Social%20Um%20Novo%20Amanhecer!5e0!3m2!1spt-BR!2sus!4v1745316903372!5m2!1spt-BR!2sus" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
+      <!-- Links Rápidos -->
+      <div class="col-12 col-md-4">
+        <h5 class="fw-semibold mb-3">Links Rápidos</h5>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><a href="<?php echo $site_url; ?>/quem-somos" class="text-white-50 text-decoration-none small"><i class="bi bi-chevron-right me-1"></i>Quem Somos</a></li>
+          <li class="mb-2"><a href="<?php echo $site_url; ?>/galeria" class="text-white-50 text-decoration-none small"><i class="bi bi-chevron-right me-1"></i>Projetos em Execução</a></li>
+          <li class="mb-2"><a href="<?php echo $site_url; ?>/transparencia" class="text-white-50 text-decoration-none small"><i class="bi bi-chevron-right me-1"></i>Transparência</a></li>
+          <li class="mb-2"><a href="<?php echo $site_url; ?>/doe" class="text-warning text-decoration-none small fw-semibold"><i class="bi bi-gift-fill me-1"></i>Faça uma Doação</a></li>
+        </ul>
+      </div>
     </div>
-    <hr class="border-light">
+    <hr class="border-secondary mt-4">
     <div class="text-center">
-      <p class="mb-0">&copy; <?php echo date("Y"); ?> Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapetta.dev" class="text-white text-decoration-none">Iago Chiapetta</a></p>
+      <p class="mb-0 text-white-50 small">&copy; <?php echo date("Y"); ?> Instituto Social Novo Amanhecer. Desenvolvido por <a href="https://chiapetta.dev" class="text-white text-decoration-none">Iago Chiapetta</a></p>
     </div>
   </div>
 </footer>
 
   <script>
-    // JavaScript para ajustar a opacidade da navbar ao rolar a página
+    // Reduz opacidade da navbar ao rolar (apenas desktop)
     window.addEventListener("scroll", function() {
       const nav = document.getElementById("mainNav");
-      const isMobile = window.innerWidth <= 991.98;
-      
-      if (isMobile) {
-        // Efeito para mobile - navbar se afasta do fundo
-        if (window.scrollY > 50) {
-          nav.classList.add("scrolled");
-          document.body.classList.add("navbar-scrolled");
-        } else {
-          nav.classList.remove("scrolled");
-          document.body.classList.remove("navbar-scrolled");
-        }
-      } else {
-        // Efeito para desktop - opacidade
+      if (window.innerWidth >= 992) {
         if (window.scrollY > 50) {
           nav.classList.add("opacity-75");
         } else {
           nav.classList.remove("opacity-75");
         }
+      } else {
+        nav.classList.remove("opacity-75");
       }
     });
 
@@ -72,17 +72,14 @@
     s.async = true;
     s.src = url;
     
-    // Configurações diferentes para mobile e desktop
-    var isMobile = window.innerWidth <= 991.98;
-    
     var options = {
     "enabled": true,
     "chatButtonSetting": {
     "backgroundColor": "#25D366",
-    "ctaText": isMobile ? "" : "Fale Conosco",
+    "ctaText": "Fale Conosco",
     "borderRadius": "50",
     "marginLeft": "20",
-    "marginBottom": isMobile ? "90" : "20",
+    "marginBottom": "20",
     "marginRight": "20",
     "position": "left",
     "textColor": "#ffffff",

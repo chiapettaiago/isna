@@ -38,81 +38,80 @@
             </span>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita">
+            <a class="nav-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" data-label="Dashboard">
               <i class="bi bi-speedometer2"></i> Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia">
+            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia" data-label="Relatórios">
               <i class="bi bi-graph-up"></i> Relatórios
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios">
+            <a class="nav-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" data-label="Usuários">
               <i class="bi bi-people-gear"></i> Usuários
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria">
+            <a class="nav-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" data-label="Galeria">
               <i class="bi bi-images"></i> Gerenciar galeria
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog">
+            <a class="nav-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog" data-label="Blog">
               <i class="bi bi-journal-text"></i> Gerenciar blog
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $site_url; ?>/logout">
+            <a class="nav-link" href="<?php echo $site_url; ?>/logout" data-label="Sair">
               <i class="bi bi-box-arrow-right"></i> Sair
             </a>
           </li>
         </ul>
         <?php else: ?>
         <ul class="navbar-nav ms-auto">
-          <!-- Logo para voltar ao início - visível apenas em mobile -->
-          <li class="nav-item d-lg-none">
-            <a class="nav-link<?php echo ($path === '/') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/">
-              <img src="<?php echo $site_url; ?>/images/logo.png" alt="Início" class="navbar-mobile-logo">
+          <li class="nav-item">
+            <a class="nav-link<?php echo ($path === '/quem-somos') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/quem-somos" data-label="Sobre">
+              <i class="bi bi-people-fill"></i> Quem Somos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/quem-somos') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/quem-somos">
-              <i class="bi bi-people-fill"></i>Quem Somos
+            <a class="nav-link<?php echo ($path === '/linha-atuacao') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/linha-atuacao" data-label="Atuação">
+              <i class="bi bi-bullseye"></i> Linha de Atuação
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/linha-atuacao') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/linha-atuacao">
-              <i class="bi bi-bullseye"></i>Linha de Atuação
+            <a class="nav-link<?php echo ($path === '/galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/galeria" data-label="Galeria">
+              <i class="bi bi-images"></i> Projetos em Execução
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/galeria">
-              <i class="bi bi-images"></i>Projetos em Execução
+            <a class="nav-link<?php echo ($path === '/parceiros') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/parceiros" data-label="Parceiros">
+              <i class="bi bi-building"></i> Parceiros
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/parceiros') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/parceiros">
-              <i class="bi bi-building"></i>Parceiros
+            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia" data-label="Balanço">
+              <i class="bi bi-graph-up"></i> Transparência
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia">
-              <i class="bi bi-graph-up"></i>Transparência
+            <a class="nav-link<?php echo ($path === '/titulos-documentos') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/titulos-documentos" data-label="Títulos">
+              <i class="bi bi-file-earmark-check-fill"></i> Títulos e Documentos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/titulos-documentos') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/titulos-documentos">
-              <i class="bi bi-file-earmark-check-fill"></i>Títulos e Documentos
+            <a class="nav-link<?php echo ($path === '/contato') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/contato" data-label="Contato">
+              <i class="bi bi-chat-dots-fill"></i> Contato
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-warning<?php echo ($path === '/doe' || $path === '/doacoes-bancarias') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/doe">
+            <a class="nav-link fw-semibold text-warning<?php echo ($path === '/doe' || $path === '/doacoes-bancarias') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/doe" data-label="Doe">
               <i class="bi bi-gift-fill me-1"></i> Doe
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/login') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/login">
+            <a class="nav-link<?php echo ($path === '/login') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/login" data-label="Entrar">
               <i class="bi bi-box-arrow-in-right"></i> <span class="nav-text-entrar">Entrar</span>
             </a>
           </li>

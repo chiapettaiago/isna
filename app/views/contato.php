@@ -134,9 +134,9 @@
           </a>
         </div>
       </div>
-      
-
-<!-- Seção CTA Doações -->
+    </div>
+  </div>
+</section>
 <section class="py-5 text-center">
   <div class="container">
     <h3 class="mb-3">Quer contribuir com nossa causa?</h3>

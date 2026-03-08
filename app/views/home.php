@@ -4,13 +4,14 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
 ?>
 
 <!-- Seção Hero -->
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
-  background-position: center; /* Centraliza a imagem no elemento */
-  background-repeat: no-repeat; /* Evita a repetição da imagem */">
+  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); min-height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container text-center">
-      <h1 class="display-4">Bem-vindo ao Instituto Social Novo Amanhecer</h1>
-      <p class="lead">Qualificando pessoas para inclusão no mercado de trabalho.</p>
-      <a href="<?php echo $site_url; ?>/quem-somos" class="btn btn-warning btn-lg mt-3">Saiba Mais</a>
+      <h1 class="display-4 fw-bold">Bem-vindo ao Instituto Social Novo Amanhecer</h1>
+      <p class="lead mt-2">Qualificando pessoas para inclusão no mercado de trabalho.</p>
+      <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+        <a href="<?php echo $site_url; ?>/quem-somos" class="btn btn-warning btn-lg px-4">Saiba Mais</a>
+        <a href="<?php echo $site_url; ?>/doe" class="btn btn-outline-light btn-lg px-4">Doe Agora</a>
+      </div>
     </div>
   </section>
 
@@ -231,12 +232,12 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 class="realizacoes-video"
                 controls
                 preload="metadata"
-                src="/videos/realizacao-marco-horizontal.mp4"
-                poster="/images/realizacoes/realizacao-marco-horizontal.jpg"
+                src="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
+                poster="/images/realizacoes/realizacao-1-horizontal.jpg"
                 data-src-desktop="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
                 data-src-mobile="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
-                data-poster-desktop="/images/realizacoes/realizacao-marco-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-marco-vertical.jpg"
+                data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>
@@ -256,12 +257,8 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 class="realizacoes-video"
                 controls
                 preload="metadata"
-                src="/videos/realizacao-3-horizontal.mp4"
-                poster="/images/realizacoes/realizacao-3-horizontal.jpg"
-                data-src-desktop="/videos/realizacao-3-horizontal.mp4"
-                data-src-mobile="/videos/realizacao-3-vertical.mp4"
-                data-poster-desktop="/images/realizacoes/realizacao-3-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-3-vertical.jpg"
+                src=""
+                poster=""
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>

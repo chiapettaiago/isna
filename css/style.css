@@ -1,5 +1,166 @@
 /* CSS customizado para complementar o Bootstrap */
 
+/* ============================================================
+   MELHORIAS GERAIS MOBILE
+   ============================================================ */
+
+/* Hero responsivo */
+@media (max-width: 767.98px) {
+  .hero {
+    height: auto !important;
+    min-height: 60svh !important; /* svh = small viewport height, melhor em mobile */
+    padding: 4rem 0 !important;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem !important;
+    line-height: 1.3;
+  }
+
+  .hero .lead {
+    font-size: 1rem !important;
+  }
+
+  .hero .btn-lg {
+    font-size: 1rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+  }
+}
+
+/* Seções — menos espaçamento vertical em mobile */
+@media (max-width: 767.98px) {
+  section.py-5 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  section.py-4 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+  }
+
+  /* Cards — padding mais compacto em mobile */
+  .card-body {
+    padding: 1rem !important;
+  }
+
+  /* Botões outline — mais touchable */
+  .btn-outline-secondary {
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+  }
+}
+
+/* Mural banner — empilha melhor em mobile */
+@media (max-width: 575.98px) {
+  #mural-informativo .row > div {
+    text-align: center !important;
+  }
+
+  #mural-informativo .col-md-3 img {
+    max-height: 120px;
+  }
+
+  #mural-informativo .col-md-3,
+  #mural-informativo .col-md-6 {
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Blog — cards numa coluna única em mobile com scroll suave */
+@media (max-width: 767.98px) {
+  #blog .row.g-4 {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    /* Esconde scrollbar visualmente */
+    scrollbar-width: none;
+  }
+
+  #blog .row.g-4::-webkit-scrollbar {
+    display: none;
+  }
+
+  #blog .col-md-4 {
+    min-width: calc(85vw);
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+  }
+}
+
+/* Footer — melhorias mobile */
+@media (max-width: 767.98px) {
+  footer .row > div {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Mapa reduzido em mobile */
+  footer .ratio.ratio-4x3 {
+    --bs-aspect-ratio: 56.25%;
+    max-height: 180px;
+    overflow: hidden;
+  }
+
+  footer .ratio.ratio-4x3 iframe {
+    border-radius: 8px;
+  }
+
+  /* Texto do footer menor */
+  footer h5 {
+    font-size: 1rem;
+  }
+
+  footer p {
+    font-size: 0.875rem;
+  }
+}
+
+/* Parceiros — cards menores em telas muito pequenas */
+@media (max-width: 480px) {
+  #parceiros-bairro .card-body {
+    padding: 0.75rem !important;
+  }
+
+  #parceiros-bairro .parceiro-logo {
+    max-height: 80px !important;
+  }
+
+  #parceiros-bairro .card-title {
+    font-size: 0.8rem;
+  }
+
+  #parceiros-bairro .card-text {
+    font-size: 0.7rem;
+  }
+}
+
+/* Vídeos de Realizações — portrait-friendly em mobile */
+@media (max-width: 767.98px) {
+  #realizacoes .row.g-4 {
+    flex-direction: column;
+  }
+
+  #realizacoes .col-md-4 {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+/* Galeria home — grid com espaçamento melhor */
+@media (max-width: 575.98px) {
+  #galeria .col-6 {
+    padding: 4px;
+  }
+}
+
 /* Garantia de z-index - navbar sempre na frente em mobile */
 @media (max-width: 991.98px) {
   /* Limita z-index de elementos comuns */
@@ -58,14 +219,14 @@
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
 /* Reduz a escuridão do hero em dispositivos móveis */
 @media (max-width: 767.98px) {
   .hero::before {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -97,219 +258,132 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Navbar mobile - posicionamento inferior */
+/* ============================================================
+   MENU MOBILE EXPANDIDO
+   ============================================================ */
 @media (max-width: 991.98px) {
-  .navbar {
-    position: fixed !important;
-    top: auto !important;
-    bottom: 0 !important;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-    background: #000000 !important;
-    border: none;
-    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
-    height: 70px;
-    padding: 0;
-    border-radius: 20px 20px 0 0;
-    transition: all 0.3s ease;
+  /* Painel do menu — fundo sólido com ligeiro desfoque */
+  #navbarNav.show,
+  #navbarNav.collapsing {
+    background: #111111;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.5rem 0 1rem;
+    margin-top: 0;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   }
-  
-  /* Efeito quando rola a tela - navbar se afasta */
-  .navbar.scrolled {
-    bottom: 10px !important;
-    left: 10px;
-    right: 10px;
-    border-radius: 20px;
-    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.9) !important;
-    z-index: 9999;
+
+  /* Itens individuais */
+  #navbarNav .nav-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
-  
-  /* Adiciona padding ao body para compensar a navbar fixa na parte inferior */
-  body {
-    padding-bottom: 80px;
+
+  #navbarNav .nav-item:last-child {
+    border-bottom: none;
   }
-  
-  /* Oculta o botão hamburguer e logo em mobile */
-  .navbar-toggler,
-  .navbar-brand {
-    display: none !important;
-  }
-  
-  /* Layout horizontal da navbar */
-  .navbar-collapse {
-    position: static !important;
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
+
+  /* Links */
+  #navbarNav .nav-link {
     display: flex !important;
-    height: 100%;
-  }
-  
-  /* Layout horizontal dos itens */
-  .navbar-nav {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    width: 100% !important;
-    height: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  
-  /* Estilo dos itens como botões horizontais */
-  .navbar-nav .nav-item {
-    flex: 1;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100%;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem !important;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 10px;
+    margin: 2px 8px;
+    transition: background 0.18s ease, color 0.18s ease;
   }
-  
-  .navbar-nav .nav-link {
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0.5rem 0.25rem !important;
+
+  #navbarNav .nav-link:active,
+  #navbarNav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
     color: #ffffff !important;
-    text-decoration: none;
-    font-size: 0.65rem;
-    font-weight: 600;
-    height: 100%;
-    width: 100%;
-    transition: all 0.3s ease;
-    border-radius: 0;
-    background: none !important;
-    border: none !important;
-    position: relative;
   }
-  
-  .navbar-nav .nav-link:hover {
-    transform: translateY(-2px);
+
+  /* Ícones */
+  #navbarNav .nav-link i {
+    font-size: 1.2rem;
+    width: 1.5rem;
+    text-align: center;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.55);
   }
-  
-  /* Esconde o texto em mobile, mostra apenas ícones */
-  .navbar-nav .nav-link i {
-    font-size: 24px;
-    color: #ffffff;
-    margin-bottom: 0;
+
+  /* Item ativo */
+  #navbarNav .nav-link.active {
+    background: rgba(255, 193, 7, 0.12) !important;
+    color: #ffc107 !important;
   }
-  
-  /* Logo na navbar mobile - primeiro item */
-  .navbar-mobile-logo {
-    height: 36px;
-    width: auto;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  /* Oculta o texto em mobile */
-  .navbar-nav .nav-link {
-    font-size: 0 !important;
-    text-indent: -9999px;
-    overflow: hidden;
-  }
-  
-  /* Garante que apenas o ícone apareça */
-  .navbar-nav .nav-link i {
-    text-indent: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-  }
-  
-  /* Item ativo em mobile - logo destacada */
-  .navbar-nav .nav-link.active .navbar-mobile-logo {
-    filter: brightness(1.2) drop-shadow(0 0 8px rgba(255, 193, 7, 0.6));
-  }
-  
-  /* Item ativo em mobile */
-  .navbar-nav .nav-link.active {
-    background: rgba(255, 193, 7, 0.2) !important;
-    border-radius: 12px !important;
-    box-shadow: 
-      0 0 15px rgba(255, 193, 7, 0.4),
-      inset 0 0 10px rgba(255, 193, 7, 0.1);
-  }
-  
-  .navbar-nav .nav-link.active i {
+
+  #navbarNav .nav-link.active i {
     color: #ffc107;
-    transform: translate(-50%, -50%) scale(1.1);
   }
-  
-  /* Oculta o ícone do coração no texto para "Doe" (agora desnecessário) */
-  .navbar-nav .nav-item:nth-child(9) .nav-link .bi-heart-fill {
-    display: none;
+
+  /* Item "Doe" — destaque dourado */
+  #navbarNav .nav-link.text-warning {
+    color: #ffc107 !important;
   }
-  
-  /* Responsividade para telas muito pequenas */
-  @media (max-width: 480px) {
-    .navbar-nav .nav-link i {
-      font-size: 20px;
-    }
-    
-    .navbar-mobile-logo {
-      height: 32px;
-    }
+
+  #navbarNav .nav-link.text-warning i {
+    color: #ffc107;
+  }
+
+  /* Altura da navbar quando fechada */
+  .navbar .container {
+    min-height: 60px;
+  }
+
+  /* Brand: logo com tamanho adequado para a barra fechada */
+  .navbar-brand img {
+    height: 68px !important;
+    position: static !important;
+    transform: none !important;
+  }
+
+  /* Toggler: visual mais limpo */
+  .navbar-toggler {
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 8px !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.4) !important;
   }
 }
 
-/* Desktop - mantém navbar no topo */
+/* Navbar — sticky no topo em todas as telas */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+/* Desktop: oculta ícones, mostra apenas texto */
 @media (min-width: 992px) {
-  .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 9999; /* garante que nada passe por cima no desktop */
-  }
-  
-  /* Oculta os ícones no desktop */
   .navbar-nav .nav-link i {
     display: none;
   }
-  
-  /* Exceção: mostra apenas o ícone de "Entrar" e oculta o texto em desktop */
+
+  /* Exceção: ícone de "Entrar" (substitui o texto) */
   .navbar-nav .nav-link .nav-text-entrar {
     display: none;
   }
-  
+
   .navbar-nav .nav-link i.bi-box-arrow-in-right {
     display: inline-block !important;
     font-size: 1.2rem;
   }
-  
-  /* Restaura o texto normal no desktop */
-  .navbar-nav .nav-link {
-    font-size: inherit !important;
-    text-indent: 0 !important;
-    overflow: visible !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-  
-  /* Remove efeitos de brilho em desktop - apenas sublinhado */
+
+  /* Link ativo — sublinhado sutil */
   .navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    font-weight: 600;
     position: relative;
-    background: none !important;
-    box-shadow: none !important;
-    animation: none !important;
-    border-radius: 0 !important;
   }
-  
-  /* Sublinhado para link ativo em desktop */
+
   .navbar-nav .nav-link.active::after {
     content: '';
     position: absolute;
@@ -321,71 +395,13 @@ body {
     background: linear-gradient(90deg, transparent, #ffffff 20%, #ffffff 80%, transparent);
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   }
-  
-  /* Sublinhado amarelo para o item "Doe" */
+
   .navbar-nav .nav-link.text-warning.active::after {
     background: linear-gradient(90deg, transparent, #ffc107 20%, #ffc107 80%, transparent);
     box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
   }
-  
-  /* Evita que imagens/carousels sobreponham */
+
   img, video, .carousel, .hero, section { z-index: 1; position: relative; }
-}
-
-/* Estilos para navbar ativa - círculo luminoso branco */
-.navbar-nav .nav-link.active {
-  color: #ffffff !important;
-  font-weight: 600;
-  position: relative;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 70%);
-  border-radius: 50px;
-  box-shadow: 
-    0 0 15px rgba(255, 255, 255, 0.4),
-    0 0 25px rgba(255, 255, 255, 0.25),
-    inset 0 0 10px rgba(255, 255, 255, 0.1);
-  animation: glow-pulse-white 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow-pulse-white {
-  from {
-    box-shadow: 
-      0 0 15px rgba(255, 255, 255, 0.4),
-      0 0 25px rgba(255, 255, 255, 0.25),
-      inset 0 0 10px rgba(255, 255, 255, 0.1);
-  }
-  to {
-    box-shadow: 
-      0 0 20px rgba(255, 255, 255, 0.5),
-      0 0 35px rgba(255, 255, 255, 0.35),
-      inset 0 0 15px rgba(255, 255, 255, 0.15);
-  }
-}
-
-/* Ajuste para o item "Doe" que já tem texto amarelo - mantém amarelo mas com luz branca */
-.navbar-nav .nav-link.text-warning.active {
-  color: #ffc107 !important;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%);
-  border-radius: 50px;
-  box-shadow: 
-    0 0 18px rgba(255, 255, 255, 0.45),
-    0 0 30px rgba(255, 255, 255, 0.3),
-    inset 0 0 12px rgba(255, 255, 255, 0.12);
-  animation: glow-pulse-white-strong 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow-pulse-white-strong {
-  from {
-    box-shadow: 
-      0 0 18px rgba(255, 255, 255, 0.45),
-      0 0 30px rgba(255, 255, 255, 0.3),
-      inset 0 0 12px rgba(255, 255, 255, 0.12);
-  }
-  to {
-    box-shadow: 
-      0 0 25px rgba(255, 255, 255, 0.6),
-      0 0 40px rgba(255, 255, 255, 0.4),
-      inset 0 0 18px rgba(255, 255, 255, 0.18);
-  }
 }
 
 /* Pinch-to-zoom imagens */
@@ -648,68 +664,11 @@ body {
   }
 }
 
-/* Posicionamento especial para mobile - acima da navbar */
+/* Botões flutuantes: ocultar em mobile, manter no desktop */
 @media (max-width: 991.98px) {
-  .theme-toggle {
-    bottom: 90px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    z-index: 9998;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-  }
-  
-  /* Ajusta posição dos botões quando navbar está "scrolled" - removido para manter posição fixa */
-  /* .navbar.scrolled ~ .theme-toggle,
-  body.navbar-scrolled .theme-toggle {
-    bottom: 100px;
-  } */
-  
-  /* Botão do WhatsApp - posicionamento acima da navbar em mobile, alinhado */
+  .theme-toggle,
   div[id*="waplus"] {
-    bottom: 90px !important;
-    left: 20px !important;
-    z-index: 9998 !important;
-    position: fixed !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  /* Ajusta posição do WhatsApp quando navbar está "scrolled" - removido para manter posição fixa */
-  /* body.navbar-scrolled div[id*="waplus"] {
-    bottom: 100px !important;
-  } */
-  
-  div[id*="waplus"] button,
-  div[id*="waplus"] > div {
-    background: #25D366 !important;
-    border-radius: 50% !important;
-    width: 50px !important;
-    height: 50px !important;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4) !important;
-    transition: all 0.3s ease !important;
-    border: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-  
-  div[id*="waplus"] button:hover,
-  div[id*="waplus"] > div:hover {
-    transform: scale(1.1) !important;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6) !important;
-  }
-  
-  /* Oculta textos extras do botão WhatsApp em mobile */
-  div[id*="waplus"] span {
     display: none !important;
-  }
-  
-  /* Garante que apenas o ícone apareça */
-  div[id*="waplus"] svg,
-  div[id*="waplus"] img {
-    width: 24px !important;
-    height: 24px !important;
   }
 }
 
