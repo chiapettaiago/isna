@@ -48,7 +48,7 @@
             <li><strong>Agência:</strong> 0769</li>
             <li><strong>Operação:</strong> 003</li>
             <li><strong>Conta Corrente:</strong> 54213-6</li>
-            <li><strong>Pix:</strong> 08.912.758/0001-08</li>
+            <li><strong>Pix:</strong> isnaimpactosocial@gmail.com</li>
           </ul>
         </div>
       </div>
@@ -76,7 +76,7 @@
           <ul class="list-unstyled">
             <li><strong>Agência:</strong> 3402</li>
             <li><strong>Conta Corrente:</strong> 13005369-2</li>
-            <li><strong>Pix:</strong> isnaimpactosocial@gmail.com</li>
+            <li><strong>Pix:</strong> 08.912.758/0001-08</li>
           </ul>
         </div>
       </div>
