@@ -221,6 +221,18 @@ foreach ($rawSections as $section) {
     .gallery-modal .carousel-caption {
       display: none !important;
     }
+
+    .gallery-section-toggle .bi {
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-section-toggle[aria-expanded="true"] .bi {
+      transform: rotate(180deg);
+    }
+
+    .gallery-section-card {
+      box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.12) !important;
+    }
 </style>
 
 <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo htmlspecialchars($hero['background'], ENT_QUOTES, 'UTF-8'); ?>'); height: <?php echo (int) $hero['height']; ?>px; background-size: cover; background-position: center;">
@@ -232,27 +244,44 @@ foreach ($rawSections as $section) {
 <!-- Seção Outubro Rosa -->
 <section class="py-5 bg-light" id="outubro-rosa">
   <div class="container">
-    <div class="text-center mb-4">
-      <h2 class="mb-3" style="color: #d63384;">Outubro Rosa</h2>
-      <p class="text-muted mb-4">Conscientização sobre a prevenção do câncer de mama</p>
-    </div>
-    
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="outubro-rosa-player">
-          <video
-            class="outubro-rosa-video"
-            controls
-            preload="metadata"
-            src="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
-            poster="/videos/outubro_rosa_poster.jpg"
-            data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
-            data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
-            data-poster-desktop="/videos/outubro_rosa_poster.jpg"
-            data-poster-mobile="/videos/outubro_rosa_poster_vertical.jpg"
+    <div class="card border-0 shadow-sm gallery-section-card">
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <h2 class="mb-3" style="color: #d63384;">Outubro Rosa</h2>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm gallery-section-toggle"
+            data-bs-toggle="collapse"
+            data-bs-target="#outubro-rosa-collapse"
+            aria-expanded="false"
+            aria-controls="outubro-rosa-collapse"
           >
-            Seu navegador não suporta o elemento de vídeo.
-          </video>
+            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            <span class="visually-hidden">Mostrar ou ocultar seção Outubro Rosa</span>
+          </button>
+          <p class="text-muted mb-4">Conscientização sobre a prevenção do câncer de mama</p>
+        </div>
+
+        <div id="outubro-rosa-collapse" class="collapse">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="outubro-rosa-player">
+                <video
+                  class="outubro-rosa-video"
+                  controls
+                  preload="metadata"
+                  src="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+                  poster="/videos/outubro_rosa_poster.jpg"
+                  data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+                  data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
+                  data-poster-desktop="/videos/outubro_rosa_poster.jpg"
+                  data-poster-mobile="/videos/outubro_rosa_poster_vertical.jpg"
+                >
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -260,38 +289,56 @@ foreach ($rawSections as $section) {
 </section>
 
 <?php foreach ($gallerySections as $section): ?>
+  <?php $collapseId = 'section-collapse-' . $section['id']; ?>
   <section class="py-5 <?php echo htmlspecialchars($section['background'], ENT_QUOTES, 'UTF-8'); ?>" id="galeria-<?php echo htmlspecialchars($section['id'], ENT_QUOTES, 'UTF-8'); ?>">
     <div class="container">
-      <div class="text-center mb-4">
-        <h2 class="mb-3"><?php echo htmlspecialchars($section['title'], ENT_QUOTES, 'UTF-8'); ?></h2>
-        <?php if (!empty($section['description'])): ?>
-          <p class="text-muted mb-0"><?php echo nl2br(htmlspecialchars($section['description'], ENT_QUOTES, 'UTF-8')); ?></p>
-        <?php endif; ?>
-      </div>
+      <div class="card border-0 shadow-sm gallery-section-card">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h2 class="mb-3"><?php echo htmlspecialchars($section['title'], ENT_QUOTES, 'UTF-8'); ?></h2>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm gallery-section-toggle"
+              data-bs-toggle="collapse"
+              data-bs-target="#<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>"
+              aria-expanded="false"
+              aria-controls="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>"
+            >
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+              <span class="visually-hidden">Mostrar ou ocultar seção</span>
+            </button>
+            <?php if (!empty($section['description'])): ?>
+              <p class="text-muted mb-0"><?php echo nl2br(htmlspecialchars($section['description'], ENT_QUOTES, 'UTF-8')); ?></p>
+            <?php endif; ?>
+          </div>
 
-      <?php if ($section['count'] === 0): ?>
-        <p class="text-center text-muted">Nenhum item cadastrado para esta seção no momento.</p>
-      <?php else: ?>
-        <div class="row g-4">
-          <?php foreach ($section['items'] as $index => $item): ?>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-              <div class="ratio ratio-1x1">
-                <img
-                  src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>"
-                  class="w-100 h-100 rounded shadow-sm galeria-img"
-                  alt="<?php echo htmlspecialchars($item['alt'], ENT_QUOTES, 'UTF-8'); ?>"
-                  style="object-fit: cover; cursor: pointer;"
-                  data-bs-toggle="modal"
-                  data-bs-target="#<?php echo htmlspecialchars($section['modal_id'], ENT_QUOTES, 'UTF-8'); ?>"
-                  data-modal-target="#<?php echo htmlspecialchars($section['modal_id'], ENT_QUOTES, 'UTF-8'); ?>"
-                  data-gallery-index="<?php echo $index; ?>"
-                  loading="lazy"
-                >
+          <div id="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" class="collapse">
+            <?php if ($section['count'] === 0): ?>
+              <p class="text-center text-muted">Nenhum item cadastrado para esta seção no momento.</p>
+            <?php else: ?>
+              <div class="row g-4">
+                <?php foreach ($section['items'] as $index => $item): ?>
+                  <div class="col-sm-6 col-md-4 col-lg-4">
+                    <div class="ratio ratio-1x1">
+                      <img
+                        src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>"
+                        class="w-100 h-100 rounded shadow-sm galeria-img"
+                        alt="<?php echo htmlspecialchars($item['alt'], ENT_QUOTES, 'UTF-8'); ?>"
+                        style="object-fit: cover; cursor: pointer;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#<?php echo htmlspecialchars($section['modal_id'], ENT_QUOTES, 'UTF-8'); ?>"
+                        data-modal-target="#<?php echo htmlspecialchars($section['modal_id'], ENT_QUOTES, 'UTF-8'); ?>"
+                        data-gallery-index="<?php echo $index; ?>"
+                        loading="lazy"
+                      >
+                    </div>
+                  </div>
+                <?php endforeach; ?>
               </div>
-            </div>
-          <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
         </div>
-      <?php endif; ?>
+      </div>
     </div>
   </section>
 <?php endforeach; ?>
