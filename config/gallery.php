@@ -30,6 +30,15 @@ return [
     ],
     'sections' => [
         [
+            'id' => 'viva-oficinas-de-saude-07032026',
+            'title' => 'Viva Oficinas de Saúde 07/03/2026',
+            'type' => 'directory',
+            'background' => 'bg-light',
+            'description' => '',
+            'directory' => 'images/viva-oficinas-de-saude-07-03',
+            'caption_prefix' => 'Viva Oficinas de Saúde 07/03/2026',
+        ],
+        [
             'id' => 'recital-emc-252',
             'title' => 'Recital EMC 25.2',
             'type' => 'directory',
