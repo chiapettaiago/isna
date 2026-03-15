@@ -243,8 +243,8 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
               </video>
             </div>
             <div class="card-body">
-              <h3 class="h6 mb-1">Retorno das atividades 2026</h3>
-              <p class="text-muted small mb-0">Veja o que preparamos</p>
+              <h3 class="h6 mb-1">Realizações de Março</h3>
+              <p class="text-muted small mb-0">Veja o que realizamos neste mês</p>
             </div>
           </div>
         </div>
