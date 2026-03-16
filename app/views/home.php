@@ -234,8 +234,8 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 preload="metadata"
                 src="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
                 poster="/images/realizacoes/realizacao-1-horizontal.jpg"
-                data-src-desktop="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
-                data-src-mobile="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
+                data-src-desktop="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
+                data-src-mobile="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
                 data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
                 data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
               >
