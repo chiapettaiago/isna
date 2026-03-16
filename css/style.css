@@ -161,6 +161,34 @@
   }
 }
 
+/* Home mobile — melhora enquadramento das imagens */
+@media (max-width: 767.98px) {
+  /* Evita miniatura muito pequena no mural */
+  #mural-informativo .col-md-3 img {
+    width: 100%;
+    max-width: 260px;
+    max-height: 180px !important;
+    object-fit: cover !important;
+    object-position: center;
+    background: transparent !important;
+  }
+
+  /* Card de atividades de marco com melhor foco da imagem */
+  #realizacoes .realizacoes-player > img {
+    object-position: center 28%;
+  }
+
+  /* Miniaturas da galeria da home mais legiveis no celular */
+  #galeria .ratio {
+    aspect-ratio: 4 / 5;
+  }
+
+  #galeria .galeria-home-img {
+    object-fit: cover !important;
+    object-position: center;
+  }
+}
+
 /* Garantia de z-index - navbar sempre na frente em mobile */
 @media (max-width: 991.98px) {
   /* Limita z-index de elementos comuns */
@@ -1130,7 +1158,8 @@ footer .social-media .btn-outline-light:hover {
 }
 
 #realizacoes .realizacoes-player > .plyr,
-#realizacoes .realizacoes-player > video {
+#realizacoes .realizacoes-player > video,
+#realizacoes .realizacoes-player > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1145,11 +1174,18 @@ footer .social-media .btn-outline-light:hover {
 }
 
 #realizacoes .plyr__video-wrapper video,
-#realizacoes .realizacoes-player > video {
+#realizacoes .realizacoes-player > video,
+#realizacoes .realizacoes-player > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+#realizacoes .plyr__poster {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
 }
 
 /* Melhorar foco do player para acessibilidade */

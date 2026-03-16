@@ -233,6 +233,35 @@ foreach ($rawSections as $section) {
     .gallery-section-card {
       box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.12) !important;
     }
+
+    #retorno-atividades-2026 .featured-video-player {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #retorno-atividades-2026 .featured-video-player::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%;
+    }
+
+    @media (max-width: 767.98px) {
+      #retorno-atividades-2026 .featured-video-player::before {
+        padding-top: 177.7778%;
+      }
+    }
+
+    #retorno-atividades-2026 .featured-video-player > video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
 </style>
 
 <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo htmlspecialchars($hero['background'], ENT_QUOTES, 'UTF-8'); ?>'); height: <?php echo (int) $hero['height']; ?>px; background-size: cover; background-position: center;">
@@ -241,41 +270,38 @@ foreach ($rawSections as $section) {
   </div>
 </section>
 
-<!-- Seção Outubro Rosa -->
-<section class="py-5 bg-light" id="outubro-rosa">
+<!-- Seção Retorno às Atividades 2026 -->
+<section class="py-5 bg-white" id="retorno-atividades-2026">
   <div class="container">
     <div class="card border-0 shadow-sm gallery-section-card">
       <div class="card-body">
         <div class="text-center mb-4">
-          <h2 class="mb-3" style="color: #d63384;">Outubro Rosa</h2>
+          <h2 class="mb-3">Retorno às Atividades 2026</h2>
           <button
             type="button"
             class="btn btn-outline-secondary btn-sm gallery-section-toggle"
             data-bs-toggle="collapse"
-            data-bs-target="#outubro-rosa-collapse"
+            data-bs-target="#retorno-atividades-2026-collapse"
             aria-expanded="false"
-            aria-controls="outubro-rosa-collapse"
+            aria-controls="retorno-atividades-2026-collapse"
           >
             <i class="bi bi-chevron-down" aria-hidden="true"></i>
-            <span class="visually-hidden">Mostrar ou ocultar seção Outubro Rosa</span>
+            <span class="visually-hidden">Mostrar ou ocultar seção Retorno às Atividades 2026</span>
           </button>
-          <p class="text-muted mb-4">Conscientização sobre a prevenção do câncer de mama</p>
+          <p class="text-muted mb-4">Confira o vídeo do retorno das atividades em 2026</p>
         </div>
 
-        <div id="outubro-rosa-collapse" class="collapse">
+        <div id="retorno-atividades-2026-collapse" class="collapse">
           <div class="row justify-content-center">
             <div class="col-lg-8">
-              <div class="outubro-rosa-player">
+              <div class="featured-video-player">
                 <video
-                  class="outubro-rosa-video"
                   controls
-                  preload="metadata"
-                  src="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
-                  poster="/videos/outubro_rosa_poster.jpg"
-                  data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
-                  data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
-                  data-poster-desktop="/videos/outubro_rosa_poster.jpg"
-                  data-poster-mobile="/videos/outubro_rosa_poster_vertical.jpg"
+                  preload="none"
+                  src="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
+                  poster="/videos/retorno_atividades_2026_poster.jpg"
+                  data-poster-desktop="/videos/retorno_atividades_2026_poster.jpg"
+                  data-poster-mobile="/videos/retorno_atividades_2026_poster_vertical.jpg"
                 >
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
@@ -321,7 +347,8 @@ foreach ($rawSections as $section) {
                   <div class="col-sm-6 col-md-4 col-lg-4">
                     <div class="ratio ratio-1x1">
                       <img
-                        src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>"
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                        data-src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>"
                         class="w-100 h-100 rounded shadow-sm galeria-img"
                         alt="<?php echo htmlspecialchars($item['alt'], ENT_QUOTES, 'UTF-8'); ?>"
                         style="object-fit: cover; cursor: pointer;"
@@ -330,6 +357,7 @@ foreach ($rawSections as $section) {
                         data-modal-target="#<?php echo htmlspecialchars($section['modal_id'], ENT_QUOTES, 'UTF-8'); ?>"
                         data-gallery-index="<?php echo $index; ?>"
                         loading="lazy"
+                        decoding="async"
                       >
                     </div>
                   </div>
@@ -357,7 +385,14 @@ foreach ($rawSections as $section) {
             <div class="carousel-inner">
               <?php foreach ($section['items'] as $index => $item): ?>
                 <div class="carousel-item<?php echo $index === 0 ? ' active' : ''; ?>">
-                  <img src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>" class="d-block mx-auto img-fluid carousel-img" alt="<?php echo htmlspecialchars($item['alt'], ENT_QUOTES, 'UTF-8'); ?>">
+                  <img
+                    src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                    data-src="<?php echo htmlspecialchars($item['src'], ENT_QUOTES, 'UTF-8'); ?>"
+                    class="d-block mx-auto img-fluid carousel-img"
+                    alt="<?php echo htmlspecialchars($item['alt'], ENT_QUOTES, 'UTF-8'); ?>"
+                    loading="lazy"
+                    decoding="async"
+                  >
                   <?php if (!empty($item['caption'])): ?>
                     <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                       <h5 class="mb-0"><?php echo htmlspecialchars($item['caption'], ENT_QUOTES, 'UTF-8'); ?></h5>
@@ -379,17 +414,84 @@ foreach ($rawSections as $section) {
   </div>
 <?php endforeach; ?>
 
+<!-- Seção Outubro Rosa -->
+<section class="py-5 bg-light" id="outubro-rosa">
+  <div class="container">
+    <div class="card border-0 shadow-sm gallery-section-card">
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <h2 class="mb-3" style="color: #d63384;">Outubro Rosa</h2>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm gallery-section-toggle"
+            data-bs-toggle="collapse"
+            data-bs-target="#outubro-rosa-collapse"
+            aria-expanded="false"
+            aria-controls="outubro-rosa-collapse"
+          >
+            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            <span class="visually-hidden">Mostrar ou ocultar seção Outubro Rosa</span>
+          </button>
+          <p class="text-muted mb-4">Conscientização sobre a prevenção do câncer de mama</p>
+        </div>
+
+        <div id="outubro-rosa-collapse" class="collapse">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="outubro-rosa-player">
+                <video
+                  class="outubro-rosa-video"
+                  controls
+                  preload="none"
+                  src="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+                  poster="/videos/outubro_rosa_poster.jpg"
+                  data-src-desktop="https://api.chiapetta.dev/v/ItV-Nx6UsanFr8DH"
+                  data-src-mobile="https://api.chiapetta.dev/v/KfyfXHINHWwqZ_Bk"
+                  data-poster-desktop="/videos/outubro_rosa_poster.jpg"
+                  data-poster-mobile="/videos/outubro_rosa_poster_vertical.jpg"
+                >
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     if (typeof bootstrap === 'undefined') {
       return;
     }
 
+    function hydrateLazyImages(scope) {
+      if (!scope) {
+        return;
+      }
+
+      scope.querySelectorAll('img[data-src]').forEach(function(img) {
+        if (!img.getAttribute('src') || img.getAttribute('src').indexOf('data:image/gif') === 0) {
+          img.setAttribute('src', img.getAttribute('data-src'));
+        }
+      });
+    }
+
     const counters = new Map();
+
+    document.querySelectorAll('[id^="section-collapse-"]').forEach(function(collapseEl) {
+      collapseEl.addEventListener('show.bs.collapse', function() {
+        hydrateLazyImages(collapseEl);
+      });
+    });
 
     document.querySelectorAll('.gallery-modal').forEach(function(modalElement) {
       modalElement.addEventListener('shown.bs.modal', function(event) {
         const carouselElement = modalElement.querySelector('.carousel');
+
+        hydrateLazyImages(modalElement);
 
         if (!carouselElement) {
           return;
@@ -461,5 +563,34 @@ foreach ($rawSections as $section) {
         }
       });
     });
+
+    const retornoVideo = document.querySelector('#retorno-atividades-2026 video');
+    const mqMobile = window.matchMedia('(max-width: 767.98px)');
+
+    function applyRetornoPoster(isMobileView) {
+      if (!retornoVideo) {
+        return;
+      }
+
+      const posterDesktop = retornoVideo.getAttribute('data-poster-desktop') || retornoVideo.getAttribute('poster') || '';
+      const posterMobile = retornoVideo.getAttribute('data-poster-mobile') || posterDesktop;
+      const targetPoster = isMobileView ? posterMobile : posterDesktop;
+
+      if (targetPoster && retornoVideo.getAttribute('poster') !== targetPoster) {
+        retornoVideo.setAttribute('poster', targetPoster);
+      }
+    }
+
+    applyRetornoPoster(mqMobile.matches);
+
+    if (typeof mqMobile.addEventListener === 'function') {
+      mqMobile.addEventListener('change', function(event) {
+        applyRetornoPoster(event.matches);
+      });
+    } else if (typeof mqMobile.addListener === 'function') {
+      mqMobile.addListener(function(event) {
+        applyRetornoPoster(event.matches);
+      });
+    }
   });
 </script>

@@ -233,11 +233,11 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 controls
                 preload="metadata"
                 src="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
-                poster="/images/realizacoes/realizacao-1-horizontal.jpg"
+                poster="/images/realizacoes/realizacao-2-horizontal.jpg"
                 data-src-desktop="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
                 data-src-mobile="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
-                data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
+                data-poster-desktop="/images/realizacoes/realizacao-2-horizontal.jpg"
+                data-poster-mobile="/images/realizacoes/realizacao-2-vertical.jpg"
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>
@@ -249,23 +249,27 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
           </div>
         </div>
 
-        <!-- Player 3 -->
-        <div class="col-md-4 d-none">
+        <!-- Card 3: Atividades de Março -->
+        <div class="col-md-4">
           <div class="card h-100 border-0 shadow-sm">
             <div class="realizacoes-player">
-              <video
-                class="realizacoes-video"
-                controls
-                preload="metadata"
-                src=""
-                poster=""
+              <img
+                src="/images/viva-oficinas-de-saude-07-03/DSC_0112.jpg"
+                alt="Viva Oficinas de Saúde"
+                loading="lazy"
               >
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
             </div>
             <div class="card-body">
-              <h3 class="h6 mb-1">Realizações do mês</h3>
-              <p class="text-muted small mb-0">Atualize as versões horizontal e vertical em <code>/videos/realizacao-3-horizontal.mp4</code> e <code>/videos/realizacao-3-vertical.mp4</code>.</p>
+              <h3 class="h6 mb-2">Atividades de Março de 2026</h3>
+              <p class="text-muted small mb-3">Acesse as ações especiais de Março nos Projetos em Execução.</p>
+              <div class="d-grid gap-2">
+                <a href="<?php echo $site_url; ?>/galeria#retorno-atividades-2026" class="btn btn-outline-secondary btn-sm">
+                  Retorno às Atividades 2026
+                </a>
+                <a href="<?php echo $site_url; ?>/galeria#galeria-viva-oficinas-de-saude-07032026" class="btn btn-outline-secondary btn-sm">
+                  Viva Oficinas de Saúde
+                </a>
+              </div>
             </div>
           </div>
         </div>
