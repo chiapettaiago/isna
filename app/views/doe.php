@@ -183,12 +183,8 @@
       <!-- Card 3: Cartão de Crédito ou Débito (Stripe) -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
-          <div class="card-img-top d-flex flex-column align-items-center justify-content-center" style="height:200px; background: linear-gradient(135deg, #635bff 0%, #7c73ff 50%, #a89cff 100%);">
-            <i class="bi bi-credit-card-fill text-white mb-2" style="font-size:3.5rem; opacity:.95;"></i>
-            <div class="d-flex gap-2 mt-1">
-              <i class="bi bi-stripe text-white" style="font-size:1.5rem; opacity:.85;"></i>
-              <span class="text-white fw-semibold small" style="opacity:.85; letter-spacing:.5px;">Pagamento Seguro</span>
-            </div>
+          <div class="card-img-top d-flex align-items-center justify-content-center" style="height:200px; background-color:#fff;">
+            <img src="<?php echo asset('images/stripe-logo-wordmark.svg'); ?>" alt="Logo da Stripe" style="max-width:72%; height:auto; object-fit:contain;">
           </div>
           <div class="card-body">
             <h5 class="card-title">Cartão de Crédito ou Débito</h5>
