@@ -1,5 +1,5 @@
 <?php
-  $mesMural = date('m');
+  $mesMural = '03';
   $anoMural = date('Y');
   $nomesMeses = [
     '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março',
