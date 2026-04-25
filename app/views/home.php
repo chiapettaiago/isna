@@ -15,73 +15,6 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
     </div>
   </section>
 
-  <!-- Chamada para o Mural Informativo do Mês -->
-  <?php
-    $mesMural = '03';
-    $anoMural = date('Y');
-    $nomesMeses = [
-      '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março',
-      '04' => 'Abril',   '05' => 'Maio',      '06' => 'Junho',
-      '07' => 'Julho',   '08' => 'Agosto',    '09' => 'Setembro',
-      '10' => 'Outubro', '11' => 'Novembro',  '12' => 'Dezembro',
-    ];
-    $nomeMesMural = $nomesMeses[$mesMural] ?? 'Mês';
-
-    // Verifica se há imagens no mural para exibir ou não o banner
-    $muralDir  = $_SERVER['DOCUMENT_ROOT'] . '/images/mural/';
-    $muralExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    $muralImgs = [];
-    if (is_dir($muralDir)) {
-      foreach (scandir($muralDir) as $f) {
-        $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-        if (in_array($ext, $muralExts)) {
-          $muralImgs[] = '/images/mural/' . $f;
-        }
-      }
-      sort($muralImgs);
-    }
-  ?>
-  <?php if (!empty($muralImgs)): ?>
-  <section id="mural-informativo" class="py-4" style="background-color: #fff8e1;">
-    <div class="container">
-      <div class="row align-items-center g-4">
-
-        <!-- Miniatura da primeira imagem do mural -->
-        <div class="col-md-3 text-center">
-          <a href="<?php echo $site_url; ?>/mural" title="Ver mural completo">
-            <img
-              src="<?php echo htmlspecialchars($muralImgs[0], ENT_QUOTES, 'UTF-8'); ?>"
-              alt="Prévia do mural de <?php echo $nomeMesMural . ' de ' . $anoMural; ?>"
-              class="img-fluid rounded shadow-sm"
-              style="max-height: 160px; object-fit: contain; background: #f5f5f5;"
-            >
-          </a>
-        </div>
-
-        <!-- Texto de chamada -->
-        <div class="col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-1">
-            <i class="bi bi-journal-richtext fs-4 text-warning"></i>
-            <h2 class="h4 mb-0">Mural Informativo de <?php echo $nomeMesMural; ?></h2>
-          </div>
-          <p class="text-muted mb-2">
-            Há <?php echo count($muralImgs); ?> aviso<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> publicado<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> este mês.
-            Fique por dentro das novidades do instituto.
-          </p>
-        </div>
-
-        <!-- Botão CTA -->
-        <div class="col-md-3 text-md-end text-center">
-          <a href="<?php echo $site_url; ?>/mural" class="btn btn-warning">
-            <i class="bi bi-journal-richtext me-1"></i> Ver mural completo
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-  <?php endif; ?>
-
 <?php if (!empty($latestPosts)): ?>
   <section id="blog" class="py-5 bg-white">
     <div class="container">
@@ -263,9 +196,6 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
               <h3 class="h6 mb-2">Atividades de Março de 2026</h3>
               <p class="text-muted small mb-3">Acesse as ações especiais de Março nos Projetos em Execução.</p>
               <div class="d-grid gap-2">
-                <a href="<?php echo $site_url; ?>/galeria#retorno-atividades-2026" class="btn btn-outline-secondary btn-sm">
-                  Retorno às Atividades 2026
-                </a>
                 <a href="<?php echo $site_url; ?>/galeria#galeria-viva-oficinas-de-saude-07032026" class="btn btn-outline-secondary btn-sm">
                   Viva Oficinas de Saúde
                 </a>
