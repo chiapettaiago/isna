@@ -7,9 +7,12 @@ if (!auth_user_is_admin()) {
 $pages = CmsModel::registeredBlocks();
 $pageOptions = CmsModel::pageOptions();
 $customSections = CmsModel::customSections();
+$mediaItems = CmsModel::mediaItems();
+$mediaGroups = CmsModel::mediaGroups();
 $token = AuthService::generateCsrfToken('cms_save_blocks');
 $addSectionToken = AuthService::generateCsrfToken('cms_add_section');
 $deleteSectionToken = AuthService::generateCsrfToken('cms_delete_section');
+$uploadMediaToken = AuthService::generateCsrfToken('cms_upload_media');
 $oldSectionPage = AuthService::flashPullValue('cms_section_page_slug', 'home');
 $oldSectionTitle = AuthService::flashPullValue('cms_section_title', '');
 $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
@@ -55,11 +58,29 @@ $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
                       $type = $block['type'] ?? 'text';
                       $value = (string)($block['value'] ?? '');
                     ?>
-                    <div class="col-12<?php echo in_array($type, ['textarea', 'html'], true) ? '' : ' col-lg-6'; ?>">
+                    <div class="col-12<?php echo in_array($type, ['textarea', 'html', 'image'], true) ? '' : ' col-lg-6'; ?>">
                       <label class="form-label fw-semibold" for="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>
                       </label>
-                      <?php if (in_array($type, ['textarea', 'html'], true)): ?>
+                      <?php if ($type === 'image'): ?>
+                        <?php
+                          $currentImage = CmsModel::isMediaPathAllowed($value) ? $value : (string)($block['default'] ?? '/images/imagem.jpg');
+                          $currentImageUrl = $site_url . '/' . ltrim($currentImage, '/');
+                        ?>
+                        <input type="hidden" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-value>
+                        <div class="cms-media-field" data-cms-media-field>
+                          <button class="cms-media-current" type="button" data-bs-toggle="modal" data-bs-target="#cmsMediaModal" data-cms-media-trigger data-cms-media-field-id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>"<?php echo empty($mediaItems) ? ' disabled' : ''; ?>>
+                            <img src="<?php echo htmlspecialchars($currentImageUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Imagem selecionada para <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-preview>
+                            <span data-cms-media-current-label><?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?></span>
+                            <i class="bi bi-pencil-square ms-auto" aria-hidden="true"></i>
+                          </button>
+                          <?php if (empty($mediaItems)): ?>
+                            <p class="text-muted small mb-0 mt-2">Nenhuma imagem disponível. Envie uma imagem na biblioteca acima.</p>
+                          <?php else: ?>
+                            <div class="form-text">Clique na imagem para escolher outra na biblioteca.</div>
+                          <?php endif; ?>
+                        </div>
+                      <?php elseif (in_array($type, ['textarea', 'html'], true)): ?>
                         <textarea class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" rows="<?php echo $type === 'html' ? 8 : 4; ?>"><?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
                       <?php else: ?>
                         <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo $type === 'url' ? 'url' : 'text'; ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
@@ -168,3 +189,120 @@ $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
     </div>
   </div>
 </section>
+
+<div class="modal fade" id="cmsMediaModal" tabindex="-1" aria-labelledby="cmsMediaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title h5" id="cmsMediaModalLabel">Selecionar imagem</h2>
+          <p class="text-muted small mb-0">Imagens organizadas pelas pastas dentro de /images.</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cms-media-upload border rounded-3 p-3 mb-4 bg-light">
+          <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+            <div>
+              <h3 class="h6 fw-semibold mb-1">Enviar nova imagem</h3>
+              <p class="text-muted small mb-0">A imagem enviada ficará disponível na pasta CMS desta biblioteca.</p>
+            </div>
+            <form class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center" method="post" action="<?php echo $site_url; ?>/gestao-cms" enctype="multipart/form-data">
+              <input type="hidden" name="action" value="upload_media">
+              <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($uploadMediaToken, ENT_QUOTES, 'UTF-8'); ?>">
+              <input class="form-control" type="file" name="cms_media" accept="image/jpeg,image/png,image/webp,image/gif" required>
+              <button class="btn btn-success flex-shrink-0" type="submit">
+                <i class="bi bi-upload me-1"></i> Enviar imagem
+              </button>
+            </form>
+          </div>
+        </div>
+        <?php if (empty($mediaGroups)): ?>
+          <p class="text-muted mb-0">Nenhuma imagem disponível. Envie uma imagem acima.</p>
+        <?php else: ?>
+          <div class="accordion cms-media-modal-accordion" id="cmsMediaGroups">
+            <?php foreach ($mediaGroups as $groupIndex => $group): ?>
+              <?php
+                $groupId = 'cms-media-group-' . $groupIndex;
+                $items = isset($group['items']) && is_array($group['items']) ? $group['items'] : [];
+              ?>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button<?php echo $groupIndex === 0 ? '' : ' collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo htmlspecialchars($groupId, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="<?php echo $groupIndex === 0 ? 'true' : 'false'; ?>" aria-controls="<?php echo htmlspecialchars($groupId, ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php echo htmlspecialchars((string)($group['label'] ?? 'Imagens'), ENT_QUOTES, 'UTF-8'); ?>
+                    <span class="badge text-bg-light ms-2"><?php echo count($items); ?></span>
+                  </button>
+                </h3>
+                <div id="<?php echo htmlspecialchars($groupId, ENT_QUOTES, 'UTF-8'); ?>" class="accordion-collapse collapse<?php echo $groupIndex === 0 ? ' show' : ''; ?>" data-bs-parent="#cmsMediaGroups">
+                  <div class="accordion-body">
+                    <div class="cms-media-grid">
+                      <?php foreach ($items as $media): ?>
+                        <?php
+                          $mediaPath = (string)($media['path'] ?? '');
+                          if ($mediaPath === '') continue;
+                          $mediaUrl = $site_url . '/' . ltrim($mediaPath, '/');
+                        ?>
+                        <button class="cms-media-option" type="button" data-cms-media-select data-cms-media-path="<?php echo htmlspecialchars($mediaPath, ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-url="<?php echo htmlspecialchars($mediaUrl, ENT_QUOTES, 'UTF-8'); ?>">
+                          <img src="<?php echo htmlspecialchars($mediaUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars((string)($media['label'] ?? 'Imagem CMS'), ENT_QUOTES, 'UTF-8'); ?>">
+                          <span><?php echo htmlspecialchars((string)($media['label'] ?? basename($mediaPath)), ENT_QUOTES, 'UTF-8'); ?></span>
+                        </button>
+                      <?php endforeach; ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var cmsActiveMediaField = null;
+var cmsMediaModal = document.getElementById('cmsMediaModal');
+
+document.querySelectorAll('[data-cms-media-trigger]').forEach(function (trigger) {
+  trigger.addEventListener('click', function () {
+    var fieldId = trigger.getAttribute('data-cms-media-field-id');
+    var input = fieldId ? document.getElementById(fieldId) : null;
+    cmsActiveMediaField = input ? {
+      input: input,
+      wrapper: trigger.closest('[data-cms-media-field]'),
+      trigger: trigger
+    } : null;
+  });
+});
+
+if (cmsMediaModal) {
+  cmsMediaModal.addEventListener('shown.bs.modal', function () {
+    var currentValue = cmsActiveMediaField && cmsActiveMediaField.input ? cmsActiveMediaField.input.value : '';
+    document.querySelectorAll('[data-cms-media-select]').forEach(function (button) {
+      button.classList.toggle('active', button.getAttribute('data-cms-media-path') === currentValue);
+    });
+  });
+}
+
+document.querySelectorAll('[data-cms-media-select]').forEach(function (button) {
+  button.addEventListener('click', function () {
+    if (!cmsActiveMediaField || !cmsActiveMediaField.input || !cmsActiveMediaField.wrapper) return;
+
+    var mediaPath = button.getAttribute('data-cms-media-path') || '';
+    var mediaUrl = button.getAttribute('data-cms-media-url') || '';
+    var preview = cmsActiveMediaField.wrapper.querySelector('[data-cms-media-preview]');
+    var label = cmsActiveMediaField.wrapper.querySelector('[data-cms-media-current-label]');
+
+    cmsActiveMediaField.input.value = mediaPath;
+    if (preview && mediaUrl) preview.src = mediaUrl;
+    if (label) label.textContent = mediaPath;
+
+    document.querySelectorAll('[data-cms-media-select]').forEach(function (option) {
+      option.classList.toggle('active', option === button);
+    });
+
+    var modal = window.bootstrap ? bootstrap.Modal.getInstance(cmsMediaModal) : null;
+    if (modal) modal.hide();
+  });
+});
+</script>

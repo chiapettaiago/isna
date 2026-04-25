@@ -13,7 +13,7 @@
       </p>
       <!-- Imagem dos 17 ODS -->
       <div class="text-center my-4">
-        <img src="/images/ods.jpg" class="img-fluid" alt="17 Objetivos de Desenvolvimento Sustentável">
+        <img src="<?php echo cms_attr('linha-atuacao', 'ods.image', '/images/ods.jpg'); ?>" class="img-fluid" alt="17 Objetivos de Desenvolvimento Sustentável">
       </div>
     </div>
   </section>

@@ -125,7 +125,7 @@
             <!-- Cartão Jiu-Jitsu -->
             <div class="col-md-4">
               <div class="card h-100 shadow hover-card">
-                <img src="/images/projetos-realizados/1.jpg" class="card-img-top galeria-img" alt="Projeto Jiu-Jitsu" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="0">
+                <img src="<?php echo cms_attr('transparencia', 'projeto1.image', '/images/projetos-realizados/1.jpg'); ?>" class="card-img-top galeria-img" alt="Projeto Jiu-Jitsu" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="0">
                 <div class="card-body">
                   <h5 class="card-title">Jiu-Jitsu</h5>
                   <p class="card-text">Projeto que promove a prática do Jiu-Jitsu como ferramenta de desenvolvimento pessoal e social.</p>
@@ -136,7 +136,7 @@
             <div class="col-md-4">
               <div class="card h-100 shadow hover-card">
                 <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDcyMDk5MzA3MDExNDY1/?igshid=19q1pxh7arujv&story_media_id=2059748744879228230_9448633282#" target="_blank" class="text-decoration-none">
-                  <img src="/images/projetos-realizados/2.jpg" class="card-img-top galeria-img" alt="Projeto Notas Musicais" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="1">
+                  <img src="<?php echo cms_attr('transparencia', 'projeto2.image', '/images/projetos-realizados/2.jpg'); ?>" class="card-img-top galeria-img" alt="Projeto Notas Musicais" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="1">
                   <div class="card-body">
                     <h5 class="card-title">Notas Musicais</h5>
                     <p class="card-text">Iniciativa que utiliza a música como instrumento de transformação social e desenvolvimento cultural.</p>
@@ -147,7 +147,7 @@
             <!-- Cartão Nosso Natal -->
             <div class="col-md-4">
               <div class="card h-100 shadow hover-card">
-                <img src="/images/projetos-realizados/3.jpg" class="card-img-top galeria-img" alt="Projeto Nosso Natal" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="2">
+                <img src="<?php echo cms_attr('transparencia', 'projeto3.image', '/images/projetos-realizados/3.jpg'); ?>" class="card-img-top galeria-img" alt="Projeto Nosso Natal" style="height: 200px; object-fit: cover; cursor: pointer;" data-bs-target="#imageModal3" data-index="2">
                 <div class="card-body">
                   <h5 class="card-title">Nosso Natal</h5>
                   <p class="card-text">Projeto que leva alegria e esperança através de ações solidárias durante o período natalino.</p>
@@ -173,21 +173,21 @@
             <div class="carousel-inner">
               <!-- Slides do carrossel -->
               <div class="carousel-item active">
-                <img src="/images/projetos-realizados/1.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 1">
+                <img src="<?php echo cms_attr('transparencia', 'projeto1.image', '/images/projetos-realizados/1.jpg'); ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 1">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                   <h5>Projetos Realizados 1</h5>
                   <p>Descrição da imagem 1</p>
                 </div>
               </div>
               <div class="carousel-item">
-                <img src="/images/projetos-realizados/2.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 2">
+                <img src="<?php echo cms_attr('transparencia', 'projeto2.image', '/images/projetos-realizados/2.jpg'); ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 2">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                   <h5>Projetos Realizados 2</h5>
                   <p>Descrição da imagem 2</p>
                 </div>
               </div>
               <div class="carousel-item">
-                <img src="/images/projetos-realizados/3.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 3">
+                <img src="<?php echo cms_attr('transparencia', 'projeto3.image', '/images/projetos-realizados/3.jpg'); ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados 3">
                 <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                   <h5>Projetos Realizados 3</h5>
                   <p>Descrição da imagem 3</p>

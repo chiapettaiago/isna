@@ -7,6 +7,9 @@ require_once __DIR__ . '/../services/AuthService.php';
 class CmsModel
 {
     private static ?array $cache = null;
+    private const MEDIA_PUBLIC_BASE = '/images/cms';
+    private const MEDIA_ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    private const MEDIA_SELECTABLE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico'];
 
     public static function configPath(): string
     {
@@ -191,6 +194,125 @@ ON DUPLICATE KEY UPDATE
         }
 
         return $out;
+    }
+
+    public static function mediaDirectory(): string
+    {
+        return __DIR__ . '/../../images/cms';
+    }
+
+    public static function mediaPublicBase(): string
+    {
+        return self::MEDIA_PUBLIC_BASE;
+    }
+
+    public static function ensureMediaDirectory(): bool
+    {
+        $dir = self::mediaDirectory();
+        if (is_dir($dir)) return is_writable($dir);
+        return @mkdir($dir, 0775, true);
+    }
+
+    public static function allowedMediaExtensions(): array
+    {
+        return self::MEDIA_ALLOWED_EXTENSIONS;
+    }
+
+    public static function mediaItems(): array
+    {
+        $items = [];
+        $root = realpath(__DIR__ . '/../..');
+
+        $addItem = static function (string $path) use (&$items, $root): void {
+            $path = '/' . ltrim(trim($path), '/');
+            $absolute = $root ? $root . $path : null;
+            if (!$absolute || !is_file($absolute)) return;
+            $ext = strtolower(pathinfo($absolute, PATHINFO_EXTENSION));
+            if (!in_array($ext, self::MEDIA_SELECTABLE_EXTENSIONS, true)) return;
+            $items[$path] = [
+                'path' => $path,
+                'label' => basename($path),
+                'updated_at' => filemtime($absolute) ?: 0,
+            ];
+        };
+
+        $dir = __DIR__ . '/../../images';
+        if (is_dir($dir)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS)
+            );
+
+            foreach ($iterator as $fileInfo) {
+                if (!$fileInfo instanceof SplFileInfo || !$fileInfo->isFile()) continue;
+                $filename = $fileInfo->getFilename();
+                if ($filename === '.gitkeep' || $filename === 'index.html') continue;
+                $relativePath = str_replace('\\', '/', substr($fileInfo->getPathname(), strlen($root ?: '') + 1));
+                if ($relativePath !== '') {
+                    $addItem('/' . $relativePath);
+                }
+            }
+        }
+
+        uasort($items, static function (array $a, array $b): int {
+            return ($b['updated_at'] <=> $a['updated_at']) ?: strcmp($a['label'], $b['label']);
+        });
+
+        return array_values($items);
+    }
+
+    public static function mediaGroups(): array
+    {
+        $groups = [];
+
+        foreach (self::mediaItems() as $item) {
+            $path = isset($item['path']) ? (string)$item['path'] : '';
+            if ($path === '') continue;
+
+            $dir = trim(dirname($path), '/');
+            $groupKey = $dir === 'images' ? 'images' : $dir;
+            $groupLabel = $groupKey === 'images'
+                ? 'Imagens principais'
+                : preg_replace('/^images\//', '', $groupKey);
+
+            $groupLabel = str_replace(['-', '_'], ' ', $groupLabel);
+            $groupLabel = function_exists('mb_convert_case')
+                ? mb_convert_case($groupLabel, MB_CASE_TITLE, 'UTF-8')
+                : ucwords($groupLabel);
+
+            if (!isset($groups[$groupKey])) {
+                $groups[$groupKey] = [
+                    'key' => $groupKey,
+                    'label' => $groupLabel,
+                    'items' => [],
+                ];
+            }
+
+            $groups[$groupKey]['items'][] = $item;
+        }
+
+        uasort($groups, static function (array $a, array $b): int {
+            if ($a['key'] === 'images') return -1;
+            if ($b['key'] === 'images') return 1;
+            if ($a['key'] === 'images/cms') return -1;
+            if ($b['key'] === 'images/cms') return 1;
+            return strcmp($a['label'], $b['label']);
+        });
+
+        return array_values($groups);
+    }
+
+    public static function isMediaPathAllowed(string $path): bool
+    {
+        $path = '/' . ltrim(trim($path), '/');
+
+        $root = realpath(__DIR__ . '/../..');
+        $absolute = $root ? realpath($root . $path) : false;
+        $imagesRoot = $root ? realpath($root . '/images') : false;
+        if (!$absolute || !$imagesRoot) return false;
+        if ($absolute !== $imagesRoot && strpos($absolute, $imagesRoot . DIRECTORY_SEPARATOR) !== 0) return false;
+
+        $ext = strtolower(pathinfo($absolute, PATHINFO_EXTENSION));
+        return is_file($absolute) && in_array($ext, self::MEDIA_SELECTABLE_EXTENSIONS, true);
     }
 
     public static function pageOptions(): array

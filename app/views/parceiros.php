@@ -82,7 +82,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/coca-cola.png" alt="Coca-Cola Brasil" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'coca_cola.image', '/images/parceiros/coca-cola.png'); ?>" alt="Coca-Cola Brasil" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Coca-Cola Brasil</h5>
@@ -95,7 +95,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/petrobras.png" alt="Petrobras" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'petrobras.image', '/images/parceiros/petrobras.png'); ?>" alt="Petrobras" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Petrobras</h5>
@@ -108,7 +108,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/google.png" alt="Google" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'google.image', '/images/parceiros/google.png'); ?>" alt="Google" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Google</h5>
@@ -121,7 +121,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/prefeitura-itaborai.png" alt="Prefeitura de Itaboraí" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'prefeitura.image', '/images/parceiros/prefeitura-itaborai.png'); ?>" alt="Prefeitura de Itaboraí" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Prefeitura de Itaboraí</h5>
@@ -134,7 +134,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/governo-rj.png" alt="Governo do Estado do RJ" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'governo_rj.image', '/images/parceiros/governo-rj.png'); ?>" alt="Governo do Estado do RJ" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Governo do Estado do RJ</h5>
@@ -147,7 +147,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/banco-de-alimentos.png" alt="Banco de Alimentos" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'banco_alimentos.image', '/images/parceiros/banco-de-alimentos.png'); ?>" alt="Banco de Alimentos" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Banco de Alimentos</h5>
@@ -160,7 +160,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/mlx-gases.png" alt="MLX Gases" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'mlx_gases.image', '/images/parceiros/mlx-gases.png'); ?>" alt="MLX Gases" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">MLX Gases</h5>
@@ -173,7 +173,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/agencia-do-bem.jpg" alt="Agência do Bem" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'agencia_bem.image', '/images/parceiros/agencia-do-bem.jpg'); ?>" alt="Agência do Bem" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Agência do Bem</h5>
@@ -198,7 +198,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/af-fitness.png" alt="AF Fitness - Centro de Treinamento" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'bairro.af_fitness.image', '/images/parceiros/af-fitness.png'); ?>" alt="AF Fitness - Centro de Treinamento" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">AF Fitness</h5>
@@ -211,7 +211,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/elvis-hernandez.png" alt="Centro de Treinamento Elvis Hernandez" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'bairro.elvis.image', '/images/parceiros/elvis-hernandez.png'); ?>" alt="Centro de Treinamento Elvis Hernandez" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">CT Elvis Hernandez</h5>
@@ -224,7 +224,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/alem-do-disfarce.png" alt="Além do Disfarce - Barber Shop" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'bairro.alem.image', '/images/parceiros/alem-do-disfarce.png'); ?>" alt="Além do Disfarce - Barber Shop" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Além do Disfarce</h5>
@@ -237,7 +237,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 border-0 shadow-sm parceiro-card">
           <div class="parceiro-logo-wrapper">
-            <img src="/images/parceiros/mercadinho-felpao.png" alt="Mercadinho Felpão" class="img-fluid">
+            <img src="<?php echo cms_attr('parceiros', 'bairro.felpao.image', '/images/parceiros/mercadinho-felpao.png'); ?>" alt="Mercadinho Felpão" class="img-fluid">
           </div>
           <div class="card-body text-center py-3">
             <h5 class="card-title h6 mb-1">Mercadinho Felpão</h5>

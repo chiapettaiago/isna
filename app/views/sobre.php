@@ -33,7 +33,7 @@ if (is_readable($jsonFile)) {
   }
 }
 ?>
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px; background-size: cover; background-position: center; min-height: 220px;">
+  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('sobre', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px; background-size: cover; background-position: center; min-height: 220px;">
     <div class="container text-center">
       <h1 class="display-4">Sobre o Site</h1>
       <p class="lead">Conheça os recursos, funcionalidades e a proposta do nosso portal</p>

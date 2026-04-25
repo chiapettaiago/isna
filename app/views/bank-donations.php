@@ -41,7 +41,7 @@
     <!-- Caixa Econômica Federal -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/caixa.png'); ?>" class="card-img-top" alt="Caixa Econômica Federal">
+        <img src="<?php echo cms_attr('doacoes-bancarias', 'caixa.image', '/images/caixa.png'); ?>" class="card-img-top" alt="Caixa Econômica Federal">
         <div class="card-body text-center">
           <h5 class="card-title">Caixa Econômica Federal</h5>
           <ul class="list-unstyled">
@@ -56,7 +56,7 @@
     <!-- Bradesco -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/bradesco.png'); ?>" class="card-img-top" alt="Bradesco">
+        <img src="<?php echo cms_attr('doacoes-bancarias', 'bradesco.image', '/images/bradesco.png'); ?>" class="card-img-top" alt="Bradesco">
         <div class="card-body text-center">
           <h5 class="card-title">Bradesco</h5>
           <ul class="list-unstyled">
@@ -70,7 +70,7 @@
     <!-- Santander -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/santander.jpg'); ?>" class="card-img-top" alt="Santander">
+        <img src="<?php echo cms_attr('doacoes-bancarias', 'santander.image', '/images/santander.jpg'); ?>" class="card-img-top" alt="Santander">
         <div class="card-body text-center">
           <h5 class="card-title">Santander</h5>
           <ul class="list-unstyled">
@@ -84,7 +84,7 @@
     <!-- Banco do Brasil -->
     <div class="col-md-4 mb-4">
       <div class="card shadow h-100">
-        <img src="<?php echo asset('images/banco-do-brasil.png'); ?>" class="card-img-top" alt="Banco do Brasil">
+        <img src="<?php echo cms_attr('doacoes-bancarias', 'bb.image', '/images/banco-do-brasil.png'); ?>" class="card-img-top" alt="Banco do Brasil">
         <div class="card-body text-center">
           <h5 class="card-title">Banco do Brasil</h5>
           <ul class="list-unstyled">

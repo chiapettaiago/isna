@@ -96,7 +96,12 @@ class GalleryController extends Controller
             }
 
             if ($src === '') {
-                auth_flash_message('error', 'Informe o caminho ou URL da imagem.');
+                auth_flash_message('error', 'Escolha uma imagem da biblioteca.');
+                auth_redirect('gestao-galeria');
+            }
+
+            if (!CmsModel::isMediaPathAllowed($src)) {
+                auth_flash_message('error', 'A imagem selecionada não está disponível na biblioteca do CMS.');
                 auth_redirect('gestao-galeria');
             }
 

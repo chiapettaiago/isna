@@ -375,7 +375,7 @@ foreach ($rawSections as $section) {
 
 </style>
 
-<section class="hero bg-image text-white d-flex align-items-center project-gallery-hero" style="background-image: url('<?php echo htmlspecialchars($hero['background'], ENT_QUOTES, 'UTF-8'); ?>'); --gallery-hero-height: <?php echo (int) $hero['height']; ?>px; background-size: cover; background-position: center;">
+<section class="hero bg-image text-white d-flex align-items-center project-gallery-hero" style="background-image: url('<?php echo cms_attr('galeria', 'hero.image', isset($hero['background']) ? (string)$hero['background'] : '/images/imagem.jpg'); ?>'); --gallery-hero-height: <?php echo (int) $hero['height']; ?>px; background-size: cover; background-position: center;">
   <div class="container text-center">
     <h1 class="display-4"><?php echo htmlspecialchars($hero['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
   </div>

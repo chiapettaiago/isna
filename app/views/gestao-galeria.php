@@ -6,6 +6,7 @@ if (!\AuthService::userIsAdmin()) {
 
 $config = \GalleryModel::load();
 $sections = $config['sections'];
+$mediaItems = \CmsModel::mediaItems();
 
 $gridSections = array_values(array_filter($sections, static function ($section) {
   return isset($section['type']) && $section['type'] === 'grid';
@@ -117,16 +118,32 @@ $backgroundOptions = [
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label" for="item_src">Imagem (URL ou caminho)</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="item_src"
-                    name="src"
-                    value="<?php echo htmlspecialchars($oldItemSrc, ENT_QUOTES, 'UTF-8'); ?>"
-                    placeholder="Ex.: /images/projetos/nova-foto.jpg"
-                    required
-                  >
+                  <label class="form-label">Imagem</label>
+                  <?php if (empty($mediaItems)): ?>
+                    <div class="alert alert-warning" role="alert">
+                      Envie imagens na biblioteca do CMS antes de adicionar itens à galeria.
+                    </div>
+                  <?php else: ?>
+                    <div class="cms-media-picker" data-cms-media-picker>
+                      <div class="cms-media-grid">
+                        <?php foreach ($mediaItems as $mediaIndex => $media): ?>
+                          <?php
+                            $mediaPath = (string)($media['path'] ?? '');
+                            if ($mediaPath === '') continue;
+                            $mediaUrl = $site_url . '/' . ltrim($mediaPath, '/');
+                            $radioId = 'gallery-item-media-' . $mediaIndex;
+                            $checked = $oldItemSrc === $mediaPath || ($oldItemSrc === '' && $mediaIndex === 0);
+                          ?>
+                          <label class="cms-media-option<?php echo $checked ? ' active' : ''; ?>" for="<?php echo htmlspecialchars($radioId, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input id="<?php echo htmlspecialchars($radioId, ENT_QUOTES, 'UTF-8'); ?>" type="radio" name="src" value="<?php echo htmlspecialchars($mediaPath, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $checked ? ' checked' : ''; ?> data-cms-media-radio required>
+                            <img src="<?php echo htmlspecialchars($mediaUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars((string)($media['label'] ?? 'Imagem'), ENT_QUOTES, 'UTF-8'); ?>">
+                            <span><?php echo htmlspecialchars((string)($media['label'] ?? basename($mediaPath)), ENT_QUOTES, 'UTF-8'); ?></span>
+                          </label>
+                        <?php endforeach; ?>
+                      </div>
+                    </div>
+                  <?php endif; ?>
+                  <div class="form-text">Para usar uma imagem nova, envie primeiro em CMS do site &gt; Biblioteca de imagens.</div>
                 </div>
 
                 <div class="mb-3">
@@ -153,7 +170,7 @@ $backgroundOptions = [
                   >
                 </div>
 
-                <button class="btn btn-success" type="submit">
+                <button class="btn btn-success" type="submit"<?php echo empty($mediaItems) ? ' disabled' : ''; ?>>
                   <i class="bi bi-plus-circle-fill me-1"></i> Adicionar item
                 </button>
               </form>
@@ -207,3 +224,15 @@ $backgroundOptions = [
     </div>
   </div>
 </section>
+
+<script>
+document.querySelectorAll('[data-cms-media-picker]').forEach(function (picker) {
+  picker.querySelectorAll('[data-cms-media-radio]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      picker.querySelectorAll('.cms-media-option').forEach(function (option) {
+        option.classList.toggle('active', option.contains(radio));
+      });
+    });
+  });
+});
+</script>

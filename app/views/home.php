@@ -1,6 +1,9 @@
 <?php
 $blogData = blog_load();
 $latestPosts = array_slice($blogData['posts'], 0, 3);
+$homeGalleryImage1 = cms_attr('home', 'galeria.image1', '/images/projeto-escola-musica-e-cidadania/1.jpg');
+$homeGalleryImage2 = cms_attr('home', 'galeria.image2', '/images/projeto-notas-culturais/1.jpg');
+$homeGalleryImage3 = cms_attr('home', 'galeria.image3', '/images/projetos-realizados/1.jpg');
 ?>
 
 <!-- Seção Hero -->
@@ -141,11 +144,11 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 controls
                 preload="metadata"
                 src="https://api.chiapetta.dev/v/boKogI2kIyY6fieR"
-                poster="/images/realizacoes/realizacao-1-horizontal.jpg"
+                poster="<?php echo cms_attr('home', 'realizacoes.video1.poster_desktop', '/images/realizacoes/realizacao-1-horizontal.jpg'); ?>"
                 data-src-desktop="https://api.chiapetta.dev/v/boKogI2kIyY6fieR"
                 data-src-mobile="https://api.chiapetta.dev/v/DU_q-YUklTb57i2Y"
-                data-poster-desktop="/images/realizacoes/realizacao-1-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-1-vertical.jpg"
+                data-poster-desktop="<?php echo cms_attr('home', 'realizacoes.video1.poster_desktop', '/images/realizacoes/realizacao-1-horizontal.jpg'); ?>"
+                data-poster-mobile="<?php echo cms_attr('home', 'realizacoes.video1.poster_mobile', '/images/realizacoes/realizacao-1-vertical.jpg'); ?>"
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>
@@ -166,11 +169,11 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
                 controls
                 preload="metadata"
                 src="https://api.chiapetta.dev/v/S3jJpk0G114IeNn5"
-                poster="/images/realizacoes/realizacao-2-horizontal.jpg"
+                poster="<?php echo cms_attr('home', 'realizacoes.video2.poster_desktop', '/images/realizacoes/realizacao-2-horizontal.jpg'); ?>"
                 data-src-desktop="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
                 data-src-mobile="https://api.chiapetta.dev/v/h46j8cKD6bXOn8Xp"
-                data-poster-desktop="/images/realizacoes/realizacao-2-horizontal.jpg"
-                data-poster-mobile="/images/realizacoes/realizacao-2-vertical.jpg"
+                data-poster-desktop="<?php echo cms_attr('home', 'realizacoes.video2.poster_desktop', '/images/realizacoes/realizacao-2-horizontal.jpg'); ?>"
+                data-poster-mobile="<?php echo cms_attr('home', 'realizacoes.video2.poster_mobile', '/images/realizacoes/realizacao-2-vertical.jpg'); ?>"
               >
                 Seu navegador não suporta o elemento de vídeo.
               </video>
@@ -187,7 +190,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
           <div class="card h-100 border-0 shadow-sm">
             <div class="realizacoes-player">
               <img
-                src="/images/viva-oficinas-de-saude-07-03/DSC_0112.jpg"
+                src="<?php echo cms_attr('home', 'realizacoes.card3.image', '/images/viva-oficinas-de-saude-07-03/DSC_0112.jpg'); ?>"
                 alt="Viva Oficinas de Saúde"
                 loading="lazy"
               >
@@ -222,7 +225,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       <!-- Imagem 1: Projeto de Escola Música e Cidadania -->
       <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
-          <img src="/images/projeto-escola-musica-e-cidadania/1.jpg"
+          <img src="<?php echo $homeGalleryImage1; ?>"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
                alt="Projeto Escola Música e Cidadania"
                style="object-fit: cover; cursor: pointer;"
@@ -234,7 +237,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       <!-- Imagem 2: Projeto Notas Culturais -->
       <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
-          <img src="/images/projeto-notas-culturais/1.jpg"
+          <img src="<?php echo $homeGalleryImage2; ?>"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
                alt="Projeto Notas Culturais"
                style="object-fit: cover; cursor: pointer;"
@@ -246,7 +249,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       <!-- Imagem 3: Projetos Realizados -->
       <div class="col-6 col-md-4">
         <div class="ratio ratio-1x1">
-          <img src="/images/projetos-realizados/1.jpg"
+          <img src="<?php echo $homeGalleryImage3; ?>"
                class="w-100 h-100 rounded shadow-sm galeria-home-img"
                alt="Projetos Realizados"
                style="object-fit: cover; cursor: pointer;"
@@ -270,19 +273,19 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         <div id="carouselGaleriaHome" class="carousel slide carousel-fade" data-bs-ride="false" data-bs-touch="true">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="/images/projeto-escola-musica-e-cidadania/1.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projeto Escola Música e Cidadania">
+              <img src="<?php echo $homeGalleryImage1; ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projeto Escola Música e Cidadania">
               <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                 <h5>Projeto Escola Música e Cidadania</h5>
               </div>
             </div>
             <div class="carousel-item">
-              <img src="/images/projeto-notas-culturais/1.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projeto Notas Culturais">
+              <img src="<?php echo $homeGalleryImage2; ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projeto Notas Culturais">
               <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                 <h5>Projeto Notas Culturais</h5>
               </div>
             </div>
             <div class="carousel-item">
-              <img src="/images/projetos-realizados/1.jpg" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados">
+              <img src="<?php echo $homeGalleryImage3; ?>" class="d-block mx-auto img-fluid carousel-img" alt="Projetos Realizados">
               <div class="carousel-caption bg-dark bg-opacity-50 rounded px-3 py-2 d-block">
                 <h5>Projetos Realizados</h5>
               </div>
@@ -314,7 +317,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         <div class="card h-100 border-0 shadow-sm text-center">
           <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
             <div class="parceiro-logo-container mb-3">
-              <img src="/images/parceiros/af-fitness.png" 
+              <img src="<?php echo cms_attr('home', 'parceiros_bairro.af_fitness.image', '/images/parceiros/af-fitness.png'); ?>" 
                    class="img-fluid parceiro-logo" 
                    alt="AF Fitness - Centro de Treinamento"
                    style="max-height: 120px; object-fit: contain;">
@@ -330,7 +333,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         <div class="card h-100 border-0 shadow-sm text-center">
           <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
             <div class="parceiro-logo-container mb-3">
-              <img src="/images/parceiros/elvis-hernandez.png" 
+              <img src="<?php echo cms_attr('home', 'parceiros_bairro.elvis.image', '/images/parceiros/elvis-hernandez.png'); ?>" 
                    class="img-fluid parceiro-logo" 
                    alt="Centro de Treinamento Elvis Hernandez"
                    style="max-height: 120px; object-fit: contain;">
@@ -346,7 +349,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         <div class="card h-100 border-0 shadow-sm text-center">
           <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
             <div class="parceiro-logo-container mb-3">
-              <img src="/images/parceiros/alem-do-disfarce.png" 
+              <img src="<?php echo cms_attr('home', 'parceiros_bairro.alem.image', '/images/parceiros/alem-do-disfarce.png'); ?>" 
                    class="img-fluid parceiro-logo" 
                    alt="Além do Disfarce - Barber Shop"
                    style="max-height: 120px; object-fit: contain;">
@@ -362,7 +365,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
         <div class="card h-100 border-0 shadow-sm text-center">
           <div class="card-body d-flex flex-column justify-content-center align-items-center p-4">
             <div class="parceiro-logo-container mb-3">
-              <img src="/images/parceiros/mercadinho-felpao.png" 
+              <img src="<?php echo cms_attr('home', 'parceiros_bairro.felpao.image', '/images/parceiros/mercadinho-felpao.png'); ?>" 
                    class="img-fluid parceiro-logo" 
                    alt="Mercadinho Felpão"
                    style="max-height: 120px; object-fit: contain;">

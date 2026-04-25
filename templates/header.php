@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src * 'self' data: 'unsafe-inline' 'unsafe-eval'; script-src * 'self' https: 'unsafe-inline' 'unsafe-eval'; connect-src * 'self' https: blob:; img-src * 'self' data: blob:; frame-src * 'self' https:; style-src * 'self' 'unsafe-inline';">
-  <link rel="shortcut icon" href="<?php echo $site_url; ?>/images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="<?php echo $site_url . cms_attr('global', 'brand.favicon', '/images/favicon.ico'); ?>" type="image/x-icon">
   <title><?php echo isset($pageTitle) ? $pageTitle : 'ISNA - Impacto Social'; ?></title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
   <?php if ($currentUser): ?>
   <aside class="admin-sidebar" aria-label="Navegação administrativa">
     <a class="admin-sidebar-brand" href="<?php echo $site_url; ?>/area-restrita" title="Área restrita">
-      <img src="<?php echo $site_url; ?>/images/logo.png" alt="Logo do Instituto">
+      <img src="<?php echo $site_url . cms_attr('global', 'brand.logo', '/images/logo.png'); ?>" alt="Logo do Instituto">
       <span class="admin-sidebar-text">ISNA Admin</span>
     </a>
 
@@ -69,7 +69,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
     <div class="container">
       <a class="navbar-brand position-relative" href="<?php echo $site_url; ?>/">
-        <img src="<?php echo $site_url; ?>/images/logo.png" alt="Logo do Instituto" class="position-absolute top-50 start-0 translate-middle-y" style="height: 80px;">
+        <img src="<?php echo $site_url . cms_attr('global', 'brand.logo', '/images/logo.png'); ?>" alt="Logo do Instituto" class="position-absolute top-50 start-0 translate-middle-y" style="height: 80px;">
       </a>
 
 

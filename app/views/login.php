@@ -11,7 +11,7 @@ $oldUsername = AuthService::flashPullValue('old_username', '');
           <div class="row g-0">
             <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center bg-primary text-white p-4">
               <div class="text-center">
-                <img src="<?php echo $site_url; ?>/images/logo.png" alt="Logo" style="max-height:90px;" class="mb-3">
+                <img src="<?php echo $site_url . cms_attr('global', 'brand.logo', '/images/logo.png'); ?>" alt="Logo" style="max-height:90px;" class="mb-3">
                 <h2 class="h5 fw-semibold">Acesso Restrito</h2>
                 <p class="small mb-0">Área administrativa do site. Faça login para gerenciar conteúdo e configurações.</p>
               </div>

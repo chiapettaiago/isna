@@ -89,7 +89,7 @@
     <div class="row justify-content-center mb-5 ">
       <div class="col-lg-10">
         <div class="netflix-player ratio ratio-16x9" id="yt-like-player">
-          <video id="donation-video" preload="auto" playsinline webkit-playsinline poster="<?php $thumb='images/donation-thumbnail.jpg'; echo asset($thumb) . '?v=' . (file_exists($thumb)?filemtime($thumb):time()); ?>" disablepictureinpicture controlslist="noplaybackrate nodownload noremoteplayback">
+          <video id="donation-video" preload="auto" playsinline webkit-playsinline poster="<?php echo cms_attr('doe', 'video.poster', '/images/donation-thumbnail.jpg'); ?>" disablepictureinpicture controlslist="noplaybackrate nodownload noremoteplayback">
             <source src="https://api.chiapetta.dev/v/4N4uRF1EkEjnpxgx" type="video/mp4">
             Seu navegador não suporta vídeo HTML5.
           </video>
@@ -144,7 +144,7 @@
       <!-- Card 1: Doações Bancárias -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
-          <img src="<?php echo asset('images/depositos.png'); ?>" class="card-img-top" alt="Doações Bancárias">
+          <img src="<?php echo cms_attr('doe', 'bank.image', '/images/depositos.png'); ?>" class="card-img-top" alt="Doações Bancárias">
           <div class="card-body text-center">
             <h5 class="card-title">Doações Bancárias</h5>
              <p class="card-text">
@@ -157,7 +157,7 @@
       <!-- Card 2: Doação via PayPal -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
-          <img src="<?php echo asset('images/paypal.jpg'); ?>" class="card-img-top" alt="Doação via PayPal">
+          <img src="<?php echo cms_attr('doe', 'paypal.image', '/images/paypal.jpg'); ?>" class="card-img-top" alt="Doação via PayPal">
           <div class="card-body">
             <h5 class="card-title">Doação via PayPal</h5>
             <p class="card-text">
@@ -183,7 +183,7 @@
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
           <div class="card-img-top d-flex align-items-center justify-content-center" style="height:200px; background-color:#fff;">
-            <img src="<?php echo asset('images/stripe-logo-wordmark.svg'); ?>" alt="Logo da Stripe" style="max-width:72%; height:auto; object-fit:contain;">
+            <img src="<?php echo cms_attr('doe', 'stripe.image', '/images/stripe-logo-wordmark.svg'); ?>" alt="Logo da Stripe" style="max-width:72%; height:auto; object-fit:contain;">
           </div>
           <div class="card-body">
             <h5 class="card-title">Cartão de Crédito ou Débito</h5>
@@ -201,7 +201,7 @@
       <!-- Card 4: Doações Internacionais -->
       <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
-          <img src="<?php echo asset('images/international-gifts.png'); ?>" class="card-img-top" alt="Doações Internacionais">
+          <img src="<?php echo cms_attr('doe', 'international.image', '/images/international-gifts.png'); ?>" class="card-img-top" alt="Doações Internacionais">
           <div class="card-body">
             <h5 class="card-title">Doações Internacionais</h5>
             <p class="card-text">
