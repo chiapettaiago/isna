@@ -1,7 +1,7 @@
 <!-- Hero -->
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 400px; background-size: cover; background-position: center;">
+  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('quem-somos', 'hero.image', '/images/imagem.jpg'); ?>'); height: 400px; background-size: cover; background-position: center;">
     <div class="container text-center">
-      <h1 class="display-4">Quem Somos</h1>
+      <h1 class="display-4"><?php echo cms_text('quem-somos', 'hero.title', 'Quem Somos'); ?></h1>
     </div>
   </section>
 
@@ -12,8 +12,8 @@
         <div class="col-md-6">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Nossa História</h5>
-              <p class="card-text">O ISNA/IMPACTO SOCIAL é uma Organização de Sociedade Civil de Interesse Público de natureza filantrópica que trabalha há 13 anos a fim de contribuir na promoção da defesa dos direitos da criança, do adolescente, jovens e famílias que vivem em situação de extrema pobreza e de vulnerabilidade social no estado do Rio de Janeiro, através de projetos Educacionais, Culturais, Ambientais, Esportivos e Capacitação Profissional e Geração de Renda.</p>
+              <h5 class="card-title"><?php echo cms_text('quem-somos', 'historia.title', 'Nossa História'); ?></h5>
+              <p class="card-text"><?php echo cms_paragraph('quem-somos', 'historia.text', 'O ISNA/IMPACTO SOCIAL é uma Organização de Sociedade Civil de Interesse Público de natureza filantrópica que trabalha há 13 anos a fim de contribuir na promoção da defesa dos direitos da criança, do adolescente, jovens e famílias que vivem em situação de extrema pobreza e de vulnerabilidade social no estado do Rio de Janeiro, através de projetos Educacionais, Culturais, Ambientais, Esportivos e Capacitação Profissional e Geração de Renda.'); ?></p>
             </div>
           </div>
         </div>
@@ -21,8 +21,8 @@
         <div class="col-md-6">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Nossa Missão</h5>
-              <p class="card-text">Contribuir no processo de desenvolvimento social, ambiental, cultural, educativo, esportivo e artístico.</p>
+              <h5 class="card-title"><?php echo cms_text('quem-somos', 'missao.title', 'Nossa Missão'); ?></h5>
+              <p class="card-text"><?php echo cms_paragraph('quem-somos', 'missao.text', 'Contribuir no processo de desenvolvimento social, ambiental, cultural, educativo, esportivo e artístico.'); ?></p>
             </div>
           </div>
         </div>
@@ -30,8 +30,8 @@
         <div class="col-md-6">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Nossa Visão</h5>
-              <p class="card-text">Ser reconhecida como uma Organização eficiente e que seja capaz de assegurar a formação profissional do cidadão.</p>
+              <h5 class="card-title"><?php echo cms_text('quem-somos', 'visao.title', 'Nossa Visão'); ?></h5>
+              <p class="card-text"><?php echo cms_paragraph('quem-somos', 'visao.text', 'Ser reconhecida como uma Organização eficiente e que seja capaz de assegurar a formação profissional do cidadão.'); ?></p>
             </div>
           </div>
         </div>
@@ -39,8 +39,8 @@
         <div class="col-md-6">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Valores</h5>
-              <p class="card-text">Cidadania, Ética, Transparência, Integridade, Respeito à adversidade e Perseverança.</p>
+              <h5 class="card-title"><?php echo cms_text('quem-somos', 'valores.title', 'Valores'); ?></h5>
+              <p class="card-text"><?php echo cms_paragraph('quem-somos', 'valores.text', 'Cidadania, Ética, Transparência, Integridade, Respeito à adversidade e Perseverança.'); ?></p>
             </div>
           </div>
         </div>

@@ -19,7 +19,52 @@
   ?>
   <link rel="stylesheet" href="<?php echo $site_url; ?>/css/style.css?v=<?php echo $cssVer; ?>">
 </head>
-<body>
+<body class="<?php echo $currentUser ? 'admin-layout' : ''; ?>">
+  <?php if ($currentUser): ?>
+  <aside class="admin-sidebar" aria-label="Navegação administrativa">
+    <a class="admin-sidebar-brand" href="<?php echo $site_url; ?>/area-restrita" title="Área restrita">
+      <img src="<?php echo $site_url; ?>/images/logo.png" alt="Logo do Instituto">
+      <span class="admin-sidebar-text">ISNA Admin</span>
+    </a>
+
+    <div class="admin-sidebar-user" title="<?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?>">
+      <i class="bi bi-person-circle" aria-hidden="true"></i>
+      <span class="admin-sidebar-text"><?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+    </div>
+
+    <nav class="admin-sidebar-nav">
+      <a class="admin-sidebar-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" title="Dashboard">
+        <i class="bi bi-speedometer2" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Dashboard</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia" title="Relatórios">
+        <i class="bi bi-graph-up" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Relatórios</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" title="Usuários">
+        <i class="bi bi-people-gear" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Usuários</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" title="Gerenciar galeria">
+        <i class="bi bi-images" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Gerenciar galeria</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog" title="Gerenciar blog">
+        <i class="bi bi-journal-text" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Gerenciar blog</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/gestao-cms') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-cms" title="CMS do site">
+        <i class="bi bi-layout-text-window-reverse" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">CMS do site</span>
+      </a>
+    </nav>
+
+    <a class="admin-sidebar-link admin-sidebar-logout" href="<?php echo $site_url; ?>/logout" title="Sair">
+      <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+      <span class="admin-sidebar-text">Sair</span>
+    </a>
+  </aside>
+  <?php else: ?>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
     <div class="container">
@@ -33,46 +78,6 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <?php if ($currentUser): ?>
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item">
-            <span class="navbar-text text-light me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
-              <i class="bi bi-person-circle me-1"></i>
-              <?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?>
-            </span>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" data-label="Dashboard">
-              <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia" data-label="Relatórios">
-              <i class="bi bi-graph-up"></i> Relatórios
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" data-label="Usuários">
-              <i class="bi bi-people-gear"></i> Usuários
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" data-label="Galeria">
-              <i class="bi bi-images"></i> Gerenciar galeria
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog" data-label="Blog">
-              <i class="bi bi-journal-text"></i> Gerenciar blog
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo $site_url; ?>/logout" data-label="Sair">
-              <i class="bi bi-box-arrow-right"></i> Sair
-            </a>
-          </li>
-        </ul>
-        <?php else: ?>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a class="nav-link<?php echo ($path === '/quem-somos') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/quem-somos" data-label="Sobre">
@@ -120,10 +125,10 @@
             </a>
           </li>
         </ul>
-        <?php endif; ?>
       </div>
     </div>
   </nav>
+  <?php endif; ?>
 
   <?php
     $flashBanners = [];

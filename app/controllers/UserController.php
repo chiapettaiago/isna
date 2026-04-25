@@ -48,24 +48,22 @@ class UserController extends Controller
                 AuthService::redirect('gestao-usuarios');
             }
 
-            $users = AuthService::users();
+            $user = AuthService::userFromDb($username);
 
-            if (!isset($users[$username])) {
+            if (!is_array($user)) {
                 AuthService::flashMessage('error', 'Registro de usuário não encontrado.');
                 AuthService::redirect('gestao-usuarios');
             }
 
-            $currentHash = $users[$username]['password'] ?? '';
+            $currentHash = $user['password'] ?? '';
 
             if (!is_string($currentHash) || $currentHash === '' || !password_verify($currentPassword, $currentHash)) {
                 AuthService::flashMessage('error', 'Senha atual incorreta.');
                 AuthService::redirect('gestao-usuarios');
             }
 
-            $users[$username]['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            if (!AuthService::usersSave($users)) {
-                AuthService::flashMessage('error', 'Não foi possível atualizar a senha. Verifique as permissões do arquivo.');
+            if (!AuthService::updateUserInDb($username, ['password' => password_hash($newPassword, PASSWORD_DEFAULT)])) {
+                AuthService::flashMessage('error', 'Não foi possível atualizar a senha no banco MySQL.');
                 AuthService::redirect('gestao-usuarios');
             }
 
@@ -134,49 +132,21 @@ class UserController extends Controller
                 AuthService::redirect('gestao-usuarios');
             }
 
-            // If DB remote is configured, try to create user there first
-            $dbCfg = AuthService::dbConfig();
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-            if ($dbCfg !== null) {
-                // check if user already exists in DB
-                $dbUser = AuthService::userFromDb($usernameNormalized);
-                if (is_array($dbUser)) {
-                    $preserveFormState();
-                    AuthService::flashMessage('error', 'Já existe um usuário com esse login (banco de dados).');
-                    AuthService::redirect('gestao-usuarios');
-                }
-
-                $created = AuthService::createUserInDb($usernameNormalized, $passwordHash, $displayName !== '' ? $displayName : $usernameInput, $isAdminRequested ? ['admin'] : []);
-                if ($created) {
-                    AuthService::flashMessage('success', 'Usuário criado com sucesso no banco remoto.');
-                    AuthService::redirect('gestao-usuarios');
-                }
-                // If DB create failed, fall back to file-based users
-                AuthService::flashMessage('warning', 'Não foi possível criar o usuário no banco remoto; tentando fallback para arquivo local.');
-            }
-
-            $users = AuthService::users();
-
-            if (isset($users[$usernameNormalized])) {
+            if (AuthService::userFromDb($usernameNormalized)) {
                 $preserveFormState();
                 AuthService::flashMessage('error', 'Já existe um usuário com esse login.');
                 AuthService::redirect('gestao-usuarios');
             }
 
-            $users[$usernameNormalized] = [
-                'name' => $displayName !== '' ? $displayName : $usernameInput,
-                'password' => $passwordHash,
-                'roles' => $isAdminRequested ? ['admin'] : [],
-            ];
-
-            if (!AuthService::usersSave($users)) {
+            if (!AuthService::createUserInDb($usernameNormalized, $passwordHash, $displayName !== '' ? $displayName : $usernameInput, $isAdminRequested ? ['admin'] : [])) {
                 $preserveFormState();
-                AuthService::flashMessage('error', 'Não foi possível criar o usuário. Verifique as permissões do arquivo.');
+                AuthService::flashMessage('error', 'Não foi possível criar o usuário no banco MySQL.');
                 AuthService::redirect('gestao-usuarios');
             }
 
-            AuthService::flashMessage('success', 'Usuário criado com sucesso.');
+            AuthService::flashMessage('success', 'Usuário criado com sucesso no banco MySQL.');
             AuthService::redirect('gestao-usuarios');
         }
     }

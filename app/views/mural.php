@@ -29,10 +29,10 @@
   <div class="container text-center">
     <div class="d-flex justify-content-center align-items-center gap-3 mb-2">
       <i class="bi bi-journal-richtext fs-1 text-warning"></i>
-      <h1 class="display-5 mb-0">Mural Informativo</h1>
+      <h1 class="display-5 mb-0"><?php echo cms_text('mural', 'hero.title', 'Mural Informativo'); ?></h1>
     </div>
     <p class="lead text-warning-emphasis mb-0"><?php echo $nomeMesMural . ' de ' . $anoMural; ?></p>
-    <p class="text-white-50 mt-1">Avisos e novidades do Instituto Social Novo Amanhecer</p>
+    <p class="text-white-50 mt-1"><?php echo cms_paragraph('mural', 'hero.subtitle', 'Avisos e novidades do Instituto Social Novo Amanhecer'); ?></p>
     <a href="<?php echo $site_url; ?>/" class="btn btn-outline-light btn-sm mt-2">
       <i class="bi bi-arrow-left me-1"></i> Voltar ao início
     </a>

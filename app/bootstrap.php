@@ -105,5 +105,6 @@ require_once __DIR__ . '/Core/View.php';
 
 // Load app services that depend on helpers (auth uses $site_url)
 require_once __DIR__ . '/compat/auth.php';
+require_once __DIR__ . '/compat/cms.php';
 require_once __DIR__ . '/compat/gallery.php';
 require_once __DIR__ . '/compat/blog.php';

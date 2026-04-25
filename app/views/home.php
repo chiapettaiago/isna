@@ -4,10 +4,10 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
 ?>
 
 <!-- Seção Hero -->
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); min-height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
+  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('home', 'hero.image', '/images/imagem.jpg'); ?>'); height: 400px; background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container text-center">
-      <h1 class="display-4 fw-bold">Bem-vindo ao Instituto Social Novo Amanhecer</h1>
-      <p class="lead mt-2">Qualificando pessoas para inclusão no mercado de trabalho.</p>
+      <h1 class="display-4 fw-bold"><?php echo cms_text('home', 'hero.title', 'Bem-vindo ao Instituto Social Novo Amanhecer'); ?></h1>
+      <p class="lead mt-2"><?php echo cms_text('home', 'hero.subtitle', 'Qualificando pessoas para inclusão no mercado de trabalho.'); ?></p>
       <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
         <a href="<?php echo $site_url; ?>/quem-somos" class="btn btn-warning btn-lg px-4">Saiba Mais</a>
         <a href="<?php echo $site_url; ?>/doe" class="btn btn-outline-light btn-lg px-4">Doe Agora</a>
@@ -73,9 +73,9 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
   <!-- Seção Quem Somos -->
   <section id="quem-somos" class="py-5">
     <div class="container">
-      <h2 class="text-center mb-4">Quem Somos</h2>
+      <h2 class="text-center mb-4"><?php echo cms_text('home', 'quem_somos.title', 'Quem Somos'); ?></h2>
       <p class="lead text-center">
-        O ISNA é uma organização da sociedade civil de interesse público, sem fins lucrativos, que busca, através de seus projetos sociais, qualificar e requalificar pessoas para a inclusão no mercado de trabalho.
+        <?php echo cms_paragraph('home', 'quem_somos.text', 'O ISNA é uma organização da sociedade civil de interesse público, sem fins lucrativos, que busca, através de seus projetos sociais, qualificar e requalificar pessoas para a inclusão no mercado de trabalho.'); ?>
       </p>
     </div>
   </section>
@@ -83,7 +83,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
   <!-- Seção Linha de Atuação -->
   <section id="linha-atuacao" class="py-5 bg-light">
     <div class="container">
-      <h2 class="text-center mb-4">Linha de Atuação</h2>
+      <h2 class="text-center mb-4"><?php echo cms_text('home', 'linha.title', 'Linha de Atuação'); ?></h2>
        <!-- Link Veja Mais -->
     <div class="text-center mb-4">
       <a href="<?php echo $site_url; ?>/linha-atuacao" class="btn btn-outline-secondary">
@@ -91,7 +91,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
       </a>
     </div>
       <p class="lead text-center">
-        Nossos projetos sociais visam capacitar indivíduos, proporcionando-lhes as habilidades necessárias para ingressar e prosperar no mercado de trabalho.
+        <?php echo cms_paragraph('home', 'linha.text', 'Nossos projetos sociais visam capacitar indivíduos, proporcionando-lhes as habilidades necessárias para ingressar e prosperar no mercado de trabalho.'); ?>
       </p>
       <!-- Você pode incluir mais detalhes ou até mesmo cards para cada área de atuação -->
       <div class="row text-center mt-4">
@@ -127,8 +127,8 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
   <section id="realizacoes" class="py-5 bg-light">
     <div class="container">
       <div class="text-center mb-4">
-        <h2 class="mb-2">Realizações</h2>
-        <p class="text-muted mb-0">Acompanhe, em vídeo, os destaques e conquistas do instituto a cada mês.</p>
+        <h2 class="mb-2"><?php echo cms_text('home', 'realizacoes.title', 'Realizações'); ?></h2>
+        <p class="text-muted mb-0"><?php echo cms_text('home', 'realizacoes.subtitle', 'Acompanhe, em vídeo, os destaques e conquistas do instituto a cada mês.'); ?></p>
       </div>
 
       <div class="row g-4">
@@ -211,7 +211,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
   <!-- Seção Galeria -->
 <section id="galeria" class="py-5">
   <div class="container">
-    <h2 class="text-center mb-4">Projetos em Execução</h2>
+    <h2 class="text-center mb-4"><?php echo cms_text('home', 'galeria.title', 'Projetos em Execução'); ?></h2>
      <!-- Link Veja Mais -->
      <div class="text-center mb-4">
       <a href="<?php echo $site_url; ?>/galeria" class="btn btn-outline-secondary">
@@ -305,7 +305,7 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
 <!-- Seção Parceiros do Bairro -->
 <section id="parceiros-bairro" class="py-5 bg-light">
   <div class="container">
-    <h2 class="text-center mb-4">Parceiros do Bairro</h2>
+    <h2 class="text-center mb-4"><?php echo cms_text('home', 'parceiros_bairro.title', 'Parceiros do Bairro'); ?></h2>
     <p class="text-center text-muted mb-5">Conheça os parceiros locais que apoiam nossas iniciativas</p>
     
     <div class="row g-4 justify-content-center align-items-center">

@@ -27,33 +27,30 @@ class AuthService
         }
 
         if ($users === null) {
-            $file = self::usersPath();
             $users = [];
+            $pdo = self::getPdo();
+            $cfg = self::dbConfig();
 
-            if (is_readable($file)) {
-                $data = include $file;
-                if (is_array($data)) {
-                    foreach ($data as $username => $info) {
-                        if (!is_array($info)) continue;
-                        $normalized = self::normalizeUsername((string)$username);
-                        if ($normalized === '') continue;
-                        $name = isset($info['name']) && is_string($info['name']) && $info['name'] !== '' ? $info['name'] : $normalized;
-                        $password = isset($info['password']) && is_string($info['password']) ? $info['password'] : '';
-                        $roles = [];
-                        if (isset($info['roles']) && is_array($info['roles'])) {
-                            foreach ($info['roles'] as $role) {
-                                if (!is_string($role)) continue;
-                                $role = trim($role);
-                                if ($role === '') continue;
-                                $roles[] = $role;
-                            }
-                        }
-                        $users[$normalized] = [
-                            'name' => $name,
-                            'password' => $password,
-                            'roles' => array_values(array_unique($roles)),
+            if ($pdo && $cfg) {
+                $table = self::quoteIdentifier((string)($cfg['table'] ?? 'users'));
+                $uCol = self::quoteIdentifier((string)($cfg['username_column'] ?? 'username'));
+
+                try {
+                    $stmt = $pdo->query("SELECT * FROM {$table} ORDER BY {$uCol} ASC");
+                    foreach ($stmt->fetchAll() as $row) {
+                        if (!is_array($row)) continue;
+                        $user = self::dbRowToUser($row);
+                        if (!$user) continue;
+                        $username = self::normalizeUsername((string)$user['username']);
+                        if ($username === '') continue;
+                        $users[$username] = [
+                            'name' => $user['name'],
+                            'password' => $user['password'],
+                            'roles' => $user['roles'],
                         ];
                     }
+                } catch (\Exception $e) {
+                    $users = [];
                 }
             }
         }
@@ -100,7 +97,8 @@ class AuthService
 
     public static function usersSave(array $users): bool
     {
-        $prepared = [];
+        $saved = false;
+
         foreach ($users as $username => $info) {
             if (!is_array($info)) continue;
             $normalized = self::normalizeUsername((string)$username);
@@ -117,25 +115,14 @@ class AuthService
                     $roles[] = $role;
                 }
             }
-            $prepared[$normalized] = [
-                'name' => $name,
-                'password' => $password,
-                'roles' => array_values(array_unique($roles)),
-            ];
+
+            if (self::upsertUserInDb($normalized, $password, $name, array_values(array_unique($roles)))) {
+                $saved = true;
+            }
         }
 
-        if (empty($prepared)) return false;
-
-        ksort($prepared);
-        $content = self::renderUsersFile($prepared);
-        $path = self::usersPath();
-        $tempPath = $path . '.' . bin2hex(random_bytes(8));
-
-        if (file_put_contents($tempPath, $content) === false) return false;
-        if (!@rename($tempPath, $path)) { @unlink($tempPath); return false; }
-
         self::users(true);
-        return true;
+        return $saved;
     }
 
     // Database helpers for remote MySQL authentication
@@ -148,9 +135,20 @@ class AuthService
     {
         $path = self::dbConfigPath();
         if (!is_readable($path)) return null;
+        ob_start();
         $data = include $path;
+        ob_end_clean();
         if (!is_array($data)) return null;
         return $data;
+    }
+
+    public static function quoteIdentifier(string $identifier): string
+    {
+        $identifier = trim($identifier);
+        if ($identifier === '') {
+            throw new \InvalidArgumentException('Identificador SQL vazio.');
+        }
+        return '`' . str_replace('`', '``', $identifier) . '`';
     }
 
     public static function getPdo(): ?\PDO
@@ -175,46 +173,102 @@ class AuthService
         }
     }
 
-    public static function userFromDb(string $username): ?array
+    private static function rolesFromValue($value): array
     {
-        $pdo = self::getPdo();
-        if (!$pdo) return null;
+        if (is_array($value)) {
+            $rawRoles = $value;
+        } elseif (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if (is_array($decoded)) {
+                $rawRoles = $decoded;
+            } else {
+                $rawRoles = explode(',', $value);
+            }
+        } else {
+            $rawRoles = [];
+        }
+
+        $roles = [];
+        foreach ($rawRoles as $role) {
+            if (!is_string($role)) continue;
+            $role = strtolower(trim($role));
+            if ($role === '') continue;
+            $roles[] = $role;
+        }
+
+        return array_values(array_unique($roles));
+    }
+
+    private static function rolesToValue(array $roles): string
+    {
+        $clean = [];
+        foreach ($roles as $role) {
+            if (!is_string($role)) continue;
+            $role = strtolower(trim($role));
+            if ($role === '') continue;
+            $clean[] = $role;
+        }
+
+        return implode(',', array_values(array_unique($clean)));
+    }
+
+    private static function dbRowToUser(array $row): ?array
+    {
         $cfg = self::dbConfig();
-        $table = $cfg['table'] ?? 'users';
+        if (!$cfg) return null;
+
         $uCol = $cfg['username_column'] ?? 'username';
         $pCol = $cfg['password_column'] ?? 'password';
         $nCol = $cfg['name_column'] ?? 'name';
         $rCol = $cfg['roles_column'] ?? 'roles';
 
-        $sql = 'SELECT * FROM `' . str_replace('`', '\\`', $table) . "` WHERE `$uCol` = :u LIMIT 1";
+        $username = isset($row[$uCol]) ? self::normalizeUsername((string)$row[$uCol]) : '';
+        if ($username === '') return null;
+
+        $password = isset($row[$pCol]) ? (string)$row[$pCol] : '';
+        $name = isset($row[$nCol]) && is_string($row[$nCol]) && $row[$nCol] !== '' ? $row[$nCol] : $username;
+
+        return [
+            'username' => $username,
+            'password' => $password,
+            'name' => $name,
+            'roles' => self::rolesFromValue($row[$rCol] ?? ''),
+        ];
+    }
+
+    public static function userFromDb(string $username): ?array
+    {
+        $pdo = self::getPdo();
+        if (!$pdo) return null;
+        $cfg = self::dbConfig();
+        $table = self::quoteIdentifier((string)($cfg['table'] ?? 'users'));
+        $uCol = self::quoteIdentifier((string)($cfg['username_column'] ?? 'username'));
+
+        $sql = "SELECT * FROM {$table} WHERE {$uCol} = :u LIMIT 1";
         try {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':u' => $username]);
             $row = $stmt->fetch();
             if (!$row || !is_array($row)) return null;
 
-            $roles = [];
-            if (isset($row[$rCol])) {
-                if (is_array($row[$rCol])) {
-                    $roles = $row[$rCol];
-                } elseif (is_string($row[$rCol])) {
-                    $parts = array_map('trim', explode(',', $row[$rCol]));
-                    $roles = array_values(array_filter($parts, static function ($v) { return $v !== ''; }));
-                }
-            }
-
-            $password = isset($row[$pCol]) ? (string)$row[$pCol] : '';
-            $name = isset($row[$nCol]) && is_string($row[$nCol]) && $row[$nCol] !== '' ? $row[$nCol] : $username;
-
-            return [
-                'username' => $username,
-                'password' => $password,
-                'name' => $name,
-                'roles' => $roles,
-            ];
+            return self::dbRowToUser($row);
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public static function upsertUserInDb(string $username, string $passwordHash, string $name = '', array $roles = []): bool
+    {
+        $existing = self::userFromDb($username);
+        if ($existing) {
+            return self::updateUserInDb($username, [
+                'password' => $passwordHash,
+                'name' => $name,
+                'roles' => $roles,
+            ]);
+        }
+
+        return self::createUserInDb($username, $passwordHash, $name, $roles);
     }
 
     public static function createUserInDb(string $username, string $passwordHash, string $name = '', array $roles = []): bool
@@ -222,18 +276,14 @@ class AuthService
         $pdo = self::getPdo();
         if (!$pdo) return false;
         $cfg = self::dbConfig();
-        $table = $cfg['table'] ?? 'users';
-        $uCol = $cfg['username_column'] ?? 'username';
-        $pCol = $cfg['password_column'] ?? 'password';
-        $nCol = $cfg['name_column'] ?? 'name';
-        $rCol = $cfg['roles_column'] ?? 'roles';
+        if (!$cfg) return false;
 
-        // Prepare roles value: if DB expects CSV string, join; if JSON, user can adapt later
-        $rolesValue = '';
-        if (!empty($roles)) {
-            // default store as CSV
-            $rolesValue = implode(',', $roles);
-        }
+        $table = self::quoteIdentifier((string)($cfg['table'] ?? 'users'));
+        $uCol = (string)($cfg['username_column'] ?? 'username');
+        $pCol = (string)($cfg['password_column'] ?? 'password');
+        $nCol = (string)($cfg['name_column'] ?? 'name');
+        $rCol = (string)($cfg['roles_column'] ?? 'roles');
+        $rolesValue = self::rolesToValue($roles);
 
         $columns = [$uCol, $pCol];
         $placeholders = [':u', ':p'];
@@ -250,13 +300,55 @@ class AuthService
             $params[':r'] = $rolesValue;
         }
 
-        $safeTable = str_replace('`', '\\`', $table);
-        $colsSql = implode('`,`', array_map(static function ($c) { return $c; }, $columns));
-        $sql = 'INSERT INTO `' . $safeTable . '` (`' . $colsSql . '`) VALUES (' . implode(', ', $placeholders) . ')';
+        $colsSql = implode(', ', array_map([self::class, 'quoteIdentifier'], $columns));
+        $sql = "INSERT INTO {$table} ({$colsSql}) VALUES (" . implode(', ', $placeholders) . ')';
 
         try {
             $stmt = $pdo->prepare($sql);
-            return $stmt->execute($params);
+            $created = $stmt->execute($params);
+            self::users(true);
+            return $created;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function updateUserInDb(string $username, array $fields): bool
+    {
+        $pdo = self::getPdo();
+        if (!$pdo) return false;
+        $cfg = self::dbConfig();
+        if (!$cfg) return false;
+
+        $table = self::quoteIdentifier((string)($cfg['table'] ?? 'users'));
+        $uColRaw = (string)($cfg['username_column'] ?? 'username');
+        $uCol = self::quoteIdentifier($uColRaw);
+
+        $sets = [];
+        $params = [':username' => self::normalizeUsername($username)];
+
+        $columnMap = [
+            'password' => (string)($cfg['password_column'] ?? 'password'),
+            'name' => (string)($cfg['name_column'] ?? 'name'),
+            'roles' => (string)($cfg['roles_column'] ?? 'roles'),
+        ];
+
+        foreach ($columnMap as $field => $column) {
+            if (!array_key_exists($field, $fields) || $column === '') continue;
+            $placeholder = ':' . $field;
+            $sets[] = self::quoteIdentifier($column) . " = {$placeholder}";
+            $params[$placeholder] = $field === 'roles' && is_array($fields[$field])
+                ? self::rolesToValue($fields[$field])
+                : (string)$fields[$field];
+        }
+
+        if (empty($sets) || $params[':username'] === '') return false;
+
+        try {
+            $stmt = $pdo->prepare("UPDATE {$table} SET " . implode(', ', $sets) . " WHERE {$uCol} = :username LIMIT 1");
+            $updated = $stmt->execute($params);
+            self::users(true);
+            return $updated;
         } catch (\Exception $e) {
             return false;
         }
@@ -309,38 +401,20 @@ class AuthService
         $username = self::normalizeUsername($username);
         if ($username === '' || $password === '') return false;
 
-        // If DB config present, try remote MySQL authentication first
-        $dbCfg = self::dbConfig();
-        if ($dbCfg !== null) {
-            $user = self::userFromDb($username);
-            if (is_array($user) && isset($user['password']) && $user['password'] !== '') {
-                $hash = $user['password'];
-                // If stored as a hash, use password_verify. Otherwise compare directly.
-                $verified = false;
-                if (password_get_info($hash)['algo'] !== 0) {
-                    $verified = password_verify($password, $hash);
-                } else {
-                    $verified = hash_equals($hash, $password);
-                }
-                if ($verified) {
-                    $_SESSION['auth_user'] = [
-                        'username' => $username,
-                        'name' => isset($user['name']) && is_string($user['name']) && $user['name'] !== '' ? $user['name'] : $username,
-                        'roles' => isset($user['roles']) && is_array($user['roles']) ? $user['roles'] : [],
-                    ];
-                    return true;
-                }
-            }
-            // If DB auth configured but failed, do not immediately return: allow fallback to file users
+        $user = self::userFromDb($username);
+        if (!is_array($user) || !isset($user['password']) || $user['password'] === '') return false;
+
+        $hash = $user['password'];
+        if (!is_string($hash) || $hash === '') return false;
+
+        $verified = false;
+        if (password_get_info($hash)['algo'] !== 0) {
+            $verified = password_verify($password, $hash);
+        } else {
+            $verified = hash_equals($hash, $password);
         }
 
-        // Fallback to local users file
-        $users = self::users();
-        if (!isset($users[$username])) return false;
-        $user = $users[$username];
-        $hash = $user['password'] ?? null;
-        if (!is_string($hash) || $hash === '') return false;
-        if (!password_verify($password, $hash)) return false;
+        if (!$verified) return false;
 
         $_SESSION['auth_user'] = [
             'username' => $username,

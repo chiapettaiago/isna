@@ -64,12 +64,12 @@
     }
 </style>
    <!-- Seção Hero -->
-   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
+   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('transparencia', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
    background-position: center; /* Centraliza a imagem no elemento */
    background-repeat: no-repeat; /* Evita a repetição da imagem */">
      <div class="container text-center">
-       <h1 class="display-4">Transparência</h1>
-       <p class="lead">Conheça nossas práticas de transparência e prestação de contas.</p>
+       <h1 class="display-4"><?php echo cms_text('transparencia', 'hero.title', 'Transparência'); ?></h1>
+       <p class="lead"><?php echo cms_paragraph('transparencia', 'hero.subtitle', 'Conheça nossas práticas de transparência e prestação de contas.'); ?></p>
      </div>
    </section>
 
@@ -78,10 +78,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mx-auto">
-          <h2 class="text-center mb-4">Nossa Compromisso com a Transparência</h2>
+          <h2 class="text-center mb-4"><?php echo cms_text('transparencia', 'intro.title', 'Nosso Compromisso com a Transparência'); ?></h2>
           <p class="lead text-center mb-5">
-            O ISNA acredita que a transparência é fundamental para construir confiança e demonstrar nosso compromisso com a sociedade. 
-            Aqui você encontrará informações sobre nossos projetos, recursos e resultados.
+            <?php echo cms_paragraph('transparencia', 'intro.text', 'O ISNA acredita que a transparência é fundamental para construir confiança e demonstrar nosso compromisso com a sociedade. Aqui você encontrará informações sobre nossos projetos, recursos e resultados.'); ?>
           </p>
         </div>
       </div>

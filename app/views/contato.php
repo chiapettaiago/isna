@@ -1,8 +1,8 @@
 <!-- Seção Hero -->
-<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 400px; background-size: cover; background-position: center; background-repeat: no-repeat;">
+<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('contato', 'hero.image', '/images/imagem.jpg'); ?>'); height: 400px; background-size: cover; background-position: center; background-repeat: no-repeat;">
   <div class="container text-center">
-    <h1 class="display-4">Entre em Contato</h1>
-    <p class="lead">Estamos prontos para ajudar e responder suas dúvidas.</p>
+    <h1 class="display-4"><?php echo cms_text('contato', 'hero.title', 'Entre em Contato'); ?></h1>
+    <p class="lead"><?php echo cms_text('contato', 'hero.subtitle', 'Estamos prontos para ajudar e responder suas dúvidas.'); ?></p>
   </div>
 </section>
 
@@ -117,8 +117,8 @@
 <!-- Seção Redes Sociais -->
 <section class="py-5">
   <div class="container">
-    <h2 class="text-center mb-4">Siga-nos nas Redes Sociais</h2>
-    <p class="text-center text-muted mb-5">Acompanhe nossas atividades e novidades</p>
+    <h2 class="text-center mb-4"><?php echo cms_text('contato', 'social.title', 'Siga-nos nas Redes Sociais'); ?></h2>
+    <p class="text-center text-muted mb-5"><?php echo cms_text('contato', 'social.subtitle', 'Acompanhe nossas atividades e novidades'); ?></p>
     
     <div class="row g-4 justify-content-center">
       <!-- Instagram -->
@@ -129,7 +129,7 @@
           </div>
           <h5 class="mb-2">Instagram</h5>
           <p class="text-muted mb-3">@isnasocial</p>
-          <a href="https://instagram.com/isnasocial" target="_blank" class="btn btn-outline-dark">
+          <a href="<?php echo cms_attr('global', 'instagram.url', 'https://instagram.com/isnasocial'); ?>" target="_blank" class="btn btn-outline-dark">
             <i class="bi bi-instagram me-2"></i>Seguir
           </a>
         </div>
@@ -139,8 +139,8 @@
 </section>
 <section class="py-5 text-center">
   <div class="container">
-    <h3 class="mb-3">Quer contribuir com nossa causa?</h3>
-    <p class="text-muted mb-4">Sua doação ajuda a transformar vidas através da educação e capacitação profissional.</p>
+    <h3 class="mb-3"><?php echo cms_text('contato', 'donation.title', 'Quer contribuir com nossa causa?'); ?></h3>
+    <p class="text-muted mb-4"><?php echo cms_text('contato', 'donation.text', 'Sua doação ajuda a transformar vidas através da educação e capacitação profissional.'); ?></p>
     <a href="<?php echo $site_url; ?>/doe" class="btn btn-warning btn-lg px-5">
       <i class="bi bi-heart me-2"></i>Fazer uma Doação
     </a>

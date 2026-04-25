@@ -28,15 +28,15 @@
     }
 </style>
 <!-- Seção Hero -->
-<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
+<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('doacoes-bancarias', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
   <div class="container text-center">
-    <h1 class="display-4">Doações Bancárias</h1>
-    <p class="lead">Saiba como apoiar nosso instituto por meio de doações bancárias</p>
+    <h1 class="display-4"><?php echo cms_text('doacoes-bancarias', 'hero.title', 'Doações Bancárias'); ?></h1>
+    <p class="lead"><?php echo cms_paragraph('doacoes-bancarias', 'hero.subtitle', 'Saiba como apoiar nosso instituto por meio de doações bancárias'); ?></p>
   </div>
 </section>
 <div class="container mt-5">
-  <h1 class="mb-4 text-center">Doações Bancárias</h1>
-  <p class="mb-5 text-center">Você pode contribuir por meio de depósito ou transferência Pix utilizando os dados abaixo:</p>
+  <h1 class="mb-4 text-center"><?php echo cms_text('doacoes-bancarias', 'main.title', 'Doações Bancárias'); ?></h1>
+  <p class="mb-5 text-center"><?php echo cms_paragraph('doacoes-bancarias', 'main.text', 'Você pode contribuir por meio de depósito ou transferência Pix utilizando os dados abaixo:'); ?></p>
   <div class="row justify-content-center">
     <!-- Caixa Econômica Federal -->
     <div class="col-md-4 mb-4">

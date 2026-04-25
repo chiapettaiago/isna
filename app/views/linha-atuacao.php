@@ -1,7 +1,7 @@
 <!-- Hero -->
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 400px; background-size: cover; background-position: center;">
+  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('linha-atuacao', 'hero.image', '/images/imagem.jpg'); ?>'); height: 400px; background-size: cover; background-position: center;">
     <div class="container text-center">
-      <h1 class="display-4">Objetivos de Desenvolvimento Sustentável (ODS)</h1>
+      <h1 class="display-4"><?php echo cms_text('linha-atuacao', 'hero.title', 'Objetivos de Desenvolvimento Sustentável (ODS)'); ?></h1>
     </div>
   </section>
 
@@ -9,7 +9,7 @@
   <section class="py-5">
     <div class="container">
       <p class="lead text-center">
-        Os 17 Objetivos de Desenvolvimento Sustentável (ODS) foram estabelecidos pela ONU em 2015 como uma agenda mundial para a implementação de políticas públicas voltadas ao desenvolvimento humano. É um compromisso de Estado que só será atingido com a participação ativa da sociedade.
+        <?php echo cms_paragraph('linha-atuacao', 'intro.text', 'Os 17 Objetivos de Desenvolvimento Sustentável (ODS) foram estabelecidos pela ONU em 2015 como uma agenda mundial para a implementação de políticas públicas voltadas ao desenvolvimento humano. É um compromisso de Estado que só será atingido com a participação ativa da sociedade.'); ?>
       </p>
       <!-- Imagem dos 17 ODS -->
       <div class="text-center my-4">

@@ -1,40 +1,41 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/AuthService.php';
+
 class AccessLogger
 {
     private static ?\PDO $pdo = null;
 
-    public static function dbPath(): string
+    public static function tableName(): string
     {
-        return __DIR__ . '/../../data/accesses.sqlite3';
+        $cfg = AuthService::dbConfig() ?? [];
+        return (string)($cfg['access_table'] ?? 'accesses');
     }
 
     public static function ensureDb(): ?\PDO
     {
         if (self::$pdo !== null) return self::$pdo;
-        $path = self::dbPath();
-        $dir = dirname($path);
-        if (!is_dir($dir)) {
-            @mkdir($dir, 0755, true);
-        }
 
         try {
-            $pdo = new \PDO('sqlite:' . $path);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $pdo->exec('PRAGMA journal_mode = WAL');
+            $pdo = AuthService::getPdo();
+            if (!$pdo) return null;
 
-            $pdo->exec(<<<SQL
-CREATE TABLE IF NOT EXISTS accesses (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  ts INTEGER NOT NULL,
-  path TEXT NOT NULL,
-  method TEXT NOT NULL,
-  ip TEXT,
-  user_agent TEXT
-);
-SQL
-            );
+            $table = AuthService::quoteIdentifier(self::tableName());
+            $pdo->exec("
+CREATE TABLE IF NOT EXISTS {$table} (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  ts INT UNSIGNED NOT NULL,
+  path VARCHAR(2048) NOT NULL,
+  method VARCHAR(16) NOT NULL,
+  ip VARCHAR(45) NULL,
+  user_agent TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_accesses_ts (ts),
+  KEY idx_accesses_path (path(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+");
 
             self::$pdo = $pdo;
             return self::$pdo;
@@ -49,7 +50,8 @@ SQL
         if (!$pdo) return false;
 
         try {
-            $stmt = $pdo->prepare('INSERT INTO accesses (ts, path, method, ip, user_agent) VALUES (:ts, :path, :method, :ip, :ua)');
+            $table = AuthService::quoteIdentifier(self::tableName());
+            $stmt = $pdo->prepare("INSERT INTO {$table} (ts, path, method, ip, user_agent) VALUES (:ts, :path, :method, :ip, :ua)");
             $stmt->execute([
                 ':ts' => time(),
                 ':path' => $path,
@@ -75,7 +77,8 @@ SQL
         $fromTs = (new DateTimeImmutable($fromYmd))->setTime(0,0)->getTimestamp();
         $toTs = (new DateTimeImmutable($toYmd))->setTime(23,59,59)->getTimestamp();
 
-        $sql = 'SELECT date(datetime(ts, "unixepoch")) as d, COUNT(*) as c FROM accesses WHERE ts BETWEEN :from AND :to GROUP BY d ORDER BY d ASC';
+        $table = AuthService::quoteIdentifier(self::tableName());
+        $sql = "SELECT DATE(FROM_UNIXTIME(ts)) AS d, COUNT(*) AS c FROM {$table} WHERE ts BETWEEN :from AND :to GROUP BY d ORDER BY d ASC";
         try {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':from' => $fromTs, ':to' => $toTs]);

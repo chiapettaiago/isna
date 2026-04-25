@@ -36,6 +36,10 @@ class View
             echo '</div>';
         }
 
+        if (function_exists('cms_render_custom_sections')) {
+            cms_render_custom_sections($rel);
+        }
+
         if (is_readable($footer)) {
             include $footer;
         }

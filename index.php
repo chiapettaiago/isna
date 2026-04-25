@@ -1,4 +1,13 @@
 <?php
+if (PHP_SAPI === 'cli-server') {
+    $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $staticFile = realpath(__DIR__ . rawurldecode($requestPath));
+    $root = realpath(__DIR__);
+    if ($staticFile && $root && strpos($staticFile, $root . DIRECTORY_SEPARATOR) === 0 && is_file($staticFile)) {
+        return false;
+    }
+}
+
 // Carregar configurações do ambiente
 $config = include 'config.php';
 
@@ -28,9 +37,9 @@ if (empty($path) || $path[0] !== '/') {
 }
 
 $currentUser = null;
-$protectedRoutes = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/sobre'];
+$protectedRoutes = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre'];
 
-// Registrar acessos simples em SQLite (apenas GETs relevantes)
+// Registrar acessos simples no MySQL remoto (apenas GETs relevantes)
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $logPath = $path;
     // excluir assets estáticos
@@ -87,62 +96,7 @@ if ($path === '/api/access-stats' && $_SERVER['REQUEST_METHOD'] === 'GET') {
         $temp = $fromDate; $fromDate = $toDate; $toDate = $temp;
     }
 
-    // Consultar AccessLogger (SQLite)
-    $dailyCounts = AccessLogger::dailyCounts($fromDate->format('Y-m-d'), $toDate->format('Y-m-d')) ?: [];
-
-    $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
-    $labels = [];
-    $values = [];
-    foreach ($period as $day) {
-        $key = $day->format('Y-m-d');
-        $labels[] = $day->format('d/m');
-        $values[] = (int) ($dailyCounts[$key] ?? 0);
-    }
-
-    $total = array_sum($values);
-    $count = count($values);
-    $average = $count > 0 ? ($total / $count) : 0;
-    $peakLabel = null; $peakValue = 0;
-    if (!empty($values)) {
-        $maxValue = max($values);
-        if ($maxValue > 0) {
-            $index = array_search($maxValue, $values, true);
-            if ($index !== false) { $peakLabel = $labels[$index]; $peakValue = $maxValue; }
-        }
-    }
-
-    echo json_encode([
-        'labels' => $labels,
-        'values' => $values,
-        'total' => $total,
-        'average' => $average,
-        'peakLabel' => $peakLabel,
-        'peakValue' => $peakValue,
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-// Endpoint de debug: retorna as mesmas estatísticas sem exigir autenticação.
-// Apenas para diagnóstico — remover/proteger em produção.
-if ($path === '/api/access-stats-debug' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    header('Content-Type: application/json; charset=utf-8');
-
-    $today = new DateTimeImmutable('today');
-    $defaultStart = $today->modify('-29 days');
-
-    $fromParam = isset($_GET['from']) ? trim((string) $_GET['from']) : '';
-    $toParam = isset($_GET['to']) ? trim((string) $_GET['to']) : '';
-
-    $fromDate = DateTimeImmutable::createFromFormat('Y-m-d', $fromParam) ?: $defaultStart;
-    $toDate = DateTimeImmutable::createFromFormat('Y-m-d', $toParam) ?: $today;
-
-    $fromDate = $fromDate->setTime(0, 0);
-    $toDate = $toDate->setTime(0, 0);
-
-    if ($fromDate > $toDate) {
-        $temp = $fromDate; $fromDate = $toDate; $toDate = $temp;
-    }
-
+    // Consultar AccessLogger (MySQL)
     $dailyCounts = AccessLogger::dailyCounts($fromDate->format('Y-m-d'), $toDate->format('Y-m-d')) ?: [];
 
     $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
@@ -206,6 +160,11 @@ if ($path === '/gestao-blog' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $bc = new BlogController();
     $bc->handlePost();
 }
+if ($path === '/gestao-cms' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/app/controllers/CmsController.php';
+    $cc = new CmsController();
+    $cc->handlePost();
+}
 
 
 
@@ -228,6 +187,7 @@ $router->add('/area-restrita', ['file' => 'area-restrita.php', 'title' => 'Área
 $router->add('/gestao-usuarios', ['file' => 'gestao-usuarios.php', 'title' => 'Gestão de Usuários - ISNA']);
 $router->add('/gestao-galeria', ['file' => 'gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA']);
 $router->add('/gestao-blog', ['file' => 'gestao-blog.php', 'title' => 'Gestão do Blog - ISNA']);
+$router->add('/gestao-cms', ['file' => 'gestao-cms.php', 'title' => 'CMS do Site - ISNA']);
 $router->add('/contato', ['file' => 'contato.php', 'title' => 'Contato - ISNA']);
 $router->add('/mural', ['file' => 'mural.php', 'title' => 'Mural Informativo - ISNA']);
 

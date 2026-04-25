@@ -122,17 +122,17 @@
 </script>
 
    <!-- Seção Hero -->
-   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; background-position: center; background-repeat: no-repeat;">
+   <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('titulos-documentos', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px;  background-size: cover; background-position: center; background-repeat: no-repeat;">
      <div class="container text-center">
-       <h1 class="display-4">Títulos e Documentos</h1>
-       <p class="lead">Conheça nossos títulos, certificações e documentos institucionais que demonstram nosso compromisso com a transparência e a prestação de contas.</p>
+       <h1 class="display-4"><?php echo cms_text('titulos-documentos', 'hero.title', 'Títulos e Documentos'); ?></h1>
+       <p class="lead"><?php echo cms_paragraph('titulos-documentos', 'hero.subtitle', 'Conheça nossos títulos, certificações e documentos institucionais que demonstram nosso compromisso com a transparência e a prestação de contas.'); ?></p>
      </div>
    </section>
 
   <!-- Seção Principal -->
   <section class="py-5">
     <div class="container">
-      <h1 class="text-center mb-5">Títulos e Documentos</h1>
+      <h1 class="text-center mb-5"><?php echo cms_text('titulos-documentos', 'main.title', 'Títulos e Documentos'); ?></h1>
 
       <div class="row pdf-grid row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         <!-- Card: CERTIFICADO CEBAS -->

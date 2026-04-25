@@ -21,7 +21,7 @@ if ($fromDate > $toDate) {
 }
 
 $dailyCounts = [];
-$logReadError = null; // Não dependemos mais do arquivo de log; o frontend consulta /api/access-stats
+$logReadError = null; // Os dados são consultados do MySQL via /api/access-stats
 
 $period = new DatePeriod($fromDate, new DateInterval('P1D'), $toDate->modify('+1 day'));
 
@@ -198,6 +198,22 @@ if (!empty($chartValues)) {
           </div>
         </div>
       </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex flex-column">
+            <h2 class="h5 fw-semibold">
+              <i class="bi bi-layout-text-window-reverse me-2 text-warning"></i>CMS do site
+            </h2>
+            <p class="mb-4">
+              Edite textos, chamadas e imagens das principais seções públicas sem alterar arquivos de código.
+            </p>
+            <a class="btn btn-outline-warning mt-auto w-100" href="<?php echo $site_url; ?>/gestao-cms">
+              <i class="bi bi-pencil-square me-1"></i> Gerenciar conteúdo
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -217,18 +233,7 @@ if (!empty($chartValues)) {
         if (fromInput && fromInput.value) params.set('from', fromInput.value);
         if (toInput && toInput.value) params.set('to', toInput.value);
 
-        // Tenta o endpoint autenticado primeiro
-        let res = await fetch('<?php echo $site_url; ?>/api/access-stats?' + params.toString(), { credentials: 'same-origin' });
-        if (res.status === 401) {
-          // fallback para endpoint de debug (sem autenticação)
-          console.warn('api/access-stats retornou 401, tentando /api/access-stats-debug');
-          try {
-            res = await fetch('<?php echo $site_url; ?>/api/access-stats-debug?' + params.toString());
-          } catch (ex) {
-            console.error('Falha ao obter dados de debug', ex);
-            return null;
-          }
-        }
+        const res = await fetch('<?php echo $site_url; ?>/api/access-stats?' + params.toString(), { credentials: 'same-origin' });
 
         if (!res.ok) {
           console.error('Falha ao obter dados de acessos', res.status);

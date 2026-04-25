@@ -2,7 +2,8 @@
 <?php
 declare(strict_types=1);
 
-// Importa entradas de `logs/access_log` para o SQLite usado por AccessLogger
+// Script legado: importa entradas de `logs/access_log` para o banco usado por AccessLogger.
+// O AccessLogger atual usa MySQL remoto.
 
 require_once __DIR__ . '/../app/services/AccessLogger.php';
 
@@ -19,7 +20,7 @@ if (!is_readable($logFile)) {
 
 $pdo = AccessLogger::ensureDb();
 if (!$pdo) {
-    e('Não foi possível abrir/criar o banco SQLite.');
+    e('Não foi possível abrir/criar a tabela de acessos no banco configurado.');
     exit(3);
 }
 

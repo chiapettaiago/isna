@@ -70,21 +70,20 @@
   }
 </style>
     <!-- Seção Hero -->
-    <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
+    <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('doe', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px;  background-size: cover; /* ou 'contain' ou valores específicos */
     background-position: center; /* Centraliza a imagem no elemento */
     background-repeat: no-repeat; /* Evita a repetição da imagem */">
       <div class="container text-center">
-        <h1 class="display-4">Doações</h1>
-        <p class="lead">Saiba como apoiar nosso instituto por meio de doações</p>
+        <h1 class="display-4"><?php echo cms_text('doe', 'hero.title', 'Doações'); ?></h1>
+        <p class="lead"><?php echo cms_text('doe', 'hero.subtitle', 'Saiba como apoiar nosso instituto por meio de doações'); ?></p>
       </div>
     </section>
 
   <!-- Conteúdo Principal -->
   <div class="container mt-5">
-    <h1 class="mb-4 text-center">Faça sua Doação</h1>
+    <h1 class="mb-4 text-center"><?php echo cms_text('doe', 'main.title', 'Faça sua Doação'); ?></h1>
     <p class="mb-5 text-center">
-      Sua contribuição é essencial para continuarmos com nossos projetos sociais e ajudarmos mais pessoas.
-      Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.
+      <?php echo cms_paragraph('doe', 'main.text', 'Sua contribuição é essencial para continuarmos com nossos projetos sociais e ajudarmos mais pessoas. Selecione uma das opções abaixo para realizar sua doação de maneira segura e prática.'); ?>
     </p>
     <!-- Player de Vídeo (antes das opções de doação) -->
     <div class="row justify-content-center mb-5 ">

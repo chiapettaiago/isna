@@ -1,8 +1,8 @@
 <!-- Seção Hero -->
-<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('/images/imagem.jpg'); height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
+<section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('parceiros', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
   <div class="container text-center">
-    <h1 class="display-4">Parceiros</h1>
-    <p class="lead">Conheça nossos parceiros e apoiadores que fazem nosso trabalho possível.</p>
+    <h1 class="display-4"><?php echo cms_text('parceiros', 'hero.title', 'Parceiros'); ?></h1>
+    <p class="lead"><?php echo cms_paragraph('parceiros', 'hero.subtitle', 'Conheça nossos parceiros e apoiadores que fazem nosso trabalho possível.'); ?></p>
   </div>
 </section>
 
@@ -73,8 +73,8 @@
 <section class="py-5 bg-light" id="parceiros-institucionais">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="section-header mb-4">Parceiros Institucionais</h2>
-      <p class="text-muted">Organizações e empresas que apoiam nossas iniciativas</p>
+      <h2 class="section-header mb-4"><?php echo cms_text('parceiros', 'institucionais.title', 'Parceiros Institucionais'); ?></h2>
+      <p class="text-muted"><?php echo cms_paragraph('parceiros', 'institucionais.subtitle', 'Organizações e empresas que apoiam nossas iniciativas'); ?></p>
     </div>
     
     <div class="row g-4 justify-content-center">
