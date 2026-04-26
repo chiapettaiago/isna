@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../services/PdfRenderer.php';
 
 $documents = PdfRenderer::documents();
+$pdfRenderingAvailable = PdfRenderer::supportsRendering();
 ?>
 
 <style>
@@ -116,31 +117,43 @@ $documents = PdfRenderer::documents();
           $docKey = htmlspecialchars($document['key'], ENT_QUOTES, 'UTF-8');
           $docTitle = htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8');
           $pageCount = (int) ($document['pages'] ?? 1);
-          $thumbUrl = url('/api/pdf-page?doc=' . rawurlencode($document['key']) . '&page=1&size=thumb');
+          $pdfUrl = url('/docs/' . rawurlencode($document['file']));
+          $fallbackThumb = url('/thumbnails/' . rawurlencode($document['thumbnail'] ?? 'all_documents.png'));
+          $thumbUrl = $pdfRenderingAvailable
+            ? url('/api/pdf-page?doc=' . rawurlencode($document['key']) . '&page=1&size=thumb')
+            : $fallbackThumb;
         ?>
         <div class="col">
           <div class="card document-card shadow-sm">
             <div class="pdf-preview">
-              <img
-                src="<?php echo htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8'); ?>"
-                alt="<?php echo $docTitle; ?>"
-                loading="lazy"
-                decoding="async"
-              >
+              <a class="d-flex w-100 h-100" href="<?php echo htmlspecialchars($pdfUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
+                <img
+                  src="<?php echo htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8'); ?>"
+                  alt="<?php echo $docTitle; ?>"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </a>
             </div>
             <div class="card-body d-flex flex-column">
               <h5 class="card-title"><?php echo $docTitle; ?></h5>
-              <button
-                class="btn btn-primary mt-auto"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#modalPdf"
-                data-doc="<?php echo $docKey; ?>"
-                data-title="<?php echo $docTitle; ?>"
-                data-pages="<?php echo $pageCount; ?>"
-              >
-                Visualizar Completo
-              </button>
+              <?php if ($pdfRenderingAvailable): ?>
+                <button
+                  class="btn btn-primary mt-auto"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalPdf"
+                  data-doc="<?php echo $docKey; ?>"
+                  data-title="<?php echo $docTitle; ?>"
+                  data-pages="<?php echo $pageCount; ?>"
+                >
+                  Visualizar Completo
+                </button>
+              <?php else: ?>
+                <a class="btn btn-primary mt-auto" href="<?php echo htmlspecialchars($pdfUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
+                  Abrir Documento
+                </a>
+              <?php endif; ?>
             </div>
           </div>
         </div>
