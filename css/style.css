@@ -449,6 +449,21 @@ body.admin-layout {
   color: rgba(255, 255, 255, 0.72);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  width: 100%;
+  background: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.admin-sidebar-user:hover,
+.admin-sidebar-user:focus {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
 }
 
 .admin-sidebar-nav {

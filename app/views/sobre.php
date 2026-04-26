@@ -60,8 +60,8 @@ if (is_readable($jsonFile)) {
               <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>
-                  <strong>Versão do site:</strong> 1.4<br>
-                  <strong>Data de lançamento:</strong> Agosto de 2025
+                  <strong>Versão do sistema:</strong> 2.0<br>
+                  <strong>Data de lançamento:</strong> Abril de 2026
                 </div>
               </div>
               <p class="mt-4 fs-5 text-center">Este site foi desenvolvido para facilitar o acesso às informações do Instituto Social Novo Amanhecer, promover a transparência e incentivar a participação da comunidade em nossos projetos sociais.</p>
@@ -105,11 +105,30 @@ if (is_readable($jsonFile)) {
   <section class="py-5 bg-white">
     <div class="container">
       <div class="timeline">
+        <!-- Card da versão 2.0 -->
+        <div class="timeline-item">
+          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
+            <div class="card-body p-5">
+              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-rocket-takeoff me-2"></i>Melhorias da versão 2.0 (atual)</h2>
+              <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                <div>Versão lançada em Abril de 2026</div>
+              </div>
+              <ul class="fs-5 mb-0 list-unstyled">
+                <li class="text-center py-2 border-bottom"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Relatórios internos de acesso com filtros por período, páginas mais acessadas e exportação em PDF</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-lock me-2 text-info"></i>Dashboard e relatórios agora desconsideram telas administrativas e IPs internos configurados</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-success"></i>Gestão completa da galeria com edição de seções e fotos carregadas em modal</li>
+                <li class="text-center py-2 border-bottom"><i class="bi bi-window-sidebar me-2 text-secondary"></i>Área logada reorganizada como ISNAPress, com navegação administrativa aprimorada</li>
+                <li class="text-center py-2"><i class="bi bi-person-gear me-2 text-warning"></i>Correções na sidebar administrativa, incluindo ícones e acesso direto à página Sobre</li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <!-- Card da versão 1.4 -->
         <div class="timeline-item">
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
             <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-danger text-center"><i class="bi bi-play-circle me-2"></i>Melhorias da versão 1.4 (em desenvolvimento)</h2>
+              <h2 class="h4 mb-4 text-danger text-center"><i class="bi bi-play-circle me-2"></i>Melhorias da versão 1.4</h2>
               <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>Versão lançada em Agosto de 2025</div>
@@ -124,7 +143,7 @@ if (is_readable($jsonFile)) {
         <div class="timeline-item">
           <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
             <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-bank me-2"></i>Melhorias da versão 1.3 (atual)</h2>
+              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-bank me-2"></i>Melhorias da versão 1.3</h2>
               <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
                 <i class="bi bi-info-circle-fill me-2 fs-4"></i>
                 <div>Versão lançada em Julho de 2025</div>

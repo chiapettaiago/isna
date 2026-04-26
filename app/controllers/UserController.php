@@ -14,12 +14,16 @@ class UserController extends Controller
 
         $action = isset($_POST['action']) ? trim((string) $_POST['action']) : '';
 
-        if ($action === 'update_password') {
+        if ($action === 'update_password' || $action === 'update_sidebar_password') {
             $token = $_POST['csrf_token'] ?? '';
+            $csrfForm = $action === 'update_sidebar_password' ? 'update_sidebar_password' : 'update_password';
+            $redirectTo = $action === 'update_sidebar_password'
+                ? $this->safeReturnPath(isset($_POST['return_to']) ? (string)$_POST['return_to'] : 'area-restrita')
+                : 'gestao-usuarios';
 
-            if (!AuthService::validateCsrfToken('update_password', $token)) {
+            if (!AuthService::validateCsrfToken($csrfForm, $token)) {
                 AuthService::flashMessage('error', 'Token de segurança inválido. Por favor, tente novamente.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             $currentPassword = isset($_POST['current_password']) ? (string) $_POST['current_password'] : '';
@@ -28,47 +32,47 @@ class UserController extends Controller
 
             if ($currentPassword === '' || $newPassword === '' || $confirmPassword === '') {
                 AuthService::flashMessage('error', 'Preencha todos os campos para alterar a senha.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             if ($newPassword !== $confirmPassword) {
                 AuthService::flashMessage('error', 'A confirmação da nova senha não confere.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             if (strlen($newPassword) < 8) {
                 AuthService::flashMessage('error', 'A nova senha deve conter pelo menos 8 caracteres.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             $username = AuthService::userUsername();
 
             if ($username === null) {
                 AuthService::flashMessage('error', 'Não foi possível identificar o usuário autenticado.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             $user = AuthService::userFromDb($username);
 
             if (!is_array($user)) {
                 AuthService::flashMessage('error', 'Registro de usuário não encontrado.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             $currentHash = $user['password'] ?? '';
 
             if (!is_string($currentHash) || $currentHash === '' || !password_verify($currentPassword, $currentHash)) {
                 AuthService::flashMessage('error', 'Senha atual incorreta.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             if (!AuthService::updateUserInDb($username, ['password' => password_hash($newPassword, PASSWORD_DEFAULT)])) {
                 AuthService::flashMessage('error', 'Não foi possível atualizar a senha no banco MySQL.');
-                AuthService::redirect('gestao-usuarios');
+                AuthService::redirect($redirectTo);
             }
 
             AuthService::flashMessage('success', 'Senha atualizada com sucesso.');
-            AuthService::redirect('gestao-usuarios');
+            AuthService::redirect($redirectTo);
         } elseif ($action === 'create_user') {
             if (!AuthService::userIsAdmin()) {
                 AuthService::flashMessage('error', 'Você não tem permissão para criar usuários.');
@@ -149,5 +153,27 @@ class UserController extends Controller
             AuthService::flashMessage('success', 'Usuário criado com sucesso no banco MySQL.');
             AuthService::redirect('gestao-usuarios');
         }
+    }
+
+    private function safeReturnPath(string $path): string
+    {
+        $path = trim($path);
+        if ($path === '' || filter_var($path, FILTER_VALIDATE_URL)) {
+            return 'area-restrita';
+        }
+
+        $pathOnly = parse_url($path, PHP_URL_PATH);
+        $query = parse_url($path, PHP_URL_QUERY);
+
+        if (!is_string($pathOnly) || $pathOnly === '' || $pathOnly[0] !== '/') {
+            return 'area-restrita';
+        }
+
+        $returnPath = $pathOnly;
+        if (is_string($query) && $query !== '') {
+            $returnPath .= '?' . $query;
+        }
+
+        return $returnPath;
     }
 }

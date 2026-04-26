@@ -21,16 +21,33 @@
 </head>
 <body class="<?php echo $currentUser ? 'admin-layout' : ''; ?>">
   <?php if ($currentUser): ?>
+  <?php
+    $sidebarUsername = isset($currentUser['username']) ? (string)$currentUser['username'] : '';
+    $sidebarName = isset($currentUser['name']) && (string)$currentUser['name'] !== '' ? (string)$currentUser['name'] : $sidebarUsername;
+    $sidebarRoles = isset($currentUser['roles']) && is_array($currentUser['roles']) ? $currentUser['roles'] : [];
+    $sidebarRolesLabel = empty($sidebarRoles)
+      ? 'Padrão'
+      : implode(', ', array_map(static function ($role) {
+          $role = (string)$role;
+          return function_exists('mb_strtoupper') ? mb_strtoupper($role) : strtoupper($role);
+        }, $sidebarRoles));
+    $sidebarPasswordToken = AuthService::generateCsrfToken('update_sidebar_password');
+    $sidebarReturnTo = $path;
+    $sidebarQuery = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_QUERY);
+    if ($sidebarQuery) {
+      $sidebarReturnTo .= '?' . $sidebarQuery;
+    }
+  ?>
   <aside class="admin-sidebar" aria-label="Navegação administrativa">
     <a class="admin-sidebar-brand" href="<?php echo $site_url; ?>/area-restrita" title="Área restrita">
       <img src="<?php echo $site_url . cms_attr('global', 'brand.logo', '/images/logo.png'); ?>" alt="Logo do Instituto">
-      <span class="admin-sidebar-text">ISNA Admin</span>
+      <span class="admin-sidebar-text">ISNAPress</span>
     </a>
 
-    <div class="admin-sidebar-user" title="<?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?>">
+    <button class="admin-sidebar-user" type="button" title="<?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?>" data-bs-toggle="modal" data-bs-target="#adminUserModal">
       <i class="bi bi-person-circle" aria-hidden="true"></i>
-      <span class="admin-sidebar-text"><?php echo htmlspecialchars($currentUser['name'], ENT_QUOTES, 'UTF-8'); ?></span>
-    </div>
+      <span class="admin-sidebar-text"><?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?></span>
+    </button>
 
     <nav class="admin-sidebar-nav">
       <a class="admin-sidebar-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" title="Dashboard">
@@ -42,8 +59,12 @@
         <span class="admin-sidebar-text">Relatórios</span>
       </a>
       <a class="admin-sidebar-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" title="Usuários">
-        <i class="bi bi-people-gear" aria-hidden="true"></i>
+        <i class="bi bi-person-gear" aria-hidden="true"></i>
         <span class="admin-sidebar-text">Usuários</span>
+      </a>
+      <a class="admin-sidebar-link<?php echo ($path === '/sobre') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/sobre" title="Sobre o sistema">
+        <i class="bi bi-info-circle" aria-hidden="true"></i>
+        <span class="admin-sidebar-text">Sobre</span>
       </a>
       <a class="admin-sidebar-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" title="Gerenciar galeria">
         <i class="bi bi-images" aria-hidden="true"></i>
@@ -64,6 +85,58 @@
       <span class="admin-sidebar-text">Sair</span>
     </a>
   </aside>
+
+  <div class="modal fade" id="adminUserModal" tabindex="-1" aria-labelledby="adminUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title h5" id="adminUserModalLabel">Minha conta</h2>
+            <div class="small text-muted">Informações do usuário autenticado</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="row mb-4">
+            <dt class="col-sm-4">Nome</dt>
+            <dd class="col-sm-8"><?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?></dd>
+            <dt class="col-sm-4">Usuário</dt>
+            <dd class="col-sm-8"><code><?php echo htmlspecialchars($sidebarUsername, ENT_QUOTES, 'UTF-8'); ?></code></dd>
+            <dt class="col-sm-4">Perfil</dt>
+            <dd class="col-sm-8"><?php echo htmlspecialchars($sidebarRolesLabel, ENT_QUOTES, 'UTF-8'); ?></dd>
+          </dl>
+
+          <form method="post" action="<?php echo $site_url; ?>/gestao-usuarios" autocomplete="off">
+            <input type="hidden" name="action" value="update_sidebar_password">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($sidebarPasswordToken, ENT_QUOTES, 'UTF-8'); ?>">
+            <input type="hidden" name="return_to" value="<?php echo htmlspecialchars($sidebarReturnTo, ENT_QUOTES, 'UTF-8'); ?>">
+
+            <h3 class="h6 fw-semibold mb-3">Alterar senha</h3>
+
+            <div class="mb-3">
+              <label class="form-label" for="sidebar_current_password">Senha atual</label>
+              <input class="form-control" type="password" id="sidebar_current_password" name="current_password" autocomplete="current-password" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="sidebar_new_password">Nova senha</label>
+              <input class="form-control" type="password" id="sidebar_new_password" name="new_password" autocomplete="new-password" minlength="8" required>
+              <div class="form-text">Use pelo menos 8 caracteres.</div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="sidebar_new_password_confirmation">Confirme a nova senha</label>
+              <input class="form-control" type="password" id="sidebar_new_password_confirmation" name="new_password_confirmation" autocomplete="new-password" minlength="8" required>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">
+              <i class="bi bi-key-fill me-1"></i> Atualizar senha
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <?php else: ?>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
