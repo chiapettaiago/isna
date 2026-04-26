@@ -139,13 +139,13 @@ if (!empty($chartValues)) {
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body">
             <h2 class="h5 fw-semibold">
-              <i class="bi bi-files-alt me-2 text-primary"></i>Documentos &amp; Transparência
+              <i class="bi bi-graph-up me-2 text-primary"></i>Relatórios de acesso
             </h2>
             <p class="mb-3">
-              Organize relatórios, atas e outros materiais disponíveis na seção de transparência.
+              Gere relatórios de navegação do site por período e exporte os dados em PDF.
             </p>
-            <a class="btn btn-outline-primary w-100" href="<?php echo $site_url; ?>/transparencia">
-              <i class="bi bi-eye-fill me-1"></i> Visualizar página pública
+            <a class="btn btn-outline-primary w-100" href="<?php echo $site_url; ?>/relatorios-acesso">
+              <i class="bi bi-file-earmark-pdf me-1"></i> Gerar relatórios
             </a>
           </div>
         </div>

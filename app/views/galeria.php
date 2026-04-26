@@ -3,81 +3,13 @@ $galleryConfig = gallery_load();
 $hero = $galleryConfig['hero'];
 $rawSections = $galleryConfig['sections'];
 $gallerySections = [];
-$projectRoot = dirname(__DIR__, 2);
 
 foreach ($rawSections as $section) {
     $id = $section['id'];
     $title = $section['title'];
-    $type = $section['type'];
     $background = isset($section['background']) && $section['background'] !== '' ? $section['background'] : '';
     $description = isset($section['description']) ? $section['description'] : '';
-    $items = [];
-
-    if ($type === 'directory') {
-        $relativeDir = isset($section['directory']) ? trim($section['directory'], '/') : '';
-
-        if ($relativeDir !== '') {
-            $absoluteDir = $projectRoot . '/' . $relativeDir;
-            $webBase = '/' . $relativeDir;
-
-            $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-            $priority = ['webp', 'jpg', 'jpeg', 'png', 'gif'];
-            $byBase = [];
-
-            if (is_dir($absoluteDir)) {
-                foreach (scandir($absoluteDir) as $file) {
-                    if ($file === '.' || $file === '..') {
-                        continue;
-                    }
-
-                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-
-                    if (!in_array($ext, $allowedExt, true)) {
-                        continue;
-                    }
-
-                    $base = pathinfo($file, PATHINFO_FILENAME);
-                    $byBase[$base][$ext] = $file;
-                }
-            }
-
-            foreach ($byBase as $base => $extMap) {
-                foreach ($priority as $preferred) {
-                    if (isset($extMap[$preferred])) {
-                        $file = $extMap[$preferred];
-                        $items[] = [
-                            'type' => 'image',
-                            'src' => $webBase . '/' . $file,
-                            'alt' => ($section['caption_prefix'] ?? $title) . ' ' . (count($items) + 1),
-                            'caption' => ($section['caption_prefix'] ?? $title) . ' ' . (count($items) + 1),
-                        ];
-                        break;
-                    }
-                }
-            }
-        }
-    } else {
-        if (isset($section['items']) && is_array($section['items'])) {
-            foreach ($section['items'] as $item) {
-                if (!is_array($item)) {
-                    continue;
-                }
-
-                $src = isset($item['src']) ? trim((string) $item['src']) : '';
-
-                if ($src === '') {
-                    continue;
-                }
-
-                $items[] = [
-                    'type' => 'image',
-                    'src' => $src,
-                    'alt' => isset($item['alt']) && $item['alt'] !== '' ? (string) $item['alt'] : $title,
-                    'caption' => isset($item['caption']) ? (string) $item['caption'] : '',
-                ];
-            }
-        }
-    }
+    $items = GalleryModel::sectionItems($section);
 
     $modalId = 'gallery-modal-' . $id;
     $carouselId = 'gallery-carousel-' . $id;

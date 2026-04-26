@@ -37,7 +37,7 @@
         <i class="bi bi-speedometer2" aria-hidden="true"></i>
         <span class="admin-sidebar-text">Dashboard</span>
       </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/transparencia') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/transparencia" title="Relatórios">
+      <a class="admin-sidebar-link<?php echo ($path === '/relatorios-acesso') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/relatorios-acesso" title="Relatórios">
         <i class="bi bi-graph-up" aria-hidden="true"></i>
         <span class="admin-sidebar-text">Relatórios</span>
       </a>

@@ -37,24 +37,13 @@ if (empty($path) || $path[0] !== '/') {
 }
 
 $currentUser = null;
-$protectedRoutes = ['/area-restrita', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre'];
+$protectedRoutes = ['/area-restrita', '/relatorios-acesso', '/relatorios-acesso/pdf', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre'];
 
 // Registrar acessos simples no MySQL remoto (apenas GETs relevantes)
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $logPath = $path;
-    // excluir assets estáticos
-    if (!preg_match('/\.(css|js|png|jpe?g|gif|svg|ico|webp|pdf|mp4|mp3|zip|json|txt|xml)$/i', $logPath)) {
-        // excluir endpoints internos
-        $excludedExact = ['/api/access-stats', '/api/pdf-documents', '/api/pdf-page'];
-        $excludedPrefixes = ['/gestao-', '/admin'];
-        $skip = false;
-        if (in_array($logPath, $excludedExact, true)) $skip = true;
-        foreach ($excludedPrefixes as $prefix) {
-            if (strncmp($logPath, $prefix, strlen($prefix)) === 0) { $skip = true; break; }
-        }
-        if (!$skip) {
-            @AccessLogger::record($logPath, 'GET');
-        }
+    if (AccessLogger::isReportablePath($logPath)) {
+        @AccessLogger::record($logPath, 'GET');
     }
 }
 
@@ -191,6 +180,43 @@ if (in_array($path, $protectedRoutes, true) && !AuthService::check()) {
     AuthService::redirect('login');
 }
 
+if ($path === '/relatorios-acesso/pdf' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once __DIR__ . '/app/services/AccessReportPdf.php';
+
+    $today = new DateTimeImmutable('today');
+    $defaultStart = $today->modify('-29 days');
+
+    $fromParam = isset($_GET['from']) ? trim((string) $_GET['from']) : '';
+    $toParam = isset($_GET['to']) ? trim((string) $_GET['to']) : '';
+
+    $fromDate = DateTimeImmutable::createFromFormat('Y-m-d', $fromParam) ?: $defaultStart;
+    $toDate = DateTimeImmutable::createFromFormat('Y-m-d', $toParam) ?: $today;
+
+    $fromDate = $fromDate->setTime(0, 0);
+    $toDate = $toDate->setTime(0, 0);
+
+    if ($fromDate > $toDate) {
+        $temp = $fromDate;
+        $fromDate = $toDate;
+        $toDate = $temp;
+    }
+
+    $report = AccessLogger::report($fromDate->format('Y-m-d'), $toDate->format('Y-m-d'), 100);
+    $pdf = AccessReportPdf::render($report, $fromDate, $toDate);
+    $filename = 'relatorio-acessos-' . $fromDate->format('Ymd') . '-' . $toDate->format('Ymd') . '.pdf';
+
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Content-Length: ' . strlen($pdf));
+    header('Cache-Control: private, max-age=0, must-revalidate');
+    echo $pdf;
+    exit;
+}
+
 if ($path === '/gestao-usuarios' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/app/controllers/UserController.php';
     $uc = new UserController();
@@ -231,6 +257,7 @@ $router->add('/doacoes-bancarias', ['file' => 'bank-donations.php', 'title' => '
 $router->add('/sobre', ['file' => 'sobre.php', 'title' => 'Sobre o Site - ISNA']);
 $router->add('/login', ['file' => 'login.php', 'title' => 'Entrar - ISNA']);
 $router->add('/area-restrita', ['file' => 'area-restrita.php', 'title' => 'Área Restrita - ISNA']);
+$router->add('/relatorios-acesso', ['file' => 'relatorios-acesso.php', 'title' => 'Relatórios de Acesso - ISNA']);
 $router->add('/gestao-usuarios', ['file' => 'gestao-usuarios.php', 'title' => 'Gestão de Usuários - ISNA']);
 $router->add('/gestao-galeria', ['file' => 'gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA']);
 $router->add('/gestao-blog', ['file' => 'gestao-blog.php', 'title' => 'Gestão do Blog - ISNA']);

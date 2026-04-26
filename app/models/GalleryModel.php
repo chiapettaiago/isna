@@ -206,6 +206,112 @@ class GalleryModel
         ];
     }
 
+    public static function sectionItems(array $section): array
+    {
+        $title = isset($section['title']) && is_string($section['title']) ? $section['title'] : 'Galeria';
+        $type = isset($section['type']) && is_string($section['type']) ? $section['type'] : 'grid';
+        $items = [];
+
+        if ($type === 'directory') {
+            $relativeDir = isset($section['directory']) ? trim((string) $section['directory'], '/') : '';
+
+            if ($relativeDir === '') {
+                return [];
+            }
+
+            $projectRoot = dirname(__DIR__, 2);
+            $absoluteDir = $projectRoot . '/' . $relativeDir;
+            $webBase = '/' . $relativeDir;
+            $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $priority = ['webp', 'jpg', 'jpeg', 'png', 'gif'];
+            $byBase = [];
+
+            if (is_dir($absoluteDir)) {
+                foreach (scandir($absoluteDir) as $file) {
+                    if ($file === '.' || $file === '..') {
+                        continue;
+                    }
+
+                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+                    if (!in_array($ext, $allowedExt, true)) {
+                        continue;
+                    }
+
+                    $base = pathinfo($file, PATHINFO_FILENAME);
+                    $byBase[$base][$ext] = $file;
+                }
+            }
+
+            ksort($byBase, SORT_NATURAL | SORT_FLAG_CASE);
+
+            foreach ($byBase as $extMap) {
+                foreach ($priority as $preferred) {
+                    if (!isset($extMap[$preferred])) {
+                        continue;
+                    }
+
+                    $file = $extMap[$preferred];
+                    $index = count($items) + 1;
+                    $captionPrefix = isset($section['caption_prefix']) && is_string($section['caption_prefix']) && $section['caption_prefix'] !== ''
+                        ? $section['caption_prefix']
+                        : $title;
+
+                    $items[] = [
+                        'type' => 'image',
+                        'src' => $webBase . '/' . $file,
+                        'alt' => $captionPrefix . ' ' . $index,
+                        'caption' => $captionPrefix . ' ' . $index,
+                    ];
+                    break;
+                }
+            }
+
+            return $items;
+        }
+
+        if (isset($section['items']) && is_array($section['items'])) {
+            foreach ($section['items'] as $item) {
+                if (!is_array($item)) {
+                    continue;
+                }
+
+                $src = isset($item['src']) ? trim((string) $item['src']) : '';
+
+                if ($src === '') {
+                    continue;
+                }
+
+                $items[] = [
+                    'type' => 'image',
+                    'src' => $src,
+                    'alt' => isset($item['alt']) && is_string($item['alt']) && $item['alt'] !== '' ? $item['alt'] : $title,
+                    'caption' => isset($item['caption']) && is_string($item['caption']) ? $item['caption'] : '',
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    public static function isDirectoryPathAllowed(string $path): bool
+    {
+        $path = trim(str_replace('\\', '/', $path), '/');
+        if ($path === '' || strpos($path, '..') !== false || strpos($path, 'images/') !== 0) {
+            return false;
+        }
+
+        $root = realpath(dirname(__DIR__, 2));
+        $imagesRoot = $root ? realpath($root . '/images') : false;
+        $absolute = $root ? realpath($root . '/' . $path) : false;
+
+        if (!$absolute || !$imagesRoot || !is_dir($absolute)) {
+            return false;
+        }
+
+        return $absolute === $imagesRoot || strpos($absolute, $imagesRoot . DIRECTORY_SEPARATOR) === 0;
+    }
+
     public static function slug(string $text): string
     {
         $text = strtolower(trim($text));
