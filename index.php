@@ -45,7 +45,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     // excluir assets estáticos
     if (!preg_match('/\.(css|js|png|jpe?g|gif|svg|ico|webp|pdf|mp4|mp3|zip|json|txt|xml)$/i', $logPath)) {
         // excluir endpoints internos
-        $excludedExact = ['/api/access-stats'];
+        $excludedExact = ['/api/access-stats', '/api/pdf-documents', '/api/pdf-page'];
         $excludedPrefixes = ['/gestao-', '/admin'];
         $skip = false;
         if (in_array($logPath, $excludedExact, true)) $skip = true;
@@ -128,6 +128,53 @@ if ($path === '/api/access-stats' && $_SERVER['REQUEST_METHOD'] === 'GET') {
         'peakLabel' => $peakLabel,
         'peakValue' => $peakValue,
     ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if ($path === '/api/pdf-documents' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once __DIR__ . '/app/services/PdfRenderer.php';
+
+    $documents = array_map(static function (array $document): array {
+        return [
+            'key' => $document['key'],
+            'title' => $document['title'],
+            'pages' => $document['pages'],
+        ];
+    }, PdfRenderer::documents());
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($documents, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if ($path === '/api/pdf-page' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once __DIR__ . '/app/services/PdfRenderer.php';
+
+    $doc = isset($_GET['doc']) ? (string) $_GET['doc'] : '';
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $size = isset($_GET['size']) ? (string) $_GET['size'] : 'full';
+
+    try {
+        $imagePath = PdfRenderer::renderPage($doc, $page, $size);
+    } catch (Throwable $exception) {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        http_response_code(404);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'Documento não encontrado ou não renderizado.'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: image/png');
+    header('Content-Length: ' . filesize($imagePath));
+    header('Cache-Control: public, max-age=86400');
+    readfile($imagePath);
     exit;
 }
 
