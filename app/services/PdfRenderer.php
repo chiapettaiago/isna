@@ -5,14 +5,14 @@ declare(strict_types=1);
 class PdfRenderer
 {
     private const DOCUMENTS = [
-        ['key' => 'certificado-cebas', 'title' => 'CERTIFICADO CEBAS', 'file' => 'CERTIFICADO CEBAS.pdf', 'thumbnail' => 'all_documents.png'],
+        ['key' => 'certificado-cebas', 'title' => 'CERTIFICADO CEBAS', 'file' => 'CERTIFICADO CEBAS.pdf', 'thumbnail' => 'CERTIFICADO CEBAS_thumbnail.png'],
         ['key' => 'certificado-siconv', 'title' => 'Certificado Siconv', 'file' => 'CertificadoSiconv.pdf', 'thumbnail' => 'CertificadoSiconv_thumbnail.png'],
         ['key' => 'cmas', 'title' => 'CMAS', 'file' => 'cmas.pdf', 'thumbnail' => 'cmas_thumbnail.png'],
-        ['key' => 'declaracao-isna', 'title' => 'Declaração ISNA', 'file' => 'ISNA_Declaracao.pdf', 'thumbnail' => 'all_documents.png'],
-        ['key' => 'oscip', 'title' => 'OSCIP', 'file' => 'OSCIP.pdf', 'thumbnail' => 'all_documents.png'],
-        ['key' => 'utilidade-publica-municipal', 'title' => 'Título de Utilidade Pública Municipal', 'file' => 'Titulo de Utilidade publica municipal.pdf', 'thumbnail' => 'Titulo de Utilidade publica_thumbnail.png'],
+        ['key' => 'declaracao-isna', 'title' => 'Declaração ISNA', 'file' => 'ISNA_Declaracao.pdf', 'thumbnail' => 'ISNA_Declaracao_thumbnail.png'],
+        ['key' => 'oscip', 'title' => 'OSCIP', 'file' => 'OSCIP.pdf', 'thumbnail' => 'OSCIP_thumbnail.png'],
+        ['key' => 'utilidade-publica-municipal', 'title' => 'Título de Utilidade Pública Municipal', 'file' => 'Titulo de Utilidade publica municipal.pdf', 'thumbnail' => 'Titulo de Utilidade publica municipal_thumbnail.png'],
         ['key' => 'utilidade-publica', 'title' => 'Título de Utilidade Pública', 'file' => 'Titulo de Utilidade publica.pdf', 'thumbnail' => 'Titulo de Utilidade publica_thumbnail.png'],
-        ['key' => 'utilidade-publica-extra', 'title' => 'Utilidade Pública', 'file' => 'utilidade publica.pdf', 'thumbnail' => 'all_documents.png'],
+        ['key' => 'utilidade-publica-extra', 'title' => 'Utilidade Pública', 'file' => 'utilidade publica.pdf', 'thumbnail' => 'utilidade publica_thumbnail.png'],
     ];
 
     public static function documents(): array

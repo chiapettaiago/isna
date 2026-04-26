@@ -118,7 +118,12 @@ $pdfRenderingAvailable = PdfRenderer::supportsRendering();
           $docTitle = htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8');
           $pageCount = (int) ($document['pages'] ?? 1);
           $pdfUrl = url('/docs/' . rawurlencode($document['file']));
-          $fallbackThumb = url('/thumbnails/' . rawurlencode($document['thumbnail'] ?? 'all_documents.png'));
+          $thumbnailFile = $document['thumbnail'] ?? 'all_documents.png';
+          $thumbnailPath = __DIR__ . '/../../thumbnails/' . $thumbnailFile;
+          $fallbackThumb = url('/thumbnails/' . rawurlencode($thumbnailFile));
+          if (is_file($thumbnailPath)) {
+            $fallbackThumb .= '?v=' . filemtime($thumbnailPath);
+          }
           $thumbUrl = $pdfRenderingAvailable
             ? url('/api/pdf-page?doc=' . rawurlencode($document['key']) . '&page=1&size=thumb')
             : $fallbackThumb;
