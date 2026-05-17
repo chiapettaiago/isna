@@ -178,14 +178,42 @@ class CmsController extends Controller
             AuthService::redirect('gestao-cms');
         }
 
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = $finfo->file($tmpName) ?: '';
         $extensionByMime = [
             'image/jpeg' => 'jpg',
             'image/png' => 'png',
             'image/webp' => 'webp',
             'image/gif' => 'gif',
         ];
+        $mime = '';
+
+        if (class_exists('finfo') && defined('FILEINFO_MIME_TYPE')) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($tmpName) ?: '';
+        } elseif (function_exists('mime_content_type')) {
+            $mime = mime_content_type($tmpName) ?: '';
+        }
+
+        if (!isset($extensionByMime[$mime]) && function_exists('getimagesize')) {
+            $imageInfo = @getimagesize($tmpName);
+            if (is_array($imageInfo) && isset($imageInfo['mime'])) {
+                $mime = (string)$imageInfo['mime'];
+            }
+        }
+
+        if (!isset($extensionByMime[$mime])) {
+            $uploadedExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            $extensionByUpload = [
+                'jpg' => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png' => 'image/png',
+                'webp' => 'image/webp',
+                'gif' => 'image/gif',
+            ];
+
+            if (isset($extensionByUpload[$uploadedExtension]) && function_exists('getimagesize') && @getimagesize($tmpName) !== false) {
+                $mime = $extensionByUpload[$uploadedExtension];
+            }
+        }
 
         if (!isset($extensionByMime[$mime])) {
             AuthService::flashMessage('error', 'Formato inválido. Use JPG, PNG, WebP ou GIF.');

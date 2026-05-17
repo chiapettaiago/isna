@@ -1,26 +1,62 @@
 <?php
-  $mesMural = '03';
-  $anoMural = date('Y');
   $nomesMeses = [
     '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março',
     '04' => 'Abril',   '05' => 'Maio',      '06' => 'Junho',
     '07' => 'Julho',   '08' => 'Agosto',    '09' => 'Setembro',
     '10' => 'Outubro', '11' => 'Novembro',  '12' => 'Dezembro',
   ];
-  $nomeMesMural = $nomesMeses[$mesMural] ?? 'Mês';
 
-  // Lê dinamicamente as imagens da pasta /images/mural
-  $muralDir  = $_SERVER['DOCUMENT_ROOT'] . '/images/mural/';
-  $muralExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+  // Imagens gerenciadas pelo CMS em "Mural Informativo"
   $muralImgs = [];
-  if (is_dir($muralDir)) {
-    foreach (scandir($muralDir) as $f) {
-      $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-      if (in_array($ext, $muralExts)) {
-        $muralImgs[] = '/images/mural/' . $f;
+  $muralMonthGroups = [];
+  $muralImageCountValue = cms_value('mural', 'images.count', '2');
+  $muralImageCount = is_numeric($muralImageCountValue) ? (int)$muralImageCountValue : 2;
+  $muralImageCount = max(0, min(6, $muralImageCount));
+  $muralImageDefaults = [
+    1 => '/images/mural/anuncio1.jpeg',
+    2 => '/images/mural/anuncio2.jpeg',
+  ];
+
+  for ($muralImageIndex = 1; $muralImageIndex <= $muralImageCount; $muralImageIndex++) {
+    $imgPath = cms_value(
+      'mural',
+      'images.item' . $muralImageIndex,
+      $muralImageDefaults[$muralImageIndex] ?? '/images/imagem.jpg'
+    );
+
+    if ($imgPath !== '') {
+      $dateValue = cms_value('mural', 'images.item' . $muralImageIndex . '.date', date('Y-m-d'));
+      $timestamp = strtotime($dateValue);
+      if ($timestamp === false) {
+        $timestamp = time();
+        $dateValue = date('Y-m-d', $timestamp);
       }
+
+      $muralImgs[] = [
+        'path' => $imgPath,
+        'date' => $dateValue,
+        'timestamp' => $timestamp,
+        'original_index' => $muralImageIndex,
+      ];
     }
-    sort($muralImgs);
+  }
+
+  usort($muralImgs, static function (array $a, array $b): int {
+    return ($b['timestamp'] <=> $a['timestamp']) ?: ($a['original_index'] <=> $b['original_index']);
+  });
+
+  foreach ($muralImgs as $idx => $muralItem) {
+    $monthKey = date('Y-m', (int)$muralItem['timestamp']);
+    $monthNumber = date('m', (int)$muralItem['timestamp']);
+    $monthLabel = ($nomesMeses[$monthNumber] ?? 'Mês') . ' de ' . date('Y', (int)$muralItem['timestamp']);
+    if (!isset($muralMonthGroups[$monthKey])) {
+      $muralMonthGroups[$monthKey] = [
+        'label' => $monthLabel,
+        'items' => [],
+      ];
+    }
+    $muralItem['modal_index'] = $idx;
+    $muralMonthGroups[$monthKey]['items'][] = $muralItem;
   }
 ?>
 
@@ -31,7 +67,7 @@
       <i class="bi bi-journal-richtext fs-1 text-warning"></i>
       <h1 class="display-5 mb-0"><?php echo cms_text('mural', 'hero.title', 'Mural Informativo'); ?></h1>
     </div>
-    <p class="lead text-warning-emphasis mb-0"><?php echo $nomeMesMural . ' de ' . $anoMural; ?></p>
+    <p class="lead text-warning-emphasis mb-0">Avisos organizados por mês</p>
     <p class="text-white-50 mt-1"><?php echo cms_paragraph('mural', 'hero.subtitle', 'Avisos e novidades do Instituto Social Novo Amanhecer'); ?></p>
     <a href="<?php echo $site_url; ?>/" class="btn btn-outline-light btn-sm mt-2">
       <i class="bi bi-arrow-left me-1"></i> Voltar ao início
@@ -46,8 +82,8 @@
     <?php if (empty($muralImgs)): ?>
       <div class="text-center py-5">
         <i class="bi bi-journal-x fs-1 text-muted mb-3 d-block"></i>
-        <h3 class="text-muted">Nenhum aviso publicado este mês</h3>
-        <p class="text-muted">Volte em breve para conferir as novidades de <?php echo $nomeMesMural; ?>.</p>
+        <h3 class="text-muted">Nenhum aviso publicado</h3>
+        <p class="text-muted">Volte em breve para conferir as novidades do mural.</p>
         <a href="<?php echo $site_url; ?>/" class="btn btn-warning mt-2">
           <i class="bi bi-house-fill me-1"></i> Ir para o início
         </a>
@@ -56,43 +92,49 @@
 
       <p class="text-muted mb-4">
         <i class="bi bi-info-circle me-1"></i>
-        <?php echo count($muralImgs); ?> aviso<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> publicado<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> em <?php echo $nomeMesMural . ' de ' . $anoMural; ?>.
+        <?php echo count($muralImgs); ?> aviso<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> publicado<?php echo count($muralImgs) !== 1 ? 's' : ''; ?> no mural.
         Clique em qualquer imagem para ampliar.
       </p>
 
-      <div class="row g-4 justify-content-center">
+      <?php foreach ($muralMonthGroups as $monthGroup): ?>
         <?php
-          $total = count($muralImgs);
-          if ($total === 1)      $colClass = 'col-sm-10 col-md-8 col-lg-6';
-          elseif ($total === 2)  $colClass = 'col-sm-10 col-md-6';
-          else                   $colClass = 'col-sm-10 col-md-6 col-lg-4';
+          $monthItems = isset($monthGroup['items']) && is_array($monthGroup['items']) ? $monthGroup['items'] : [];
+          $monthTotal = count($monthItems);
+          if ($monthTotal === 1)      $colClass = 'col-sm-10 col-md-8 col-lg-6';
+          elseif ($monthTotal === 2)  $colClass = 'col-sm-10 col-md-6';
+          else                        $colClass = 'col-sm-10 col-md-6 col-lg-4';
         ?>
-        <?php foreach ($muralImgs as $idx => $imgPath): ?>
-          <div class="<?php echo $colClass; ?>">
-            <div class="card h-100 border-0 shadow overflow-hidden" style="border-top: 4px solid #ffc107 !important;">
-              <a href="#"
-                 data-bs-toggle="modal"
-                 data-bs-target="#modalMural"
-                 data-mural-index="<?php echo $idx; ?>"
-                 title="Clique para ampliar">
-                <img
-                  src="<?php echo htmlspecialchars($imgPath, ENT_QUOTES, 'UTF-8'); ?>"
-                  alt="Aviso do mural de <?php echo $nomeMesMural . ' de ' . $anoMural; ?> — imagem <?php echo $idx + 1; ?>"
-                  class="card-img-top w-100"
-                  style="object-fit: contain; max-height: 520px; background: #f5f5f5;"
-                  loading="lazy"
-                >
-              </a>
-              <div class="card-footer bg-transparent border-0 text-center py-2">
-                <small class="text-muted">
-                  <i class="bi bi-zoom-in me-1"></i>
-                  Aviso <?php echo $idx + 1; ?> de <?php echo $total; ?>
-                </small>
+        <div class="mb-5">
+          <h2 class="h4 fw-semibold mb-4"><?php echo htmlspecialchars((string)$monthGroup['label'], ENT_QUOTES, 'UTF-8'); ?></h2>
+          <div class="row g-4 justify-content-center">
+            <?php foreach ($monthItems as $muralItem): ?>
+              <div class="<?php echo $colClass; ?>">
+                <div class="card h-100 border-0 shadow overflow-hidden" style="border-top: 4px solid #ffc107 !important;">
+                  <a href="#"
+                     data-bs-toggle="modal"
+                     data-bs-target="#modalMural"
+                     data-mural-index="<?php echo (int)$muralItem['modal_index']; ?>"
+                     title="Clique para ampliar">
+                    <img
+                      src="<?php echo htmlspecialchars((string)$muralItem['path'], ENT_QUOTES, 'UTF-8'); ?>"
+                      alt="Aviso do mural de <?php echo htmlspecialchars((string)$monthGroup['label'], ENT_QUOTES, 'UTF-8'); ?>"
+                      class="card-img-top w-100"
+                      style="object-fit: contain; max-height: 520px; background: #f5f5f5;"
+                      loading="lazy"
+                    >
+                  </a>
+                  <div class="card-footer bg-transparent border-0 text-center py-2">
+                    <small class="text-muted">
+                      <i class="bi bi-calendar-event me-1"></i>
+                      <?php echo date('d/m/Y', (int)$muralItem['timestamp']); ?>
+                    </small>
+                  </div>
+                </div>
               </div>
-            </div>
+            <?php endforeach; ?>
           </div>
-        <?php endforeach; ?>
-      </div>
+        </div>
+      <?php endforeach; ?>
 
     <?php endif; ?>
   </div>
@@ -110,12 +152,12 @@
       <div class="modal-body p-0">
         <div id="carouselMural" class="carousel slide carousel-fade" data-bs-ride="false" data-bs-touch="true">
           <div class="carousel-inner">
-            <?php foreach ($muralImgs as $idx => $imgPath): ?>
+            <?php foreach ($muralImgs as $idx => $muralItem): ?>
               <div class="carousel-item <?php echo $idx === 0 ? 'active' : ''; ?>">
                 <img
-                  src="<?php echo htmlspecialchars($imgPath, ENT_QUOTES, 'UTF-8'); ?>"
+                  src="<?php echo htmlspecialchars((string)$muralItem['path'], ENT_QUOTES, 'UTF-8'); ?>"
                   class="d-block mx-auto img-fluid carousel-img"
-                  alt="Aviso <?php echo $idx + 1; ?> — Mural <?php echo $nomeMesMural . ' de ' . $anoMural; ?>"
+                  alt="Aviso <?php echo $idx + 1; ?> do mural"
                   style="max-height: 80vh; object-fit: contain;"
                 >
               </div>

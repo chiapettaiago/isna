@@ -82,6 +82,10 @@ $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
                         </div>
                       <?php elseif (in_array($type, ['textarea', 'html'], true)): ?>
                         <textarea class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" rows="<?php echo $type === 'html' ? 8 : 4; ?>"><?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                      <?php elseif ($type === 'number'): ?>
+                        <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="number" min="<?php echo htmlspecialchars((string)($block['min'] ?? '0'), ENT_QUOTES, 'UTF-8'); ?>" max="<?php echo htmlspecialchars((string)($block['max'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" step="<?php echo htmlspecialchars((string)($block['step'] ?? '1'), ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
+                      <?php elseif ($type === 'date'): ?>
+                        <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="date" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
                       <?php else: ?>
                         <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo $type === 'url' ? 'url' : 'text'; ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
                       <?php endif; ?>

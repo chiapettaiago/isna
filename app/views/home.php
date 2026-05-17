@@ -4,6 +4,23 @@ $latestPosts = array_slice($blogData['posts'], 0, 3);
 $homeGalleryImage1 = cms_attr('home', 'galeria.image1', '/images/projeto-escola-musica-e-cidadania/1.jpg');
 $homeGalleryImage2 = cms_attr('home', 'galeria.image2', '/images/projeto-notas-culturais/1.jpg');
 $homeGalleryImage3 = cms_attr('home', 'galeria.image3', '/images/projetos-realizados/1.jpg');
+$homeNoticeCountValue = cms_value('home', 'avisos.count', '3');
+$homeNoticeCount = is_numeric($homeNoticeCountValue) ? (int)$homeNoticeCountValue : 3;
+$homeNoticeCount = max(0, min(3, $homeNoticeCount));
+$homeNoticeCards = [];
+for ($noticeIndex = 1; $noticeIndex <= $homeNoticeCount; $noticeIndex++) {
+    $noticeKey = 'avisos.card' . $noticeIndex;
+    $noticeUrl = cms_value('home', $noticeKey . '.url', '/mural');
+    $noticeImage = cms_value('home', $noticeKey . '.image', '/images/imagem.jpg');
+    $homeNoticeCards[] = [
+        'tag' => cms_value('home', $noticeKey . '.tag', $noticeIndex === 2 ? 'Anúncio' : ($noticeIndex === 3 ? 'Comunicado' : 'Aviso')),
+        'title' => cms_value('home', $noticeKey . '.title', ''),
+        'text' => cms_value('home', $noticeKey . '.text', ''),
+        'image' => preg_match('/^https?:\/\//i', $noticeImage) ? $noticeImage : $site_url . '/' . ltrim($noticeImage, '/'),
+        'url' => preg_match('/^https?:\/\//i', $noticeUrl) ? $noticeUrl : $site_url . '/' . ltrim($noticeUrl, '/'),
+        'external' => (bool)preg_match('/^https?:\/\//i', $noticeUrl),
+    ];
+}
 ?>
 
 <!-- Seção Hero -->
@@ -17,6 +34,56 @@ $homeGalleryImage3 = cms_attr('home', 'galeria.image3', '/images/projetos-realiz
       </div>
     </div>
   </section>
+
+<?php if (!empty($homeNoticeCards)): ?>
+  <!-- Área de Avisos e Anúncios -->
+  <section id="avisos-anuncios" class="py-5 bg-white">
+    <div class="container">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+        <div>
+          <h2 class="mb-2"><?php echo cms_text('home', 'avisos.title', 'Avisos e Anúncios'); ?></h2>
+          <p class="text-muted mb-0"><?php echo cms_text('home', 'avisos.subtitle', 'Fique por dentro das comunicações mais recentes do ISNA.'); ?></p>
+        </div>
+        <a href="<?php echo $site_url; ?>/mural" class="btn btn-outline-secondary">
+          <i class="bi bi-megaphone me-1"></i> Ver mural
+        </a>
+      </div>
+
+      <div class="row g-4">
+        <?php foreach ($homeNoticeCards as $noticeCard): ?>
+          <?php if ($noticeCard['title'] === '' && $noticeCard['text'] === '') continue; ?>
+          <div class="col-md-4">
+            <article class="card h-100 border-0 shadow-sm overflow-hidden">
+              <div class="ratio ratio-16x9 bg-light">
+                <img
+                  src="<?php echo htmlspecialchars($noticeCard['image'], ENT_QUOTES, 'UTF-8'); ?>"
+                  alt="<?php echo htmlspecialchars($noticeCard['title'] !== '' ? $noticeCard['title'] : 'Aviso do ISNA', ENT_QUOTES, 'UTF-8'); ?>"
+                  class="w-100 h-100"
+                  style="object-fit: contain;"
+                  loading="lazy"
+                >
+              </div>
+              <div class="card-body d-flex flex-column">
+                <?php if ($noticeCard['tag'] !== ''): ?>
+                  <span class="badge text-bg-warning align-self-start mb-3"><?php echo htmlspecialchars($noticeCard['tag'], ENT_QUOTES, 'UTF-8'); ?></span>
+                <?php endif; ?>
+                <?php if ($noticeCard['title'] !== ''): ?>
+                  <h3 class="h5 fw-semibold mb-2"><?php echo htmlspecialchars($noticeCard['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <?php endif; ?>
+                <?php if ($noticeCard['text'] !== ''): ?>
+                  <p class="text-muted mb-4"><?php echo nl2br(htmlspecialchars($noticeCard['text'], ENT_QUOTES, 'UTF-8')); ?></p>
+                <?php endif; ?>
+                <a class="btn btn-link p-0 mt-auto align-self-start" href="<?php echo htmlspecialchars($noticeCard['url'], ENT_QUOTES, 'UTF-8'); ?>"<?php echo $noticeCard['external'] ? ' target="_blank" rel="noreferrer"' : ''; ?>>
+                  Saiba mais <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+<?php endif; ?>
 
 <?php if (!empty($latestPosts)): ?>
   <section id="blog" class="py-5 bg-white">

@@ -189,6 +189,9 @@ ON DUPLICATE KEY UPDATE
                     'type' => isset($block['type']) ? (string)$block['type'] : 'text',
                     'default' => $default,
                     'value' => $values[$pageSlug][$key] ?? $default,
+                    'min' => isset($block['min']) ? (string)$block['min'] : null,
+                    'max' => isset($block['max']) ? (string)$block['max'] : null,
+                    'step' => isset($block['step']) ? (string)$block['step'] : null,
                 ];
             }
         }
