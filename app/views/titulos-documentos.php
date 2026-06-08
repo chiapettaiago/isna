@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../services/PdfRenderer.php';
+require_once __DIR__ . '/../services/DocumentCrypt.php';
 
 $documents = PdfRenderer::documents();
 $pdfRenderingAvailable = PdfRenderer::supportsRendering();
@@ -117,10 +118,20 @@ $pdfRenderingAvailable = PdfRenderer::supportsRendering();
           $docKey = htmlspecialchars($document['key'], ENT_QUOTES, 'UTF-8');
           $docTitle = htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8');
           $pageCount = (int) ($document['pages'] ?? 1);
-          $pdfUrl = url('/docs/' . rawurlencode($document['file']));
+          #Função de pdfs legada do código anterior, mantida para compatibilidade com documentos antigos. Novos documentos devem usar a chave 'key' para acesso seguro.
+          #$pdfUrl = url('/docs/' . rawurlencode($document['file']));
+          $token = DocumentCrypt::encrypt($document['file']);
+          $pdfUrl = url('/documento/' . $token. '.pdf');
           $thumbnailFile = $document['thumbnail'] ?? 'all_documents.png';
           $thumbnailPath = __DIR__ . '/../../thumbnails/' . $thumbnailFile;
+
+          if (!is_file($thumbnailPath)) {
+            $thumbnailFile = 'all_documents.png';
+            $thumbnailPath = __DIR__ . '/../../thumbnails/all_documents.png';
+          }
+          
           $fallbackThumb = url('/thumbnails/' . rawurlencode($thumbnailFile));
+          
           if (is_file($thumbnailPath)) {
             $fallbackThumb .= '?v=' . filemtime($thumbnailPath);
           }
@@ -134,9 +145,11 @@ $pdfRenderingAvailable = PdfRenderer::supportsRendering();
               <a class="d-flex w-100 h-100" href="<?php echo htmlspecialchars($pdfUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
                 <img
                   src="<?php echo htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8'); ?>"
+                  data-fallback="<?php echo htmlspecialchars($fallbackThumb, ENT_QUOTES, 'UTF-8'); ?>"
                   alt="<?php echo $docTitle; ?>"
                   loading="lazy"
                   decoding="async"
+                  onerror="this.onerror=null, this.src=this.dataset.fallback;"
                 >
               </a>
             </div>

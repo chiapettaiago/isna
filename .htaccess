@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteRule ^documento/(.*)\.pdf$ documento.php?token=$1 [L.QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
