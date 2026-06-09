@@ -1,66 +1,72 @@
 <?php
 declare(strict_types=1);
 
-class AccessReportPdf
+class ReleaseReportPdf
 {
-    public static function render(array $report, DateTimeImmutable $fromDate, DateTimeImmutable $toDate): string
+    public static function render(array $report): string
     {
-        $lines = self::reportLines($report, $fromDate, $toDate);
-        return self::buildPdf($lines);
+        return self::buildPdf(self::reportLines($report));
     }
 
-    private static function reportLines(array $report, DateTimeImmutable $fromDate, DateTimeImmutable $toDate): array
+    private static function reportLines(array $report): array
     {
-        $totals = isset($report['totals']) && is_array($report['totals']) ? $report['totals'] : [];
-        $daily = isset($report['daily']) && is_array($report['daily']) ? $report['daily'] : [];
-        $topPaths = isset($report['top_paths']) && is_array($report['top_paths']) ? $report['top_paths'] : [];
-        $recent = isset($report['recent']) && is_array($report['recent']) ? $report['recent'] : [];
-
         $lines = [
-            'Relatorio de acessos - ISNA',
-            'Periodo: ' . $fromDate->format('d/m/Y') . ' a ' . $toDate->format('d/m/Y'),
+            (string)($report['title'] ?? 'Relatorio'),
+            (string)($report['label'] ?? 'Relatorio'),
+            'Lancamento: ' . (string)($report['period'] ?? ''),
+            'Status: ' . (string)($report['status'] ?? ''),
             'Gerado em: ' . (new DateTimeImmutable())->format('d/m/Y H:i'),
             '',
-            'Resumo',
-            'Total de acessos: ' . number_format((int)($totals['accesses'] ?? 0), 0, ',', '.'),
-            'IPs unicos: ' . number_format((int)($totals['unique_ips'] ?? 0), 0, ',', '.'),
-            'Paginas acessadas: ' . number_format((int)($totals['unique_paths'] ?? 0), 0, ',', '.'),
+            (string)($report['description'] ?? ''),
             '',
-            'Acessos por dia',
+            'Resumo',
         ];
 
-        if (empty($daily)) {
-            $lines[] = 'Sem acessos no periodo.';
-        } else {
-            foreach ($daily as $day => $count) {
-                $date = DateTimeImmutable::createFromFormat('Y-m-d', (string)$day);
-                $lines[] = ($date ? $date->format('d/m/Y') : (string)$day) . ': ' . (int)$count;
+        foreach (($report['summaryCards'] ?? []) as $card) {
+            if (!is_array($card)) {
+                continue;
             }
+            $lines[] = (string)($card['label'] ?? '') . ': ' . (string)($card['value'] ?? '');
+            $lines[] = (string)($card['text'] ?? '');
         }
 
         $lines[] = '';
-        $lines[] = 'Paginas mais acessadas';
+        $lines[] = 'Mudancas realizadas';
 
-        if (empty($topPaths)) {
-            $lines[] = 'Sem paginas no periodo.';
-        } else {
-            foreach ($topPaths as $index => $row) {
-                $lines[] = ($index + 1) . '. ' . (string)($row['path'] ?? '') . ' - ' . (int)($row['accesses'] ?? 0) . ' acessos';
+        foreach (($report['changeSections'] ?? []) as $section) {
+            if (!is_array($section)) {
+                continue;
             }
+
+            $lines[] = '';
+            $lines[] = (string)($section['title'] ?? '');
+            $lines[] = (string)($section['intro'] ?? '');
+
+            foreach (($section['items'] ?? []) as $item) {
+                $lines[] = '- ' . (string)$item;
+            }
+
+            $lines[] = 'Resultado: ' . (string)($section['result'] ?? '');
         }
 
         $lines[] = '';
-        $lines[] = 'Acessos recentes';
+        $lines[] = 'Antes e depois';
 
-        if (empty($recent)) {
-            $lines[] = 'Sem acessos recentes no periodo.';
-        } else {
-            foreach (array_slice($recent, 0, 30) as $row) {
-                $ts = isset($row['ts']) ? (int)$row['ts'] : 0;
-                $date = $ts > 0 ? date('d/m/Y H:i', $ts) : '--';
-                $ip = isset($row['ip']) && $row['ip'] !== '' ? (string)$row['ip'] : 'IP nao informado';
-                $lines[] = $date . ' | ' . $ip . ' | ' . (string)($row['path'] ?? '');
+        foreach (($report['deliveryRows'] ?? []) as $row) {
+            if (!is_array($row)) {
+                continue;
             }
+
+            $lines[] = (string)($row['area'] ?? '');
+            $lines[] = 'Antes: ' . (string)($row['before'] ?? '');
+            $lines[] = 'Depois da 2.1: ' . (string)($row['after'] ?? '');
+        }
+
+        $lines[] = '';
+        $lines[] = 'Criterios de qualidade';
+
+        foreach (($report['qualityChecks'] ?? []) as $check) {
+            $lines[] = '- ' . (string)$check;
         }
 
         return $lines;

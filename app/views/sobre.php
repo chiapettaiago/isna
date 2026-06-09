@@ -41,9 +41,21 @@ $featureCards = [
 
 $versionTimeline = [
   [
+    'version' => '2.1',
+    'date' => 'Junho de 2026',
+    'status' => 'Atual',
+    'icon' => 'bi-shield-lock',
+    'href' => url('/sobre/versao-2-1'),
+    'items' => [
+      'Criptografia aplicada aos links dos documentos, reforçando a proteção das URLs de acesso aos arquivos.',
+      'Novo layout da tela de login, com apresentação mais clara para acesso administrativo.',
+      'Área logada redesenhada para melhorar a navegação e a rotina de gestão interna.',
+    ],
+  ],
+  [
     'version' => '2.0',
     'date' => 'Abril de 2026',
-    'status' => 'Atual',
+    'status' => 'Entrega',
     'icon' => 'bi-rocket-takeoff',
     'items' => [
       'Relatórios internos de acesso com filtros por período, páginas mais acessadas e exportação em PDF.',
@@ -95,7 +107,7 @@ $versionTimeline = [
     <div class="container">
       <div class="sobre-hero-grid">
         <div class="sobre-hero-copy">
-          <span class="sobre-eyebrow">ISNAPress 2.0</span>
+          <span class="sobre-eyebrow">ISNAPress 2.1</span>
           <h1>Sobre o sistema</h1>
           <p>
             Portal institucional e área administrativa criados para manter o conteúdo do Instituto Social Novo Amanhecer organizado, acessível e fácil de atualizar.
@@ -112,15 +124,15 @@ $versionTimeline = [
         <div class="sobre-hero-panel" aria-label="Resumo do sistema">
           <div>
             <span class="sobre-panel-label">Versão</span>
-            <strong>2.0</strong>
+            <strong>2.1</strong>
           </div>
           <div>
             <span class="sobre-panel-label">Lançamento</span>
-            <strong>Abril de 2026</strong>
+            <strong>Junho de 2026</strong>
           </div>
           <div>
             <span class="sobre-panel-label">Foco</span>
-            <strong>Conteúdo, transparência e gestão</strong>
+            <strong>Segurança, login e área logada</strong>
           </div>
         </div>
       </div>
@@ -160,11 +172,15 @@ $versionTimeline = [
 
         <div class="sobre-version-list">
           <?php foreach ($versionTimeline as $version): ?>
+            <?php
+              $versionHref = isset($version['href']) ? (string) $version['href'] : '';
+              $versionContentTag = $versionHref !== '' ? 'a' : 'div';
+            ?>
             <article class="sobre-version-item">
               <div class="sobre-version-marker">
                 <i class="bi <?php echo htmlspecialchars($version['icon'], ENT_QUOTES, 'UTF-8'); ?>" aria-hidden="true"></i>
               </div>
-              <div class="sobre-version-content">
+              <<?php echo $versionContentTag; ?> class="sobre-version-content<?php echo $versionHref !== '' ? ' sobre-version-content-link' : ''; ?>"<?php if ($versionHref !== ''): ?> href="<?php echo htmlspecialchars($versionHref, ENT_QUOTES, 'UTF-8'); ?>" aria-label="Abrir relatório completo da versão <?php echo htmlspecialchars($version['version'], ENT_QUOTES, 'UTF-8'); ?>"<?php endif; ?>>
                 <div class="sobre-version-heading">
                   <div>
                     <span class="sobre-version-kicker"><?php echo htmlspecialchars($version['date'], ENT_QUOTES, 'UTF-8'); ?></span>
@@ -177,7 +193,7 @@ $versionTimeline = [
                     <li><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li>
                   <?php endforeach; ?>
                 </ul>
-              </div>
+              </<?php echo $versionContentTag; ?>>
             </article>
           <?php endforeach; ?>
         </div>

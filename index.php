@@ -33,7 +33,7 @@ if (preg_match('#^/documento/([^/]+)\.pdf$#', $path, $matches)) {
 }
 
 $currentUser = null;
-$protectedRoutes = ['/area-restrita', '/relatorios-acesso', '/relatorios-acesso/pdf', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre'];
+$protectedRoutes = ['/area-restrita', '/relatorios-acesso', '/relatorios-acesso/pdf', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre', '/sobre/versao-2-1', '/sobre/versao-2-1/pdf'];
 
 // Registrar acessos simples no MySQL remoto (apenas GETs relevantes)
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -213,6 +213,25 @@ if ($path === '/relatorios-acesso/pdf' && $_SERVER['REQUEST_METHOD'] === 'GET') 
     exit;
 }
 
+if ($path === '/sobre/versao-2-1/pdf' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once __DIR__ . '/app/services/VersionReportData.php';
+    require_once __DIR__ . '/app/services/ReleaseReportPdf.php';
+
+    $pdf = ReleaseReportPdf::render(VersionReportData::version21());
+    $filename = 'relatorio-isnapress-2-1.pdf';
+
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Content-Length: ' . strlen($pdf));
+    header('Cache-Control: private, max-age=0, must-revalidate');
+    echo $pdf;
+    exit;
+}
+
 if ($path === '/gestao-usuarios' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/app/controllers/UserController.php';
     $uc = new UserController();
@@ -251,6 +270,7 @@ $router->add('/titulos-documentos', ['file' => 'titulos-documentos.php', 'title'
 $router->add('/doe', ['file' => 'doe.php', 'title' => 'Doe - ISNA']);
 $router->add('/doacoes-bancarias', ['file' => 'bank-donations.php', 'title' => 'Doações Bancárias - ISNA']);
 $router->add('/sobre', ['file' => 'sobre.php', 'title' => 'Sobre o Site - ISNA']);
+$router->add('/sobre/versao-2-1', ['file' => 'sobre-versao-2-1.php', 'title' => 'Relatório da Versão 2.1 - ISNA']);
 $router->add('/login', ['file' => 'login.php', 'title' => 'Entrar - ISNA']);
 $router->add('/area-restrita', ['file' => 'area-restrita.php', 'title' => 'Área Restrita - ISNA']);
 $router->add('/relatorios-acesso', ['file' => 'relatorios-acesso.php', 'title' => 'Relatórios de Acesso - ISNA']);

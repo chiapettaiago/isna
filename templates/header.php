@@ -105,7 +105,7 @@
 
       <div class="admin-sidebar-section">
         <div class="admin-sidebar-section-title">Sistema</div>
-        <a class="admin-sidebar-link<?php echo ($path === '/sobre') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/sobre" title="Sobre o sistema">
+        <a class="admin-sidebar-link<?php echo (strpos($path, '/sobre') === 0) ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/sobre" title="Sobre o sistema">
           <i class="bi bi-info-circle" aria-hidden="true"></i>
           <span class="admin-sidebar-text">Sobre</span>
         </a>
