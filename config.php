@@ -30,7 +30,7 @@ $environment_config = [
 ];
 
 // Detectar ambiente atual
-$current_host = $_SERVER['HTTP_HOST'];
+$current_host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $config = $environment_config['default'];
 
 foreach ($environment_config as $host => $settings) {
@@ -41,10 +41,22 @@ foreach ($environment_config as $host => $settings) {
 }
 
 // Aplicar configurações
-if ($config['force_https'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on')) {
+$forwarded = $_SERVER['HTTP_FORWARDED'] ?? '';
+$forwarded_proto = null;
+if ($forwarded && preg_match('/proto=([^;\s]+)/i', $forwarded, $matches)) {
+    $forwarded_proto = strtolower($matches[1]);
+}
+$xf_proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+    ? strtolower(trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'])[0]))
+    : null;
+$is_https = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    || $xf_proto === 'https'
+    || $forwarded_proto === 'https';
+
+if ($config['force_https'] && !$is_https) {
     // Verificar se não estamos em localhost antes de forçar HTTPS
-    if (strpos($_SERVER['HTTP_HOST'], 'localhost') === false && strpos($_SERVER['HTTP_HOST'], '127.0.0.1') === false) {
-        $redirect_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    if (strpos($current_host, 'localhost') === false && strpos($current_host, '127.0.0.1') === false) {
+        $redirect_url = 'https://' . $current_host . ($_SERVER['REQUEST_URI'] ?? '/');
         header("Location: $redirect_url", true, 301);
         exit;
     }

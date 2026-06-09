@@ -23,7 +23,7 @@ AuthService::startSession();
 ob_start("replaceStaticPaths");
 
 // Get request URI and parse path
-$requestUri = $_SERVER['REQUEST_URI'];
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($requestUri, PHP_URL_PATH);
 
 // Remover o diretório base do caminho para o roteamento
@@ -34,6 +34,14 @@ if (!empty($base_path) && strpos($path, $base_path) === 0) {
 // Garantir que o caminho sempre comece com /
 if (empty($path) || $path[0] !== '/') {
     $path = '/' . $path;
+}
+
+$path = rtrim($path, '/') ?: '/';
+
+if (preg_match('#^/documento/([^/]+)\.pdf$#', $path, $matches)) {
+    $_GET['token'] = $matches[1];
+    require __DIR__ . '/app/views/documento.php';
+    exit;
 }
 
 $currentUser = null;

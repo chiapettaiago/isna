@@ -19,7 +19,7 @@ if ($forwarded) {
 $xf_proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO'])[0]) : null;
 $xf_host  = isset($_SERVER['HTTP_X_FORWARDED_HOST'])  ? trim(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])[0])  : null;
 
-$protocol = $f_proto ?: ($xf_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http'));
+$protocol = strtolower((string)($f_proto ?: ($xf_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http'))));
 $domain   = $f_host  ?: ($xf_host  ?: (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost'));
 
 if (preg_match('/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/', $domain)) {
@@ -62,38 +62,58 @@ $base_url = $protocol . '://' . $domain . $base_path;
 
 $site_url = $base_url;
 
+function normalize_public_path($path = ''): string {
+    $path = trim((string)$path);
+    if ($path === '') {
+        return '';
+    }
+
+    if (preg_match('~^(?:[a-z][a-z0-9+.-]*:|//|data:|blob:|mailto:|tel:|#)~i', $path)) {
+        return $path;
+    }
+
+    return '/' . ltrim($path, '/');
+}
+
 function url($path = '') {
     global $site_url;
-    $path = ltrim($path, '/');
-    return $site_url . ($path ? '/' . $path : '');
+    $path = normalize_public_path($path);
+    if ($path === '' || $path === '/') {
+        return $site_url . '/';
+    }
+    if (preg_match('~^(?:[a-z][a-z0-9+.-]*:|//|data:|blob:|mailto:|tel:|#)~i', $path)) {
+        return $path;
+    }
+    return $site_url . $path;
 }
 
 function asset($path) {
-    global $site_url;
-    $path = ltrim($path, '/');
-    return $site_url . '/' . $path;
+    return url($path);
+}
+
+function public_path_url($path = ''): string {
+    return url($path);
 }
 
 function replaceStaticPaths($content) {
     global $site_url;
     if (!empty($site_url) && $content !== null) {
-        $replacements = [
-            'src="/images/' => 'src="' . $site_url . '/images/',
-            'href="/css/' => 'href="' . $site_url . '/css/',
-            'src="/js/' => 'src="' . $site_url . '/js/',
-            'href="/js/' => 'href="' . $site_url . '/js/',
-            'src="/videos/' => 'src="' . $site_url . '/videos/',
-            'href="/docs/' => 'href="' . $site_url . '/docs/',
-            'href="/images/favicon.ico"' => 'href="' . $site_url . '/images/favicon.ico"',
-            "background-image: url('/images/" => "background-image: url('" . $site_url . "/images/",
-            'background-image: url("/images/' => 'background-image: url("' . $site_url . '/images/',
-        ];
-
-        foreach ($replacements as $search => $replace) {
-            $content = str_replace($search, $replace, $content);
-        }
-
-        $content = preg_replace('/href="\/([^"\/][^"]*)"/', 'href="' . $site_url . '/$1"', $content);
+        $publicDirectories = '(?:css|js|images|videos|docs|thumbnails)';
+        $content = preg_replace(
+            '/\b(src|href|poster|action|data-[a-z0-9_-]+)=([\'"])\/(' . $publicDirectories . '\/[^\'"]*)\2/i',
+            '$1=$2' . $site_url . '/$3$2',
+            $content
+        );
+        $content = preg_replace(
+            '/url\(([\'"])\/(' . $publicDirectories . '\/[^\'")]+)\1\)/i',
+            'url($1' . $site_url . '/$2$1)',
+            $content
+        );
+        $content = preg_replace(
+            '/href="\/([^"\/][^"]*)"/',
+            'href="' . $site_url . '/$1"',
+            $content
+        );
     }
     return $content;
 }
