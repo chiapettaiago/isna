@@ -130,14 +130,11 @@ $pdfRenderingAvailable = PdfRenderer::supportsRendering();
             $thumbnailPath = __DIR__ . '/../../thumbnails/all_documents.png';
           }
           
-          $fallbackThumb = url('/thumbnails/' . rawurlencode($thumbnailFile));
+          $thumbUrl = url('/thumbnails/' . rawurlencode($thumbnailFile));
           
           if (is_file($thumbnailPath)) {
-            $fallbackThumb .= '?v=' . filemtime($thumbnailPath);
+            $thumbUrl .= '?v=' . filemtime($thumbnailPath);
           }
-          $thumbUrl = $pdfRenderingAvailable
-            ? url('/api/pdf-page?doc=' . rawurlencode($document['key']) . '&page=1&size=thumb')
-            : $fallbackThumb;
         ?>
         <div class="col">
           <div class="card document-card shadow-sm">
@@ -145,11 +142,9 @@ $pdfRenderingAvailable = PdfRenderer::supportsRendering();
               <a class="d-flex w-100 h-100" href="<?php echo htmlspecialchars($pdfUrl, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
                 <img
                   src="<?php echo htmlspecialchars($thumbUrl, ENT_QUOTES, 'UTF-8'); ?>"
-                  data-fallback="<?php echo htmlspecialchars($fallbackThumb, ENT_QUOTES, 'UTF-8'); ?>"
                   alt="<?php echo $docTitle; ?>"
                   loading="lazy"
                   decoding="async"
-                  onerror="this.onerror=null, this.src=this.dataset.fallback;"
                 >
               </a>
             </div>

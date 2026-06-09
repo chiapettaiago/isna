@@ -7,9 +7,10 @@
         exit;
     }
 
-    $file = __DIR__ . $uri;
+    $file = realpath(__DIR__ . rawurldecode($uri));
+    $root = realpath(__DIR__);
 
-    if ($uri !== '/' && file_exists($file)) {
+    if ($uri !== '/' && $file && $root && strpos($file, $root . DIRECTORY_SEPARATOR) === 0 && is_file($file)) {
         return false; // Deixa o servidor web servir o arquivo estático
     }
 
