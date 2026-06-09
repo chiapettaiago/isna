@@ -22,21 +22,9 @@ AuthService::startSession();
 // Buffer de saída reativado com função mais simples
 ob_start("replaceStaticPaths");
 
-// Get request URI and parse path
+// Get request URI and resolve route path
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
-$path = parse_url($requestUri, PHP_URL_PATH);
-
-// Remover o diretório base do caminho para o roteamento
-if (!empty($base_path) && strpos($path, $base_path) === 0) {
-    $path = substr($path, strlen($base_path));
-}
-
-// Garantir que o caminho sempre comece com /
-if (empty($path) || $path[0] !== '/') {
-    $path = '/' . $path;
-}
-
-$path = rtrim($path, '/') ?: '/';
+$path = app_request_path($base_path);
 
 if (preg_match('#^/documento/([^/]+)\.pdf$#', $path, $matches)) {
     $_GET['token'] = $matches[1];

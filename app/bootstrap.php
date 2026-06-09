@@ -95,6 +95,47 @@ function public_path_url($path = ''): string {
     return url($path);
 }
 
+function app_request_path(string $basePath = ''): string {
+    $candidates = [];
+
+    foreach (['route', '_route_', 'path', 'page'] as $key) {
+        if (isset($_GET[$key]) && is_string($_GET[$key]) && trim($_GET[$key]) !== '') {
+            $candidates[] = $_GET[$key];
+        }
+    }
+
+    foreach (['PATH_INFO', 'ORIG_PATH_INFO', 'REDIRECT_URL', 'REQUEST_URI'] as $key) {
+        if (isset($_SERVER[$key]) && is_string($_SERVER[$key]) && trim($_SERVER[$key]) !== '') {
+            $candidates[] = $_SERVER[$key];
+        }
+    }
+
+    foreach ($candidates as $candidate) {
+        $path = parse_url($candidate, PHP_URL_PATH);
+        if (!is_string($path) || $path === '') {
+            continue;
+        }
+
+        $path = '/' . ltrim($path, '/');
+
+        if ($basePath !== '' && strpos($path, $basePath . '/') === 0) {
+            $path = substr($path, strlen($basePath));
+        } elseif ($basePath !== '' && $path === $basePath) {
+            $path = '/';
+        }
+
+        $path = preg_replace('#/index\.php/?#', '/', $path, 1);
+        $path = '/' . ltrim($path, '/');
+        $path = rtrim($path, '/') ?: '/';
+
+        if ($path !== '/' || $candidate === '/' || $candidate === $basePath) {
+            return $path;
+        }
+    }
+
+    return '/';
+}
+
 function replaceStaticPaths($content) {
     global $site_url;
     if (!empty($site_url) && $content !== null) {
