@@ -1,10 +1,8 @@
-<!-- Hero -->
 <?php
-// Tentar obter últimos commits a partir de JSON gerado (preferido) ou, se não existir,
-// tentar diretamente via Git (fallback). Isso permite ambientes onde shell_exec é proibido.
 $recentChanges = [];
 $projectRoot = realpath(__DIR__ . '/../../');
 $jsonFile = $projectRoot . '/data/last_changes.json';
+
 if (is_readable($jsonFile)) {
   $content = file_get_contents($jsonFile);
   $decoded = json_decode($content, true);
@@ -12,7 +10,6 @@ if (is_readable($jsonFile)) {
     $recentChanges = $decoded;
   }
 } else {
-  // fallback para git quando JSON não existe
   $gitRoot = $projectRoot;
   if ($gitRoot && is_dir($gitRoot . '/.git') && function_exists('shell_exec')) {
     $cmd = 'git -C ' . escapeshellarg($gitRoot) . ' log -n 8 --pretty=format:"%h|%an|%ad|%s" --date=short';
@@ -32,192 +29,188 @@ if (is_readable($jsonFile)) {
     }
   }
 }
+
+$featureCards = [
+  ['icon' => 'bi-phone', 'title' => 'Experiência responsiva', 'text' => 'Interface adaptada para celular, tablet e desktop usando Bootstrap 5.'],
+  ['icon' => 'bi-images', 'title' => 'Galeria institucional', 'text' => 'Projetos organizados com fotos, vídeos, modal de visualização e carregamento otimizado.'],
+  ['icon' => 'bi-cash-coin', 'title' => 'Doações', 'text' => 'Fluxos de contribuição com opções bancárias, PayPal e doação internacional.'],
+  ['icon' => 'bi-shield-check', 'title' => 'Transparência', 'text' => 'Documentos e certificados centralizados para consulta pública.'],
+  ['icon' => 'bi-window-sidebar', 'title' => 'ISNAPress', 'text' => 'Área logada para administrar conteúdo, blog, galeria, relatórios e usuários.'],
+  ['icon' => 'bi-graph-up-arrow', 'title' => 'Relatórios', 'text' => 'Painéis internos de acesso com filtros por período e exportação em PDF.'],
+];
+
+$versionTimeline = [
+  [
+    'version' => '2.0',
+    'date' => 'Abril de 2026',
+    'status' => 'Atual',
+    'icon' => 'bi-rocket-takeoff',
+    'items' => [
+      'Relatórios internos de acesso com filtros por período, páginas mais acessadas e exportação em PDF.',
+      'Dashboard e relatórios desconsideram telas administrativas e IPs internos configurados.',
+      'Gestão completa da galeria com edição de seções e fotos carregadas em modal.',
+      'Área logada reorganizada como ISNAPress, com navegação administrativa aprimorada.',
+    ],
+  ],
+  [
+    'version' => '1.4',
+    'date' => 'Agosto de 2025',
+    'status' => 'Entrega',
+    'icon' => 'bi-play-circle',
+    'items' => ['Vídeos interativos na página de doação com player e controles aprimorados.'],
+  ],
+  [
+    'version' => '1.3',
+    'date' => 'Julho de 2025',
+    'status' => 'Entrega',
+    'icon' => 'bi-bank',
+    'items' => ['Opção de Doações Bancárias adicionada na página de Doação.'],
+  ],
+  [
+    'version' => '1.2',
+    'date' => 'Junho de 2025',
+    'status' => 'Entrega',
+    'icon' => 'bi-arrow-up-circle',
+    'items' => [
+      'Sistema aprimorado de exibição de PDFs com visualização integrada.',
+      'Botão do Instagram adicionado ao rodapé.',
+    ],
+  ],
+  [
+    'version' => '1.1',
+    'date' => 'Março de 2025',
+    'status' => 'Base',
+    'icon' => 'bi-clock-history',
+    'items' => [
+      'Modal de imagens com abertura e fechamento corrigidos.',
+      'Roteamento avançado para URLs amigáveis e navegação dinâmica.',
+      'Melhorias de segurança e otimizações de desempenho.',
+    ],
+  ],
+];
 ?>
-  <section class="hero bg-image text-white d-flex align-items-center" style="background-image: url('<?php echo cms_attr('sobre', 'hero.image', '/images/imagem.jpg'); ?>'); height: 600px; background-size: cover; background-position: center; min-height: 220px;">
-    <div class="container text-center">
-      <h1 class="display-4">Sobre o Site</h1>
-      <p class="lead">Conheça os recursos, funcionalidades e a proposta do nosso portal</p>
-    </div>
-  </section>
 
-  <section class="py-5 bg-light">
+<main class="sobre-page">
+  <section class="sobre-hero" style="--sobre-hero-image: url('<?php echo htmlspecialchars(cms_attr('sobre', 'hero.image', '/images/imagem.jpg'), ENT_QUOTES, 'UTF-8'); ?>');">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div class="card sobre-card shadow-lg border-0 mb-4 bg-white bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-secondary text-center"><i class="bi bi-stars me-2"></i>Recursos do site</h2>
-              <ul class="fs-5 mb-4 list-unstyled">
-                <li class="text-center py-2 border-bottom"><i class="bi bi-phone me-2 text-primary"></i>Design responsivo e moderno com Bootstrap 5</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-primary"></i>Galeria de fotos com visualização em carrossel e modal</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-cash-coin me-2 text-primary"></i>Página de doações com múltiplas opções (banco, PayPal, internacional)</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-check me-2 text-info"></i>Seção de transparência e documentos</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-people me-2 text-warning"></i>Seção de parceiros e projetos</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-whatsapp me-2 text-success"></i>Botão de contato via WhatsApp integrado</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-geo-alt me-2 text-danger"></i>Mapa de localização integrado via Google Maps</li>
-                <li class="text-center py-2"><i class="bi bi-lightning-charge me-2 text-primary"></i>Carregamento otimizado de imagens (lazy loading)</li>
-              </ul>
-              <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
-                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
-                <div>
-                  <strong>Versão do sistema:</strong> 2.0<br>
-                  <strong>Data de lançamento:</strong> Abril de 2026
-                </div>
-              </div>
-              <p class="mt-4 fs-5 text-center">Este site foi desenvolvido para facilitar o acesso às informações do Instituto Social Novo Amanhecer, promover a transparência e incentivar a participação da comunidade em nossos projetos sociais.</p>
-            </div>
+      <div class="sobre-hero-grid">
+        <div class="sobre-hero-copy">
+          <span class="sobre-eyebrow">ISNAPress 2.0</span>
+          <h1>Sobre o sistema</h1>
+          <p>
+            Portal institucional e área administrativa criados para manter o conteúdo do Instituto Social Novo Amanhecer organizado, acessível e fácil de atualizar.
+          </p>
+          <div class="sobre-hero-actions">
+            <a class="btn btn-primary" href="<?php echo $site_url; ?>/area-restrita">
+              <i class="bi bi-speedometer2 me-1"></i> Abrir painel
+            </a>
+            <a class="btn btn-outline-secondary" href="<?php echo $site_url; ?>/">
+              <i class="bi bi-house-door me-1"></i> Ver site
+            </a>
+          </div>
+        </div>
+        <div class="sobre-hero-panel" aria-label="Resumo do sistema">
+          <div>
+            <span class="sobre-panel-label">Versão</span>
+            <strong>2.0</strong>
+          </div>
+          <div>
+            <span class="sobre-panel-label">Lançamento</span>
+            <strong>Abril de 2026</strong>
+          </div>
+          <div>
+            <span class="sobre-panel-label">Foco</span>
+            <strong>Conteúdo, transparência e gestão</strong>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <style>
-    /* Timeline styles */
-    .timeline { position: relative; margin: 2rem 0; padding: 0; }
-    .timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: #ddd; }
-    .timeline-item { position: relative; width: 50%; padding: 1rem 2rem; box-sizing: border-box; }
-    .timeline-item:nth-child(odd) { left: 0; text-align: right; }
-    .timeline-item:nth-child(even) { left: 50%; }
-    .timeline-item::before { content: ''; position: absolute; top: 1.5rem; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 4px solid #0d6efd; }
-    .timeline-item:nth-child(odd)::before { right: -12px; }
-    .timeline-item:nth-child(even)::before { left: -12px; }
-
-    /* Responsividade para dispositivos móveis */
-    @media (max-width: 767px) {
-      .timeline::before {
-        left: 8px;
-      }
-      .timeline-item {
-        width: 100%;
-        left: 0 !important;
-        text-align: left !important;
-        padding: 1rem 1rem 1rem 2.5rem;
-      }
-      .timeline-item::before {
-        top: 1rem;
-        left: 0;
-        right: auto;
-      }
-    }
-  </style>
-
-  <section class="py-5 bg-white">
+  <section class="sobre-section sobre-section-muted">
     <div class="container">
-      <div class="timeline">
-        <!-- Card da versão 2.0 -->
-        <div class="timeline-item">
-          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-rocket-takeoff me-2"></i>Melhorias da versão 2.0 (atual)</h2>
-              <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
-                <div>Versão lançada em Abril de 2026</div>
-              </div>
-              <ul class="fs-5 mb-0 list-unstyled">
-                <li class="text-center py-2 border-bottom"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Relatórios internos de acesso com filtros por período, páginas mais acessadas e exportação em PDF</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-lock me-2 text-info"></i>Dashboard e relatórios agora desconsideram telas administrativas e IPs internos configurados</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-success"></i>Gestão completa da galeria com edição de seções e fotos carregadas em modal</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-window-sidebar me-2 text-secondary"></i>Área logada reorganizada como ISNAPress, com navegação administrativa aprimorada</li>
-                <li class="text-center py-2"><i class="bi bi-person-gear me-2 text-warning"></i>Correções na sidebar administrativa, incluindo ícones e acesso direto à página Sobre</li>
-              </ul>
+      <div class="sobre-section-header">
+        <span class="sobre-eyebrow">Capacidades</span>
+        <h2>Recursos principais</h2>
+        <p>Uma visão rápida das áreas que sustentam a operação pública e administrativa do portal.</p>
+      </div>
+
+      <div class="sobre-feature-grid">
+        <?php foreach ($featureCards as $feature): ?>
+          <article class="sobre-feature-card">
+            <div class="sobre-feature-icon">
+              <i class="bi <?php echo htmlspecialchars($feature['icon'], ENT_QUOTES, 'UTF-8'); ?>" aria-hidden="true"></i>
             </div>
-          </div>
-        </div>
-        <!-- Card da versão 1.4 -->
-        <div class="timeline-item">
-          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-danger text-center"><i class="bi bi-play-circle me-2"></i>Melhorias da versão 1.4</h2>
-              <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
-                <div>Versão lançada em Agosto de 2025</div>
-              </div>
-              <ul class="fs-5 mb-0 list-unstyled">
-                <li class="text-center py-2"><i class="bi bi-play-circle-fill me-2 text-danger"></i>Vídeos interativos na página de doação (player com controles aprimorados estilo Netflix)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- Card da versão 1.3 -->
-        <div class="timeline-item">
-          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-primary text-center"><i class="bi bi-bank me-2"></i>Melhorias da versão 1.3</h2>
-              <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
-                <div>Versão lançada em Julho de 2025</div>
-              </div>
-              <ul class="fs-5 mb-0 list-unstyled">
-                <li class="text-center py-2"><i class="bi bi-cash-stack me-2 text-success"></i>Opção de Doações Bancárias adicionada na página de Doação</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <!-- Card da versão 1.2 (atual) -->
-          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-success text-center"><i class="bi bi-arrow-up-circle me-2"></i>Melhorias da versão 1.2</h2>
-              <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-4"></i>
-                <div>Versão lançada em Junho de 2025</div>
-              </div>
-              <ul class="fs-5 mb-0 list-unstyled">
-                <li class="text-center py-2"><i class="bi bi-file-earmark-pdf me-2 text-danger"></i>Sistema aprimorado de exibição de PDFs com visualização integrada e navegação facilitada</li>
-                <li class="text-center py-2"><i class="bi bi-instagram me-2 text-danger"></i>Botão do Instagram no footer</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <!-- Card da versão 1.1 -->
-          <div class="card sobre-card shadow border-0 mb-4 bg-light bg-opacity-75">
-            <div class="card-body p-5">
-              <h2 class="h4 mb-4 text-info text-center"><i class="bi bi-clock-history me-2"></i>Melhorias da versão 1.1</h2>
-              <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
-                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
-                <div>Versão lançada em Março de 2025</div>
-              </div>
-              <ul class="fs-5 mb-0 list-unstyled">
-                <li class="text-center py-2 border-bottom"><i class="bi bi-images me-2 text-primary"></i>O modal de imagens agora abre e fecha corretamente, proporcionando melhor experiência ao usuário</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-diagram-3 me-2 text-secondary"></i>Roteamento avançado para URLs amigáveis e navegação dinâmica</li>
-                <li class="text-center py-2 border-bottom"><i class="bi bi-shield-lock me-2 text-info"></i>Melhorias de segurança (validação de entrada, proteção contra ataques comuns)</li>
-                <li class="text-center py-2"><i class="bi bi-speedometer2 me-2 text-warning"></i>Otimizações de desempenho para carregamento mais rápido</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+            <h3><?php echo htmlspecialchars($feature['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+            <p><?php echo htmlspecialchars($feature['text'], ENT_QUOTES, 'UTF-8'); ?></p>
+          </article>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
 
-  <?php if (!empty($recentChanges)): ?>
-    <section class="py-4 bg-light">
-      <div class="container">
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body">
-            <h2 class="h5 fw-semibold mb-3">Últimas modificações</h2>
-            <p class="text-muted small mb-3">Últimos commits do repositório (hash, autor, data e mensagem).</p>
-            <ul class="list-group">
-              <?php foreach ($recentChanges as $change): ?>
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                  <div class="ms-2 me-auto">
-                    <div class="fw-semibold"><?php echo htmlspecialchars($change['message'], ENT_QUOTES, 'UTF-8'); ?></div>
-                    <div class="text-muted small"><?php echo htmlspecialchars($change['author'], ENT_QUOTES, 'UTF-8'); ?> — <?php echo htmlspecialchars($change['date'], ENT_QUOTES, 'UTF-8'); ?></div>
+  <section class="sobre-section">
+    <div class="container">
+      <div class="sobre-split">
+        <div class="sobre-section-header sobre-section-header-sticky">
+          <span class="sobre-eyebrow">Evolução</span>
+          <h2>Histórico de versões</h2>
+          <p>Principais entregas feitas para ampliar a autonomia de gestão, melhorar a navegação e reforçar a transparência.</p>
+        </div>
+
+        <div class="sobre-version-list">
+          <?php foreach ($versionTimeline as $version): ?>
+            <article class="sobre-version-item">
+              <div class="sobre-version-marker">
+                <i class="bi <?php echo htmlspecialchars($version['icon'], ENT_QUOTES, 'UTF-8'); ?>" aria-hidden="true"></i>
+              </div>
+              <div class="sobre-version-content">
+                <div class="sobre-version-heading">
+                  <div>
+                    <span class="sobre-version-kicker"><?php echo htmlspecialchars($version['date'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <h3>Versão <?php echo htmlspecialchars($version['version'], ENT_QUOTES, 'UTF-8'); ?></h3>
                   </div>
-                  <span class="badge bg-secondary rounded-pill" title="Commit hash"><?php echo htmlspecialchars($change['hash'], ENT_QUOTES, 'UTF-8'); ?></span>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
+                  <span class="sobre-version-badge"><?php echo htmlspecialchars($version['status'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+                <ul>
+                  <?php foreach ($version['items'] as $item): ?>
+                    <li><?php echo htmlspecialchars($item, ENT_QUOTES, 'UTF-8'); ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            </article>
+          <?php endforeach; ?>
         </div>
       </div>
-    </section>
-  <?php else: ?>
-    <section class="py-4 bg-light">
-      <div class="container">
-        <div class="alert alert-info mb-0">Histórico de modificações não disponível (repositório Git ausente ou execução do comando Git não permitida).</div>
+    </div>
+  </section>
+
+  <section class="sobre-section sobre-section-muted">
+    <div class="container">
+      <div class="sobre-section-header">
+        <span class="sobre-eyebrow">Repositório</span>
+        <h2>Últimas modificações</h2>
+        <p>Registro recente de mudanças do projeto, exibido a partir do arquivo de changelog gerado.</p>
       </div>
-    </section>
-  <?php endif; ?>
+
+      <?php if (!empty($recentChanges)): ?>
+        <div class="sobre-change-list">
+          <?php foreach ($recentChanges as $change): ?>
+            <article class="sobre-change-item">
+              <div>
+                <h3><?php echo htmlspecialchars((string)($change['message'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p><?php echo htmlspecialchars((string)($change['author'] ?? ''), ENT_QUOTES, 'UTF-8'); ?> · <?php echo htmlspecialchars((string)($change['date'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></p>
+              </div>
+              <code><?php echo htmlspecialchars((string)($change['hash'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></code>
+            </article>
+          <?php endforeach; ?>
+        </div>
+      <?php else: ?>
+        <div class="sobre-empty-state">
+          <i class="bi bi-info-circle" aria-hidden="true"></i>
+          <span>Histórico de modificações não disponível.</span>
+        </div>
+      <?php endif; ?>
+    </div>
+  </section>
+</main>

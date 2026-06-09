@@ -398,14 +398,58 @@ class AuthService
     public static function attempt(string $username, string $password): bool
     {
         self::startSession();
+        $authUser = self::verifiedAuthUser($username, $password);
+        if ($authUser === null) return false;
+
+        $_SESSION['auth_user'] = $authUser;
+        unset($_SESSION['auth_pending_user']);
+        return true;
+    }
+
+    public static function beginPendingLogin(string $username, string $password): bool
+    {
+        self::startSession();
+        $authUser = self::verifiedAuthUser($username, $password);
+        if ($authUser === null) return false;
+
+        $_SESSION['auth_pending_user'] = $authUser;
+        return true;
+    }
+
+    public static function hasPendingLogin(): bool
+    {
+        self::startSession();
+        return isset($_SESSION['auth_pending_user']) && is_array($_SESSION['auth_pending_user']);
+    }
+
+    public static function pendingLoginName(): ?string
+    {
+        self::startSession();
+        if (!self::hasPendingLogin()) return null;
+        $name = $_SESSION['auth_pending_user']['name'] ?? null;
+        return is_string($name) && $name !== '' ? $name : null;
+    }
+
+    public static function completePendingLogin(): bool
+    {
+        self::startSession();
+        if (!self::hasPendingLogin()) return false;
+
+        $_SESSION['auth_user'] = $_SESSION['auth_pending_user'];
+        unset($_SESSION['auth_pending_user']);
+        return true;
+    }
+
+    private static function verifiedAuthUser(string $username, string $password): ?array
+    {
         $username = self::normalizeUsername($username);
-        if ($username === '' || $password === '') return false;
+        if ($username === '' || $password === '') return null;
 
         $user = self::userFromDb($username);
-        if (!is_array($user) || !isset($user['password']) || $user['password'] === '') return false;
+        if (!is_array($user) || !isset($user['password']) || $user['password'] === '') return null;
 
         $hash = $user['password'];
-        if (!is_string($hash) || $hash === '') return false;
+        if (!is_string($hash) || $hash === '') return null;
 
         $verified = false;
         if (password_get_info($hash)['algo'] !== 0) {
@@ -414,14 +458,13 @@ class AuthService
             $verified = hash_equals($hash, $password);
         }
 
-        if (!$verified) return false;
+        if (!$verified) return null;
 
-        $_SESSION['auth_user'] = [
+        return [
             'username' => $username,
             'name' => isset($user['name']) && is_string($user['name']) && $user['name'] !== '' ? $user['name'] : $username,
             'roles' => isset($user['roles']) && is_array($user['roles']) ? $user['roles'] : [],
         ];
-        return true;
     }
 
     public static function check(): bool
@@ -543,5 +586,31 @@ class AuthService
         unset($_SESSION['auth_csrf'][$form]);
         if (!is_string($token) || $token === '') return false;
         return hash_equals($expected, $token);
+    }
+
+    public static function generateCaptchaChallenge(string $form = 'default'): array
+    {
+        self::startSession();
+        $left = random_int(2, 9);
+        $right = random_int(2, 9);
+        $_SESSION['auth_captcha'][$form] = (string) ($left + $right);
+
+        return [
+            'question' => $left . ' + ' . $right,
+        ];
+    }
+
+    public static function validateCaptchaAnswer(string $form, ?string $answer): bool
+    {
+        self::startSession();
+        if (!isset($_SESSION['auth_captcha'][$form])) return false;
+        $expected = (string) $_SESSION['auth_captcha'][$form];
+        unset($_SESSION['auth_captcha'][$form]);
+
+        if (!is_string($answer)) return false;
+        $answer = trim($answer);
+        if ($answer === '' || !preg_match('/^\d+$/', $answer)) return false;
+
+        return hash_equals($expected, $answer);
     }
 }

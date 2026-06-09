@@ -1,3 +1,4 @@
+<?php if ($path !== '/login' && empty($currentUser)): ?>
 <footer class="bg-dark text-white pt-5 pb-3">
   <div class="container">
     <div class="row g-4">
@@ -37,11 +38,19 @@
     </div>
   </div>
 </footer>
+<?php elseif (!empty($currentUser)): ?>
+<footer class="admin-footer">
+  <span>Obrigado por criar com ISNAPress.</span>
+</footer>
+<?php endif; ?>
 
   <script>
     // Reduz opacidade da navbar ao rolar (apenas desktop)
     window.addEventListener("scroll", function() {
       const nav = document.getElementById("mainNav");
+      if (!nav) {
+        return;
+      }
       if (window.innerWidth >= 992) {
         if (window.scrollY > 50) {
           nav.classList.add("opacity-75");
@@ -63,7 +72,7 @@
     // Commented out the force reload script as it might cause issues in a PHP setup.
   </script>
 
-  <?php if (empty($currentUser)): ?>
+  <?php if ($path !== '/login' && empty($currentUser)): ?>
   <!-- Script do WhatsApp -->
   <script>
     var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';

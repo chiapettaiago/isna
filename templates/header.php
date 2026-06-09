@@ -19,7 +19,16 @@
   ?>
   <link rel="stylesheet" href="<?php echo $site_url; ?>/css/style.css?v=<?php echo $cssVer; ?>">
 </head>
-<body class="<?php echo $currentUser ? 'admin-layout' : ''; ?>">
+<?php
+  $bodyClasses = [];
+  if ($currentUser) {
+    $bodyClasses[] = 'admin-layout';
+  }
+  if ($path === '/login') {
+    $bodyClasses[] = 'login-layout';
+  }
+?>
+<body class="<?php echo htmlspecialchars(implode(' ', $bodyClasses), ENT_QUOTES, 'UTF-8'); ?>">
   <?php if ($currentUser): ?>
   <?php
     $sidebarUsername = isset($currentUser['username']) ? (string)$currentUser['username'] : '';
@@ -38,52 +47,71 @@
       $sidebarReturnTo .= '?' . $sidebarQuery;
     }
   ?>
+  <header class="admin-topbar" aria-label="Barra administrativa">
+    <a class="admin-topbar-site" href="<?php echo $site_url; ?>/" title="Ver site">
+      <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+      <span>ISNA</span>
+    </a>
+    <div class="admin-topbar-actions">
+      <button class="admin-topbar-user" type="button" data-bs-toggle="modal" data-bs-target="#adminUserModal">
+        <i class="bi bi-person-circle" aria-hidden="true"></i>
+        <span><?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?></span>
+      </button>
+      <a class="admin-topbar-logout" href="<?php echo $site_url; ?>/logout" title="Sair">
+        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+        <span>Sair</span>
+      </a>
+    </div>
+  </header>
+
   <aside class="admin-sidebar" aria-label="Navegação administrativa">
     <a class="admin-sidebar-brand" href="<?php echo $site_url; ?>/area-restrita" title="Área restrita">
       <img src="<?php echo $site_url . cms_attr('global', 'brand.logo', '/images/logo.png'); ?>" alt="Logo do Instituto">
       <span class="admin-sidebar-text">ISNAPress</span>
     </a>
 
-    <button class="admin-sidebar-user" type="button" title="<?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?>" data-bs-toggle="modal" data-bs-target="#adminUserModal">
-      <i class="bi bi-person-circle" aria-hidden="true"></i>
-      <span class="admin-sidebar-text"><?php echo htmlspecialchars($sidebarName, ENT_QUOTES, 'UTF-8'); ?></span>
-    </button>
-
     <nav class="admin-sidebar-nav">
-      <a class="admin-sidebar-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" title="Dashboard">
-        <i class="bi bi-speedometer2" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Dashboard</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/relatorios-acesso') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/relatorios-acesso" title="Relatórios">
-        <i class="bi bi-graph-up" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Relatórios</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" title="Usuários">
-        <i class="bi bi-person-gear" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Usuários</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/sobre') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/sobre" title="Sobre o sistema">
-        <i class="bi bi-info-circle" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Sobre</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" title="Gerenciar galeria">
-        <i class="bi bi-images" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Gerenciar galeria</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog" title="Gerenciar blog">
-        <i class="bi bi-journal-text" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">Gerenciar blog</span>
-      </a>
-      <a class="admin-sidebar-link<?php echo ($path === '/gestao-cms') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-cms" title="CMS do site">
-        <i class="bi bi-layout-text-window-reverse" aria-hidden="true"></i>
-        <span class="admin-sidebar-text">CMS do site</span>
-      </a>
+      <div class="admin-sidebar-section">
+        <div class="admin-sidebar-section-title">CMS do site</div>
+        <a class="admin-sidebar-link<?php echo ($path === '/area-restrita') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/area-restrita" title="Dashboard">
+          <i class="bi bi-speedometer2" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Painel</span>
+        </a>
+        <a class="admin-sidebar-link<?php echo ($path === '/gestao-cms') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-cms" title="Conteúdo do site">
+          <i class="bi bi-layout-text-window-reverse" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Páginas</span>
+        </a>
+        <a class="admin-sidebar-link<?php echo ($path === '/gestao-blog') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-blog" title="Posts do blog">
+          <i class="bi bi-journal-text" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Posts</span>
+        </a>
+        <a class="admin-sidebar-link<?php echo ($path === '/gestao-galeria') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-galeria" title="Gerenciar galeria">
+          <i class="bi bi-images" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Mídia</span>
+        </a>
+      </div>
+
+      <div class="admin-sidebar-section">
+        <div class="admin-sidebar-section-title">Administração</div>
+        <a class="admin-sidebar-link<?php echo ($path === '/relatorios-acesso') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/relatorios-acesso" title="Relatórios">
+          <i class="bi bi-graph-up" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Relatórios</span>
+        </a>
+        <a class="admin-sidebar-link<?php echo ($path === '/gestao-usuarios') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/gestao-usuarios" title="Usuários">
+          <i class="bi bi-person-gear" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Usuários</span>
+        </a>
+      </div>
+
+      <div class="admin-sidebar-section">
+        <div class="admin-sidebar-section-title">Sistema</div>
+        <a class="admin-sidebar-link<?php echo ($path === '/sobre') ? ' active' : ''; ?>" href="<?php echo $site_url; ?>/sobre" title="Sobre o sistema">
+          <i class="bi bi-info-circle" aria-hidden="true"></i>
+          <span class="admin-sidebar-text">Sobre</span>
+        </a>
+      </div>
     </nav>
 
-    <a class="admin-sidebar-link admin-sidebar-logout" href="<?php echo $site_url; ?>/logout" title="Sair">
-      <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-      <span class="admin-sidebar-text">Sair</span>
-    </a>
   </aside>
 
   <div class="modal fade" id="adminUserModal" tabindex="-1" aria-labelledby="adminUserModalLabel" aria-hidden="true">
@@ -137,7 +165,7 @@
       </div>
     </div>
   </div>
-  <?php else: ?>
+  <?php elseif ($path !== '/login'): ?>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
     <div class="container">
@@ -222,7 +250,7 @@
   ?>
 
   <?php if (!empty($flashBanners)): ?>
-    <div class="container mt-3">
+    <div class="<?php echo ($currentUser || $path === '/login') ? 'admin-flash-container' : 'container mt-3'; ?>">
       <?php foreach ($flashBanners as $flash): ?>
         <?php foreach ($flash['messages'] as $message): ?>
           <div class="alert alert-<?php echo $flash['class']; ?> alert-dismissible fade show" role="alert">
