@@ -89,9 +89,11 @@ RUN echo '<?php phpinfo(); ?>' > /var/www/html/isna/phpinfo.php && \
 
 # Criar arquivo .htaccess para URLs amigáveis
 RUN echo 'RewriteEngine On' > /var/www/html/isna/.htaccess && \
+        echo 'RewriteRule ^documento/([^/]+)\.pdf$ index.php?route=/documento/$1.pdf [QSA,L]' >> /var/www/html/isna/.htaccess && \
+        echo '' >> /var/www/html/isna/.htaccess && \
         echo 'RewriteCond %{REQUEST_FILENAME} !-f' >> /var/www/html/isna/.htaccess && \
         echo 'RewriteCond %{REQUEST_FILENAME} !-d' >> /var/www/html/isna/.htaccess && \
-        echo 'RewriteRule ^([^/]+)/?$ index.php?page=$1 [QSA,L]' >> /var/www/html/isna/.htaccess
+        echo 'RewriteRule ^ index.php [QSA,L]' >> /var/www/html/isna/.htaccess
 
 # Expor a porta configurada
 EXPOSE 8080
