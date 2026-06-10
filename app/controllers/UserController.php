@@ -152,6 +152,112 @@ class UserController extends Controller
 
             AuthService::flashMessage('success', 'Usuário criado com sucesso no banco MySQL.');
             AuthService::redirect('gestao-usuarios');
+        } elseif ($action === 'update_user') {
+            if (!AuthService::userIsAdmin()) {
+                AuthService::flashMessage('error', 'Você não tem permissão para editar usuários.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            $token = $_POST['csrf_token'] ?? '';
+
+            if (!AuthService::validateCsrfToken('update_user', $token)) {
+                AuthService::flashMessage('error', 'Token de segurança inválido. Por favor, tente novamente.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            $targetUsername = AuthService::normalizeUsername(isset($_POST['username']) ? (string) $_POST['username'] : '');
+            $displayName = isset($_POST['name']) ? trim((string) $_POST['name']) : '';
+            $password = isset($_POST['password']) ? (string) $_POST['password'] : '';
+            $passwordConfirmation = isset($_POST['password_confirmation']) ? (string) $_POST['password_confirmation'] : '';
+            $isAdminRequested = isset($_POST['is_admin']) && $_POST['is_admin'] === '1';
+            $currentUsername = AuthService::userUsername();
+
+            if ($targetUsername === '') {
+                AuthService::flashMessage('error', 'Usuário inválido para edição.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            $targetUser = AuthService::userFromDb($targetUsername);
+
+            if (!is_array($targetUser)) {
+                AuthService::flashMessage('error', 'Usuário não encontrado.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            if ($password !== '' || $passwordConfirmation !== '') {
+                if ($password !== $passwordConfirmation) {
+                    AuthService::flashMessage('error', 'A confirmação da nova senha não confere.');
+                    AuthService::redirect('gestao-usuarios');
+                }
+
+                if (strlen($password) < 8) {
+                    AuthService::flashMessage('error', 'A nova senha deve conter pelo menos 8 caracteres.');
+                    AuthService::redirect('gestao-usuarios');
+                }
+            }
+
+            $roles = isset($targetUser['roles']) && is_array($targetUser['roles']) ? $targetUser['roles'] : [];
+            $roles = array_values(array_filter($roles, static function ($role): bool {
+                return is_string($role) && strtolower(trim($role)) !== 'admin';
+            }));
+            if ($isAdminRequested || $targetUsername === $currentUsername) {
+                $roles[] = 'admin';
+            }
+
+            $fields = [
+                'name' => $displayName !== '' ? $displayName : $targetUsername,
+                'roles' => array_values(array_unique($roles)),
+            ];
+
+            if ($password !== '') {
+                $fields['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+
+            if (!AuthService::updateUserInDb($targetUsername, $fields)) {
+                AuthService::flashMessage('error', 'Não foi possível atualizar o usuário no banco MySQL.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            if ($targetUsername === $currentUsername) {
+                $_SESSION['auth_user']['name'] = $fields['name'];
+                $_SESSION['auth_user']['roles'] = $fields['roles'];
+            }
+
+            AuthService::flashMessage('success', 'Usuário atualizado com sucesso.');
+            AuthService::redirect('gestao-usuarios');
+        } elseif ($action === 'delete_user') {
+            if (!AuthService::userIsAdmin()) {
+                AuthService::flashMessage('error', 'Você não tem permissão para remover usuários.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            $token = $_POST['csrf_token'] ?? '';
+
+            if (!AuthService::validateCsrfToken('delete_user', $token)) {
+                AuthService::flashMessage('error', 'Token de segurança inválido. Por favor, tente novamente.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            $targetUsername = AuthService::normalizeUsername(isset($_POST['username']) ? (string) $_POST['username'] : '');
+            $currentUsername = AuthService::userUsername();
+
+            if ($targetUsername === '') {
+                AuthService::flashMessage('error', 'Usuário inválido para remoção.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            if ($targetUsername === $currentUsername) {
+                AuthService::flashMessage('error', 'Você não pode remover o próprio usuário autenticado.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            if (!AuthService::deleteUserInDb($targetUsername)) {
+                AuthService::flashMessage('error', 'Não foi possível remover o usuário no banco MySQL.');
+                AuthService::redirect('gestao-usuarios');
+            }
+
+            AuthService::flashMessage('success', 'Usuário removido com sucesso.');
+            AuthService::redirect('gestao-usuarios');
         }
     }
 

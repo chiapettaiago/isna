@@ -29,6 +29,11 @@ class CmsController extends Controller
             return;
         }
 
+        if ($action === 'create_page') {
+            $this->createPage();
+            return;
+        }
+
         if ($action === 'delete_section') {
             $this->deleteSection();
             return;
@@ -118,6 +123,58 @@ class CmsController extends Controller
         }
 
         AuthService::flashMessage('success', 'Seção adicionada ao site com sucesso.');
+        AuthService::redirect('gestao-cms');
+    }
+
+    private function createPage(): void
+    {
+        $token = $_POST['csrf_token'] ?? '';
+        if (!AuthService::validateCsrfToken('cms_create_page', $token)) {
+            AuthService::flashMessage('error', 'Token de segurança inválido. Por favor, tente novamente.');
+            AuthService::redirect('gestao-cms');
+        }
+
+        $title = isset($_POST['page_title']) ? trim((string)$_POST['page_title']) : '';
+        $slugInput = isset($_POST['page_slug']) ? trim((string)$_POST['page_slug']) : '';
+        $content = isset($_POST['page_content']) ? trim((string)$_POST['page_content']) : '';
+        $slug = CmsModel::normalizePageSlug($slugInput !== '' ? $slugInput : $title);
+
+        AuthService::flashValue('cms_create_page_title', $title);
+        AuthService::flashValue('cms_create_page_slug', $slugInput);
+        AuthService::flashValue('cms_create_page_content', $content);
+
+        if ($title === '') {
+            AuthService::flashMessage('error', 'Informe o título da nova página.');
+            AuthService::redirect('gestao-cms');
+        }
+
+        if ($slug === '') {
+            AuthService::flashMessage('error', 'Informe uma URL válida para a nova página.');
+            AuthService::redirect('gestao-cms');
+        }
+
+        $reserved = array_merge(array_keys(CmsModel::pageOptions()), [
+            'login',
+            'logout',
+            'area-restrita',
+            'gestao-cms',
+            'gestao-blog',
+            'gestao-galeria',
+            'gestao-usuarios',
+            'relatorios-acesso',
+        ]);
+
+        if (in_array($slug, $reserved, true) || CmsModel::customPageBySlug($slug, false)) {
+            AuthService::flashMessage('error', 'Já existe uma página usando essa URL.');
+            AuthService::redirect('gestao-cms');
+        }
+
+        if (!CmsModel::createCustomPage($slug, $title, $content, AuthService::userUsername())) {
+            AuthService::flashMessage('error', 'Não foi possível criar a página.');
+            AuthService::redirect('gestao-cms');
+        }
+
+        AuthService::flashMessage('success', 'Página criada com sucesso.');
         AuthService::redirect('gestao-cms');
     }
 

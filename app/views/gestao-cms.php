@@ -10,106 +10,179 @@ $customSections = CmsModel::customSections();
 $mediaItems = CmsModel::mediaItems();
 $mediaGroups = CmsModel::mediaGroups();
 $token = AuthService::generateCsrfToken('cms_save_blocks');
+$createPageToken = AuthService::generateCsrfToken('cms_create_page');
 $addSectionToken = AuthService::generateCsrfToken('cms_add_section');
 $deleteSectionToken = AuthService::generateCsrfToken('cms_delete_section');
 $uploadMediaToken = AuthService::generateCsrfToken('cms_upload_media');
+$oldPageTitle = AuthService::flashPullValue('cms_create_page_title', '');
+$oldPageSlug = AuthService::flashPullValue('cms_create_page_slug', '');
+$oldPageContent = AuthService::flashPullValue('cms_create_page_content', '');
 $oldSectionPage = AuthService::flashPullValue('cms_section_page_slug', 'home');
 $oldSectionTitle = AuthService::flashPullValue('cms_section_title', '');
 $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
 ?>
 
-<section class="py-5 bg-light">
-  <div class="container">
-    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4">
-      <div>
-        <h1 class="display-6 fw-semibold mb-2">CMS do Site</h1>
-        <p class="lead mb-0">Edite textos, imagens e chamadas das principais áreas sem alterar código.</p>
+<section class="wp-cms-page">
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="wp-cms-header">
+      <div class="wp-cms-title-row">
+        <h1>Páginas</h1>
+        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#cmsCreatePageModal">
+          <i class="bi bi-plus-lg me-1"></i> Criar página
+        </button>
+        <a class="btn btn-outline-primary btn-sm" href="<?php echo $site_url; ?>/" target="_blank" rel="noreferrer">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Ver página
+        </a>
       </div>
-      <a class="btn btn-outline-secondary mt-3 mt-lg-0" href="<?php echo $site_url; ?>/" target="_blank" rel="noreferrer">
-        <i class="bi bi-box-arrow-up-right me-1"></i> Ver site
-      </a>
+      <p>Edite textos, imagens e chamadas publicadas no site sem alterar código.</p>
+    </div>
+
+    <div class="modal fade" id="cmsCreatePageModal" tabindex="-1" aria-labelledby="cmsCreatePageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content wp-cms-create-modal">
+          <form method="post" action="<?php echo $site_url; ?>/gestao-cms">
+            <div class="modal-header">
+              <div>
+                <h2 class="modal-title h5" id="cmsCreatePageModalLabel">Criar página</h2>
+                <p class="text-muted mb-0">A página criada fica pública e disponível na URL definida abaixo.</p>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="action" value="create_page">
+              <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($createPageToken, ENT_QUOTES, 'UTF-8'); ?>">
+
+              <div class="row g-3">
+                <div class="col-md-7">
+                  <label class="form-label" for="cms-create-page-title">Título</label>
+                  <input class="form-control" id="cms-create-page-title" name="page_title" type="text" value="<?php echo htmlspecialchars((string)$oldPageTitle, ENT_QUOTES, 'UTF-8'); ?>" required>
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label" for="cms-create-page-slug">URL</label>
+                  <div class="input-group">
+                    <span class="input-group-text">/</span>
+                    <input class="form-control" id="cms-create-page-slug" name="page_slug" type="text" value="<?php echo htmlspecialchars((string)$oldPageSlug, ENT_QUOTES, 'UTF-8'); ?>">
+                  </div>
+                  <div class="form-text">Deixe em branco para gerar pelo título.</div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="cms-create-page-content">Conteúdo inicial</label>
+                  <textarea class="form-control" id="cms-create-page-content" name="page_content" rows="8"><?php echo htmlspecialchars((string)$oldPageContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Criar página</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <form method="post" action="<?php echo $site_url; ?>/gestao-cms">
       <input type="hidden" name="action" value="save_blocks">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
 
-      <div class="accordion" id="cmsAccordion">
-        <?php $pageIndex = 0; ?>
-        <?php foreach ($pages as $pageSlug => $page): ?>
-          <?php if (empty($page['blocks'])) continue; ?>
-          <?php
-            $collapseId = 'cms-page-' . preg_replace('/[^a-z0-9_-]/i', '-', (string)$pageSlug);
-            $isOpen = $pageIndex === 0;
-          ?>
-          <div class="accordion-item border-0 shadow-sm mb-3">
-            <h2 class="accordion-header">
-              <button class="accordion-button<?php echo $isOpen ? '' : ' collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="<?php echo $isOpen ? 'true' : 'false'; ?>" aria-controls="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>">
-                <?php echo htmlspecialchars($page['title'], ENT_QUOTES, 'UTF-8'); ?>
-              </button>
-            </h2>
-            <div id="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" class="accordion-collapse collapse<?php echo $isOpen ? ' show' : ''; ?>" data-bs-parent="#cmsAccordion">
-              <div class="accordion-body">
-                <div class="row g-3">
-                  <?php foreach ($page['blocks'] as $key => $block): ?>
-                    <?php
-                      $fieldName = 'blocks[' . $pageSlug . '][' . $key . ']';
-                      $fieldId = 'cms-' . preg_replace('/[^a-z0-9_-]/i', '-', $pageSlug . '-' . $key);
-                      $type = $block['type'] ?? 'text';
-                      $value = (string)($block['value'] ?? '');
-                    ?>
-                    <div class="col-12<?php echo in_array($type, ['textarea', 'html', 'image'], true) ? '' : ' col-lg-6'; ?>">
-                      <label class="form-label fw-semibold" for="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>">
-                        <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>
-                      </label>
-                      <?php if ($type === 'image'): ?>
+      <div class="wp-cms-layout">
+        <main class="wp-cms-main">
+          <div class="accordion wp-cms-editor" id="cmsAccordion">
+            <?php $pageIndex = 0; ?>
+            <?php foreach ($pages as $pageSlug => $page): ?>
+              <?php if (empty($page['blocks'])) continue; ?>
+              <?php
+                $collapseId = 'cms-page-' . preg_replace('/[^a-z0-9_-]/i', '-', (string)$pageSlug);
+                $isOpen = $pageIndex === 0;
+              ?>
+              <div class="accordion-item wp-cms-postbox">
+                <h2 class="accordion-header">
+                  <button class="accordion-button<?php echo $isOpen ? '' : ' collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="<?php echo $isOpen ? 'true' : 'false'; ?>" aria-controls="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php echo htmlspecialchars($page['title'], ENT_QUOTES, 'UTF-8'); ?>
+                  </button>
+                </h2>
+                <div id="<?php echo htmlspecialchars($collapseId, ENT_QUOTES, 'UTF-8'); ?>" class="accordion-collapse collapse<?php echo $isOpen ? ' show' : ''; ?>" data-bs-parent="#cmsAccordion">
+                  <div class="accordion-body">
+                    <div class="row g-3">
+                      <?php foreach ($page['blocks'] as $key => $block): ?>
                         <?php
-                          $currentImage = CmsModel::isMediaPathAllowed($value) ? $value : (string)($block['default'] ?? '/images/imagem.jpg');
-                          $currentImageUrl = $site_url . '/' . ltrim($currentImage, '/');
+                          $fieldName = 'blocks[' . $pageSlug . '][' . $key . ']';
+                          $fieldId = 'cms-' . preg_replace('/[^a-z0-9_-]/i', '-', $pageSlug . '-' . $key);
+                          $type = $block['type'] ?? 'text';
+                          $value = (string)($block['value'] ?? '');
                         ?>
-                        <input type="hidden" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-value>
-                        <div class="cms-media-field" data-cms-media-field>
-                          <button class="cms-media-current" type="button" data-bs-toggle="modal" data-bs-target="#cmsMediaModal" data-cms-media-trigger data-cms-media-field-id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>"<?php echo empty($mediaItems) ? ' disabled' : ''; ?>>
-                            <img src="<?php echo htmlspecialchars($currentImageUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Imagem selecionada para <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-preview>
-                            <span data-cms-media-current-label><?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?></span>
-                            <i class="bi bi-pencil-square ms-auto" aria-hidden="true"></i>
-                          </button>
-                          <?php if (empty($mediaItems)): ?>
-                            <p class="text-muted small mb-0 mt-2">Nenhuma imagem disponível. Envie uma imagem na biblioteca acima.</p>
+                        <div class="col-12<?php echo in_array($type, ['textarea', 'html', 'image'], true) ? '' : ' col-lg-6'; ?>">
+                          <label class="form-label" for="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>">
+                            <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>
+                          </label>
+                          <?php if ($type === 'image'): ?>
+                            <?php
+                              $currentImage = CmsModel::isMediaPathAllowed($value) ? $value : (string)($block['default'] ?? '/images/imagem.jpg');
+                              $currentImageUrl = $site_url . '/' . ltrim($currentImage, '/');
+                            ?>
+                            <input type="hidden" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-value>
+                            <div class="cms-media-field" data-cms-media-field>
+                              <button class="cms-media-current" type="button" data-bs-toggle="modal" data-bs-target="#cmsMediaModal" data-cms-media-trigger data-cms-media-field-id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>"<?php echo empty($mediaItems) ? ' disabled' : ''; ?>>
+                                <img src="<?php echo htmlspecialchars($currentImageUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="Imagem selecionada para <?php echo htmlspecialchars($block['label'], ENT_QUOTES, 'UTF-8'); ?>" data-cms-media-preview>
+                                <span data-cms-media-current-label><?php echo htmlspecialchars($currentImage, ENT_QUOTES, 'UTF-8'); ?></span>
+                                <i class="bi bi-pencil-square ms-auto" aria-hidden="true"></i>
+                              </button>
+                              <?php if (empty($mediaItems)): ?>
+                                <p class="text-muted small mb-0 mt-2">Nenhuma imagem disponível. Envie uma imagem na biblioteca acima.</p>
+                              <?php else: ?>
+                                <div class="form-text">Clique na imagem para escolher outra na biblioteca.</div>
+                              <?php endif; ?>
+                            </div>
+                          <?php elseif (in_array($type, ['textarea', 'html'], true)): ?>
+                            <textarea class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" rows="<?php echo $type === 'html' ? 8 : 4; ?>"><?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                          <?php elseif ($type === 'number'): ?>
+                            <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="number" min="<?php echo htmlspecialchars((string)($block['min'] ?? '0'), ENT_QUOTES, 'UTF-8'); ?>" max="<?php echo htmlspecialchars((string)($block['max'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" step="<?php echo htmlspecialchars((string)($block['step'] ?? '1'), ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
+                          <?php elseif ($type === 'date'): ?>
+                            <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="date" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
                           <?php else: ?>
-                            <div class="form-text">Clique na imagem para escolher outra na biblioteca.</div>
+                            <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo $type === 'url' ? 'url' : 'text'; ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
                           <?php endif; ?>
                         </div>
-                      <?php elseif (in_array($type, ['textarea', 'html'], true)): ?>
-                        <textarea class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" rows="<?php echo $type === 'html' ? 8 : 4; ?>"><?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
-                      <?php elseif ($type === 'number'): ?>
-                        <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="number" min="<?php echo htmlspecialchars((string)($block['min'] ?? '0'), ENT_QUOTES, 'UTF-8'); ?>" max="<?php echo htmlspecialchars((string)($block['max'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" step="<?php echo htmlspecialchars((string)($block['step'] ?? '1'), ENT_QUOTES, 'UTF-8'); ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
-                      <?php elseif ($type === 'date'): ?>
-                        <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="date" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
-                      <?php else: ?>
-                        <input class="form-control" id="<?php echo htmlspecialchars($fieldId, ENT_QUOTES, 'UTF-8'); ?>" name="<?php echo htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8'); ?>" type="<?php echo $type === 'url' ? 'url' : 'text'; ?>" value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>">
-                      <?php endif; ?>
+                      <?php endforeach; ?>
                     </div>
-                  <?php endforeach; ?>
+                  </div>
                 </div>
               </div>
+              <?php $pageIndex++; ?>
+            <?php endforeach; ?>
+          </div>
+        </main>
+
+        <aside class="wp-cms-sidebar">
+          <div class="wp-cms-postbox wp-cms-publish-box">
+            <div class="wp-cms-postbox-title">Publicar</div>
+            <div class="wp-cms-postbox-body">
+              <div class="wp-cms-publish-row">
+                <span>Status</span>
+                <strong>Publicado</strong>
+              </div>
+              <div class="wp-cms-publish-row">
+                <span>Visibilidade</span>
+                <strong>Público</strong>
+              </div>
+              <a class="btn btn-outline-secondary btn-sm w-100" href="<?php echo $site_url; ?>/" target="_blank" rel="noreferrer">
+                <i class="bi bi-eye me-1"></i> Visualizar
+              </a>
+            </div>
+            <div class="wp-cms-publish-actions">
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-save me-1"></i> Atualizar
+              </button>
             </div>
           </div>
-          <?php $pageIndex++; ?>
-        <?php endforeach; ?>
-      </div>
-
-      <div class="position-sticky bottom-0 bg-light border-top py-3 mt-4">
-        <button class="btn btn-primary btn-lg" type="submit">
-          <i class="bi bi-save me-1"></i> Salvar conteúdo
-        </button>
+        </aside>
       </div>
     </form>
 
-    <div class="row g-4 mt-4">
+    <div class="row g-4 mt-4 wp-cms-sections-row">
       <div class="col-12 col-xl-5">
-        <div class="bg-white border rounded-3 shadow-sm p-4">
-          <h2 class="h4 fw-semibold mb-3">Adicionar seção</h2>
+        <div class="wp-cms-postbox">
+          <div class="wp-cms-postbox-title">Adicionar seção</div>
+          <div class="wp-cms-postbox-body">
           <form method="post" action="<?php echo $site_url; ?>/gestao-cms">
             <input type="hidden" name="action" value="add_section">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($addSectionToken, ENT_QUOTES, 'UTF-8'); ?>">
@@ -139,12 +212,14 @@ $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
               <i class="bi bi-plus-lg me-1"></i> Adicionar ao site
             </button>
           </form>
+          </div>
         </div>
       </div>
 
       <div class="col-12 col-xl-7">
-        <div class="bg-white border rounded-3 shadow-sm p-4">
-          <h2 class="h4 fw-semibold mb-3">Seções adicionadas</h2>
+        <div class="wp-cms-postbox">
+          <div class="wp-cms-postbox-title">Seções adicionadas</div>
+          <div class="wp-cms-postbox-body">
           <?php if (empty($customSections)): ?>
             <p class="text-muted mb-0">Nenhuma seção extra foi adicionada ainda.</p>
           <?php else: ?>
@@ -188,6 +263,7 @@ $oldSectionContent = AuthService::flashPullValue('cms_section_content', '');
               </table>
             </div>
           <?php endif; ?>
+          </div>
         </div>
       </div>
     </div>

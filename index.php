@@ -277,9 +277,23 @@ $router->add('/relatorios-acesso', ['file' => 'relatorios-acesso.php', 'title' =
 $router->add('/gestao-usuarios', ['file' => 'gestao-usuarios.php', 'title' => 'Gestão de Usuários - ISNA']);
 $router->add('/gestao-galeria', ['file' => 'gestao-galeria.php', 'title' => 'Gestão da Galeria - ISNA']);
 $router->add('/gestao-blog', ['file' => 'gestao-blog.php', 'title' => 'Gestão do Blog - ISNA']);
-$router->add('/gestao-cms', ['file' => 'gestao-cms.php', 'title' => 'CMS do Site - ISNA']);
+$router->add('/gestao-cms', ['file' => 'gestao-cms.php', 'title' => 'Página inicial - ISNA']);
 $router->add('/contato', ['file' => 'contato.php', 'title' => 'Contato - ISNA']);
 $router->add('/mural', ['file' => 'mural.php', 'title' => 'Mural Informativo - ISNA']);
+
+foreach (CmsModel::customPages(true) as $customPage) {
+    $customSlug = isset($customPage['slug']) ? CmsModel::normalizePageSlug((string)$customPage['slug']) : '';
+    $customTitle = isset($customPage['title']) ? trim((string)$customPage['title']) : '';
+    if ($customSlug === '' || $customTitle === '') {
+        continue;
+    }
+
+    $router->add('/' . $customSlug, [
+        'file' => 'dynamic-page.php',
+        'title' => $customTitle . ' - ISNA',
+        'cms_page_slug' => $customSlug,
+    ]);
+}
 
 // Dispatch route
 $meta = $router->dispatch($path);

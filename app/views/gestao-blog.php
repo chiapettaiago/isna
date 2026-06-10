@@ -22,72 +22,89 @@ $oldAuthor = auth_flash_pull_value('blog_post_author', '');
         <h1 class="display-6 fw-semibold mb-2">Gestão do Blog</h1>
         <p class="lead mb-0">Divulgue novidades e histórias do instituto publicando artigos no blog.</p>
       </div>
-      <a class="btn btn-outline-secondary mt-3 mt-lg-0" href="<?php echo $site_url; ?>/" target="_blank" rel="noreferrer">
-        <i class="bi bi-box-arrow-up-right me-1"></i> Ver página inicial
-      </a>
+      <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#blogCreatePostModal">
+          <i class="bi bi-journal-plus me-1"></i> Novo post
+        </button>
+        <a class="btn btn-outline-secondary" href="<?php echo $site_url; ?>/" target="_blank" rel="noreferrer">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Ver página inicial
+        </a>
+      </div>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
-      <div class="card-body">
-        <h2 class="h5 fw-semibold">Publicar novo post</h2>
-        <p class="text-muted">Preencha os campos abaixo e clique em publicar para adicionar o conteúdo ao blog.</p>
-        <form method="post" action="<?php echo $site_url; ?>/gestao-blog" autocomplete="off">
-          <input type="hidden" name="action" value="create_post">
-          <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($createPostToken, ENT_QUOTES, 'UTF-8'); ?>">
+    <div class="modal fade" id="blogCreatePostModal" tabindex="-1" aria-labelledby="blogCreatePostModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <form method="post" action="<?php echo $site_url; ?>/gestao-blog" autocomplete="off">
+            <div class="modal-header">
+              <div>
+                <h2 class="modal-title h5" id="blogCreatePostModalLabel">Publicar novo post</h2>
+                <p class="text-muted mb-0">Preencha os campos e publique o conteúdo no blog.</p>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="action" value="create_post">
+              <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($createPostToken, ENT_QUOTES, 'UTF-8'); ?>">
 
-          <div class="mb-3">
-            <label class="form-label" for="post_title">Título</label>
-            <input
-              class="form-control"
-              type="text"
-              id="post_title"
-              name="title"
-              value="<?php echo htmlspecialchars($oldTitle, ENT_QUOTES, 'UTF-8'); ?>"
-              required
-            >
-          </div>
+              <div class="mb-3">
+                <label class="form-label" for="post_title">Título</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="post_title"
+                  name="title"
+                  value="<?php echo htmlspecialchars($oldTitle, ENT_QUOTES, 'UTF-8'); ?>"
+                  required
+                >
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="post_author">Autor (opcional)</label>
-            <input
-              class="form-control"
-              type="text"
-              id="post_author"
-              name="author"
-              value="<?php echo htmlspecialchars($oldAuthor, ENT_QUOTES, 'UTF-8'); ?>"
-              placeholder="Nome de quem assina a publicação"
-            >
-          </div>
+              <div class="mb-3">
+                <label class="form-label" for="post_author">Autor (opcional)</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="post_author"
+                  name="author"
+                  value="<?php echo htmlspecialchars($oldAuthor, ENT_QUOTES, 'UTF-8'); ?>"
+                  placeholder="Nome de quem assina a publicação"
+                >
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="post_summary">Resumo (opcional)</label>
-            <textarea
-              class="form-control"
-              id="post_summary"
-              name="summary"
-              rows="3"
-              maxlength="600"
-              placeholder="Breve descrição que aparecerá na página inicial"
-            ><?php echo htmlspecialchars($oldSummary, ENT_QUOTES, 'UTF-8'); ?></textarea>
-            <div class="form-text">Limite sugerido: até 600 caracteres.</div>
-          </div>
+              <div class="mb-3">
+                <label class="form-label" for="post_summary">Resumo (opcional)</label>
+                <textarea
+                  class="form-control"
+                  id="post_summary"
+                  name="summary"
+                  rows="3"
+                  maxlength="600"
+                  placeholder="Breve descrição que aparecerá na página inicial"
+                ><?php echo htmlspecialchars($oldSummary, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                <div class="form-text">Limite sugerido: até 600 caracteres.</div>
+              </div>
 
-          <div class="mb-4">
-            <label class="form-label" for="post_content">Conteúdo</label>
-            <textarea
-              class="form-control"
-              id="post_content"
-              name="content"
-              rows="10"
-              required
-              placeholder="Digite o texto completo do artigo"
-            ><?php echo htmlspecialchars($oldContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
-          </div>
+              <div>
+                <label class="form-label" for="post_content">Conteúdo</label>
+                <textarea
+                  class="form-control"
+                  id="post_content"
+                  name="content"
+                  rows="10"
+                  required
+                  placeholder="Digite o texto completo do artigo"
+                ><?php echo htmlspecialchars($oldContent, ENT_QUOTES, 'UTF-8'); ?></textarea>
+              </div>
+            </div>
 
-          <button class="btn btn-primary" type="submit">
-            <i class="bi bi-journal-plus me-1"></i> Publicar post
-          </button>
-        </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-journal-plus me-1"></i> Publicar post
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 

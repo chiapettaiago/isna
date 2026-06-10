@@ -12,7 +12,7 @@ class PageController extends Controller
         $title = $meta['title'] ?? 'ISNA';
         $file = $meta['file'] ?? null;
 
-        $data = ['pageTitle' => $title];
+        $data = array_merge($meta, ['pageTitle' => $title]);
 
         if ($file) {
             $rel = ltrim($file, '/');

@@ -39,6 +39,12 @@ class CmsModel
         return (string)($cfg['cms_sections_table'] ?? 'cms_sections');
     }
 
+    public static function pagesTableName(): string
+    {
+        $cfg = AuthService::dbConfig() ?? [];
+        return (string)($cfg['cms_pages_table'] ?? 'cms_pages');
+    }
+
     public static function ensureTable(): bool
     {
         $pdo = AuthService::getPdo();
@@ -87,6 +93,34 @@ CREATE TABLE IF NOT EXISTS {$table} (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   KEY idx_cms_sections_page_position (page_slug, is_active, position, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+");
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public static function ensurePagesTable(): bool
+    {
+        $pdo = AuthService::getPdo();
+        if (!$pdo) return false;
+
+        try {
+            $table = AuthService::quoteIdentifier(self::pagesTableName());
+            $pdo->exec("
+CREATE TABLE IF NOT EXISTS {$table} (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  slug VARCHAR(191) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  content MEDIUMTEXT NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  updated_by VARCHAR(191) NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_cms_pages_slug (slug),
+  KEY idx_cms_pages_active_slug (is_active, slug)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
             return true;
@@ -329,7 +363,107 @@ ON DUPLICATE KEY UPDATE
             $out[(string)$pageSlug] = isset($pageConfig['title']) ? (string)$pageConfig['title'] : (string)$pageSlug;
         }
 
+        foreach (self::customPages(true) as $page) {
+            $slug = isset($page['slug']) ? (string)$page['slug'] : '';
+            if ($slug === '') continue;
+            $out[$slug] = isset($page['title']) && (string)$page['title'] !== '' ? (string)$page['title'] : $slug;
+        }
+
         return $out;
+    }
+
+    public static function normalizePageSlug(string $slug): string
+    {
+        $slug = trim($slug);
+        if ($slug === '') return '';
+
+        if (class_exists('Transliterator')) {
+            $transliterator = Transliterator::create('Any-Latin; Latin-ASCII; Lower()');
+            if ($transliterator) {
+                $slug = $transliterator->transliterate($slug);
+            }
+        } elseif (function_exists('iconv')) {
+            $converted = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $slug);
+            if (is_string($converted)) {
+                $slug = $converted;
+            }
+        }
+
+        $slug = strtolower($slug);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?: '';
+        return trim($slug, '-');
+    }
+
+    public static function customPages(bool $activeOnly = false): array
+    {
+        $pdo = AuthService::getPdo();
+        if (!$pdo || !self::ensurePagesTable()) return [];
+
+        try {
+            $table = AuthService::quoteIdentifier(self::pagesTableName());
+            $sql = "SELECT id, slug, title, content, is_active, updated_by, updated_at, created_at FROM {$table}";
+            if ($activeOnly) {
+                $sql .= ' WHERE is_active = 1';
+            }
+            $sql .= ' ORDER BY title ASC, slug ASC';
+
+            $stmt = $pdo->query($sql);
+            return $stmt->fetchAll() ?: [];
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    public static function customPageBySlug(string $slug, bool $activeOnly = true): ?array
+    {
+        $pdo = AuthService::getPdo();
+        if (!$pdo || !self::ensurePagesTable()) return null;
+
+        $slug = self::normalizePageSlug($slug);
+        if ($slug === '') return null;
+
+        try {
+            $table = AuthService::quoteIdentifier(self::pagesTableName());
+            $sql = "SELECT id, slug, title, content, is_active, updated_by, updated_at, created_at FROM {$table} WHERE slug = :slug";
+            if ($activeOnly) {
+                $sql .= ' AND is_active = 1';
+            }
+            $sql .= ' LIMIT 1';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':slug' => $slug]);
+            $page = $stmt->fetch();
+            return is_array($page) ? $page : null;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public static function createCustomPage(string $slug, string $title, string $content, ?string $updatedBy = null): bool
+    {
+        $pdo = AuthService::getPdo();
+        if (!$pdo || !self::ensurePagesTable()) return false;
+
+        $slug = self::normalizePageSlug($slug);
+        $title = trim($title);
+        $content = trim($content);
+        if ($slug === '' || $title === '') return false;
+
+        try {
+            $table = AuthService::quoteIdentifier(self::pagesTableName());
+            $stmt = $pdo->prepare("
+INSERT INTO {$table} (slug, title, content, is_active, updated_by)
+VALUES (:slug, :title, :content, 1, :updated_by)
+");
+            return $stmt->execute([
+                ':slug' => $slug,
+                ':title' => $title,
+                ':content' => $content,
+                ':updated_by' => $updatedBy,
+            ]);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public static function pageSlugFromView(string $file): string

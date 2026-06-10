@@ -354,6 +354,29 @@ class AuthService
         }
     }
 
+    public static function deleteUserInDb(string $username): bool
+    {
+        $pdo = self::getPdo();
+        if (!$pdo) return false;
+        $cfg = self::dbConfig();
+        if (!$cfg) return false;
+
+        $username = self::normalizeUsername($username);
+        if ($username === '') return false;
+
+        $table = self::quoteIdentifier((string)($cfg['table'] ?? 'users'));
+        $uCol = self::quoteIdentifier((string)($cfg['username_column'] ?? 'username'));
+
+        try {
+            $stmt = $pdo->prepare("DELETE FROM {$table} WHERE {$uCol} = :username LIMIT 1");
+            $deleted = $stmt->execute([':username' => $username]);
+            self::users(true);
+            return $deleted && $stmt->rowCount() > 0;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     // Session / auth helpers
     public static function userUsername(): ?string
     {

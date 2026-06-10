@@ -132,58 +132,76 @@ $placeholder = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAU
         <h1 class="display-6 fw-semibold mb-2">Gestão da Galeria</h1>
         <p class="lead mb-0">Gerencie seções, pastas automáticas e fotos dos projetos institucionais.</p>
       </div>
-      <a class="btn btn-outline-secondary mt-3 mt-lg-0" href="<?php echo $site_url; ?>/galeria" target="_blank" rel="noreferrer">
-        <i class="bi bi-box-arrow-up-right me-1"></i> Ver galeria pública
-      </a>
+      <div class="d-flex flex-wrap gap-2 mt-3 mt-lg-0">
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#galleryCreateSectionModal">
+          <i class="bi bi-layer-plus me-1"></i> Nova seção
+        </button>
+        <a class="btn btn-outline-secondary" href="<?php echo $site_url; ?>/galeria" target="_blank" rel="noreferrer">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Ver galeria pública
+        </a>
+      </div>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
-      <div class="card-body">
-        <h2 class="h5 fw-semibold">Cadastrar nova seção</h2>
-        <form method="post" action="<?php echo $site_url; ?>/gestao-galeria" class="mt-3" autocomplete="off" data-gallery-section-form>
-          <input type="hidden" name="action" value="create_section">
-          <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($createSectionToken, ENT_QUOTES, 'UTF-8'); ?>">
+    <div class="modal fade" id="galleryCreateSectionModal" tabindex="-1" aria-labelledby="galleryCreateSectionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <form method="post" action="<?php echo $site_url; ?>/gestao-galeria" autocomplete="off" data-gallery-section-form>
+            <div class="modal-header">
+              <div>
+                <h2 class="modal-title h5" id="galleryCreateSectionModalLabel">Cadastrar nova seção</h2>
+                <p class="text-muted mb-0">Crie uma área manual ou automática para organizar fotos da galeria.</p>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="action" value="create_section">
+              <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($createSectionToken, ENT_QUOTES, 'UTF-8'); ?>">
 
-          <div class="row g-3">
-            <div class="col-lg-5">
-              <label class="form-label" for="section_title">Título da seção</label>
-              <input class="form-control" type="text" id="section_title" name="title" value="<?php echo htmlspecialchars($oldCreateTitle, ENT_QUOTES, 'UTF-8'); ?>" required>
+              <div class="row g-3">
+                <div class="col-lg-5">
+                  <label class="form-label" for="section_title">Título da seção</label>
+                  <input class="form-control" type="text" id="section_title" name="title" value="<?php echo htmlspecialchars($oldCreateTitle, ENT_QUOTES, 'UTF-8'); ?>" required>
+                </div>
+                <div class="col-lg-3">
+                  <label class="form-label" for="section_type">Tipo</label>
+                  <select class="form-select" id="section_type" name="type" data-gallery-section-type>
+                    <option value="grid"<?php echo $oldCreateType !== 'directory' ? ' selected' : ''; ?>>Manual (fotos escolhidas)</option>
+                    <option value="directory"<?php echo $oldCreateType === 'directory' ? ' selected' : ''; ?>>Automática (pasta)</option>
+                  </select>
+                </div>
+                <div class="col-lg-4">
+                  <label class="form-label" for="section_background">Estilo de fundo</label>
+                  <select class="form-select" id="section_background" name="background">
+                    <?php foreach ($backgroundOptions as $value => $label): ?>
+                      <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $value === $oldCreateBackground ? ' selected' : ''; ?>>
+                        <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="section_description">Descrição (opcional)</label>
+                  <textarea class="form-control" id="section_description" name="description" rows="2"><?php echo htmlspecialchars($oldCreateDescription, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <div class="col-lg-6" data-gallery-directory-fields>
+                  <label class="form-label" for="section_directory">Pasta dentro de /images</label>
+                  <input class="form-control" type="text" id="section_directory" name="directory" list="gallery-directory-options" value="<?php echo htmlspecialchars($oldCreateDirectory, ENT_QUOTES, 'UTF-8'); ?>" placeholder="images/nome-da-pasta">
+                </div>
+                <div class="col-lg-6" data-gallery-directory-fields>
+                  <label class="form-label" for="section_caption_prefix">Prefixo das legendas</label>
+                  <input class="form-control" type="text" id="section_caption_prefix" name="caption_prefix" value="<?php echo htmlspecialchars($oldCreateCaptionPrefix, ENT_QUOTES, 'UTF-8'); ?>" placeholder="Usa o título se ficar vazio">
+                </div>
+              </div>
             </div>
-            <div class="col-lg-3">
-              <label class="form-label" for="section_type">Tipo</label>
-              <select class="form-select" id="section_type" name="type" data-gallery-section-type>
-                <option value="grid"<?php echo $oldCreateType !== 'directory' ? ' selected' : ''; ?>>Manual (fotos escolhidas)</option>
-                <option value="directory"<?php echo $oldCreateType === 'directory' ? ' selected' : ''; ?>>Automática (pasta)</option>
-              </select>
-            </div>
-            <div class="col-lg-4">
-              <label class="form-label" for="section_background">Estilo de fundo</label>
-              <select class="form-select" id="section_background" name="background">
-                <?php foreach ($backgroundOptions as $value => $label): ?>
-                  <option value="<?php echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $value === $oldCreateBackground ? ' selected' : ''; ?>>
-                    <?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="section_description">Descrição (opcional)</label>
-              <textarea class="form-control" id="section_description" name="description" rows="2"><?php echo htmlspecialchars($oldCreateDescription, ENT_QUOTES, 'UTF-8'); ?></textarea>
-            </div>
-            <div class="col-lg-6" data-gallery-directory-fields>
-              <label class="form-label" for="section_directory">Pasta dentro de /images</label>
-              <input class="form-control" type="text" id="section_directory" name="directory" list="gallery-directory-options" value="<?php echo htmlspecialchars($oldCreateDirectory, ENT_QUOTES, 'UTF-8'); ?>" placeholder="images/nome-da-pasta">
-            </div>
-            <div class="col-lg-6" data-gallery-directory-fields>
-              <label class="form-label" for="section_caption_prefix">Prefixo das legendas</label>
-              <input class="form-control" type="text" id="section_caption_prefix" name="caption_prefix" value="<?php echo htmlspecialchars($oldCreateCaptionPrefix, ENT_QUOTES, 'UTF-8'); ?>" placeholder="Usa o título se ficar vazio">
-            </div>
-          </div>
 
-          <button class="btn btn-primary mt-3" type="submit">
-            <i class="bi bi-layer-plus me-1"></i> Criar seção
-          </button>
-        </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-layer-plus me-1"></i> Criar seção
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
