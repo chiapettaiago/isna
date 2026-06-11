@@ -597,7 +597,16 @@ class AuthService
     {
         self::startSession();
         $token = bin2hex(random_bytes(32));
-        $_SESSION['auth_csrf'][$form] = $token;
+        $tokens = $_SESSION['auth_csrf'][$form] ?? [];
+
+        if (is_string($tokens)) {
+            $tokens = [$tokens];
+        } elseif (!is_array($tokens)) {
+            $tokens = [];
+        }
+
+        $tokens[] = $token;
+        $_SESSION['auth_csrf'][$form] = array_slice($tokens, -5);
         return $token;
     }
 
@@ -605,10 +614,29 @@ class AuthService
     {
         self::startSession();
         if (!isset($_SESSION['auth_csrf'][$form])) return false;
-        $expected = $_SESSION['auth_csrf'][$form];
-        unset($_SESSION['auth_csrf'][$form]);
         if (!is_string($token) || $token === '') return false;
-        return hash_equals($expected, $token);
+
+        $tokens = $_SESSION['auth_csrf'][$form];
+        if (is_string($tokens)) {
+            $tokens = [$tokens];
+        } elseif (!is_array($tokens)) {
+            unset($_SESSION['auth_csrf'][$form]);
+            return false;
+        }
+
+        foreach ($tokens as $index => $expected) {
+            if (is_string($expected) && hash_equals($expected, $token)) {
+                unset($tokens[$index]);
+                if ($tokens) {
+                    $_SESSION['auth_csrf'][$form] = array_values($tokens);
+                } else {
+                    unset($_SESSION['auth_csrf'][$form]);
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function generateCaptchaChallenge(string $form = 'default'): array
