@@ -77,7 +77,7 @@ if (!empty($chartValues)) {
   <div class="container">
     <div class="row justify-content-between align-items-center mb-4">
       <div class="col-lg-8">
-        <h1 class="display-6 fw-semibold mb-2">Área Restrita</h1>
+        <h1 class="display-6 fw-semibold mb-2">Dashboard</h1>
         <p class="lead mb-0">
           Bem-vindo<?php if ($user): ?>, <?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?><?php endif; ?>.
           Utilize os atalhos abaixo para administrar o conteúdo institucional.
