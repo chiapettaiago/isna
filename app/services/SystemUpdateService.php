@@ -26,42 +26,42 @@ class SystemUpdateService
 
         $upstream = $this->run($this->gitCommand(['-C', $this->projectRoot, 'rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}']));
         if ($upstream['code'] !== 0 || trim($upstream['stdout']) === '') {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => false,
                 'available' => false,
                 'canInstall' => false,
                 'message' => 'Nao ha um branch remoto configurado para verificar novas versoes.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         $fetch = $this->run($this->gitCommand(['-C', $this->projectRoot, 'fetch', '--prune']));
         if ($fetch['code'] !== 0) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => false,
                 'available' => false,
                 'canInstall' => false,
                 'message' => 'Nao foi possivel consultar o GitHub. Verifique a conexao e a chave de acesso do servidor.',
                 'changes' => [],
                 'details' => $this->formatOutput($fetch),
-            ];
+            ]);
         }
 
         $local = $this->revParse('HEAD');
         $remote = $this->revParse('@{u}');
 
         if ($local === null || $remote === null) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => false,
                 'available' => false,
                 'canInstall' => false,
                 'message' => 'Nao foi possivel identificar a versao local ou remota do sistema.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         if ($local === $remote) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => true,
                 'available' => false,
                 'canInstall' => false,
@@ -69,13 +69,13 @@ class SystemUpdateService
                 'latestVersion' => substr($remote, 0, 7),
                 'message' => 'O sistema ja esta atualizado.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         $ancestor = $this->run($this->gitCommand(['-C', $this->projectRoot, 'merge-base', '--is-ancestor', 'HEAD', '@{u}']));
         $changes = $this->gitChangeSummary();
 
-        return [
+        return $this->withLastUpdateInfo([
             'ok' => $ancestor['code'] === 0,
             'available' => true,
             'canInstall' => $ancestor['code'] === 0,
@@ -85,7 +85,7 @@ class SystemUpdateService
                 ? 'Nova versao disponivel para instalacao.'
                 : 'Existe divergencia entre a versao local e a versao do GitHub. A instalacao automatica esta bloqueada.',
             'changes' => $changes,
-        ];
+        ]);
     }
 
     public function updateFromGithub(): array
@@ -165,6 +165,19 @@ class SystemUpdateService
             'updated' => true,
             'message' => 'Sistema atualizado com sucesso para a versao ' . substr($newLocal, 0, 7) . '.',
             'details' => $this->formatOutput($pull),
+        ];
+    }
+
+    public function lastUpdateInfo(): array
+    {
+        $lastUpdatedAt = $this->lastUpdatedAt();
+        if ($lastUpdatedAt === null) {
+            return [];
+        }
+
+        return [
+            'lastUpdatedAt' => $lastUpdatedAt,
+            'lastUpdatedLabel' => $this->formatDateTimeLabel($lastUpdatedAt),
         ];
     }
 
@@ -304,31 +317,31 @@ class SystemUpdateService
     {
         $repository = $this->githubRepositoryConfig();
         if ($repository === null) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => false,
                 'available' => false,
                 'canInstall' => false,
                 'message' => 'Atualizacao indisponivel: configure github_owner, github_repo e github_branch no config.php.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         $remoteCommit = $this->fetchRemoteGithubCommit($repository);
         if ($remoteCommit === null) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => false,
                 'available' => false,
                 'canInstall' => false,
                 'message' => 'Nao foi possivel consultar o GitHub pelo PHP. Verifique conexao, permissao do repositorio e token de acesso.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         $remoteSha = $remoteCommit['sha'];
         $localSha = $this->readAppliedVersion() ?: $this->readLocalGitSha();
 
         if ($localSha !== null && hash_equals($localSha, $remoteSha)) {
-            return [
+            return $this->withLastUpdateInfo([
                 'ok' => true,
                 'available' => false,
                 'canInstall' => false,
@@ -336,7 +349,7 @@ class SystemUpdateService
                 'latestVersion' => substr($remoteSha, 0, 7),
                 'message' => 'O sistema ja esta atualizado.',
                 'changes' => [],
-            ];
+            ]);
         }
 
         $changes = $localSha !== null
@@ -347,7 +360,7 @@ class SystemUpdateService
             $changes[] = $remoteCommit['message'];
         }
 
-        return [
+        return $this->withLastUpdateInfo([
             'ok' => true,
             'available' => true,
             'canInstall' => true,
@@ -355,7 +368,7 @@ class SystemUpdateService
             'latestVersion' => substr($remoteSha, 0, 7),
             'message' => 'Nova versao disponivel para instalacao.',
             'changes' => $changes,
-        ];
+        ]);
     }
 
     private function fetchRemoteGithubSha(array $repository): ?string
@@ -555,15 +568,83 @@ class SystemUpdateService
 
     private function readAppliedVersion(): ?string
     {
+        $data = $this->readAppliedVersionData();
+        $sha = is_array($data) && isset($data['sha']) ? (string)$data['sha'] : '';
+
+        return preg_match('/^[a-f0-9]{40}$/', $sha) ? $sha : null;
+    }
+
+    private function readAppliedVersionData(): ?array
+    {
         $path = $this->appliedVersionPath();
         if (!is_readable($path)) {
             return null;
         }
 
         $data = json_decode((string)file_get_contents($path), true);
-        $sha = is_array($data) && isset($data['sha']) ? (string)$data['sha'] : '';
+        return is_array($data) ? $data : null;
+    }
 
-        return preg_match('/^[a-f0-9]{40}$/', $sha) ? $sha : null;
+    private function withLastUpdateInfo(array $result): array
+    {
+        return array_merge($result, $this->lastUpdateInfo());
+    }
+
+    private function lastUpdatedAt(): ?string
+    {
+        $data = $this->readAppliedVersionData();
+        $updatedAt = is_array($data) && isset($data['updated_at']) ? (string)$data['updated_at'] : '';
+
+        if ($this->isValidDateTime($updatedAt)) {
+            return (new DateTimeImmutable($updatedAt))->format(DATE_ATOM);
+        }
+
+        return $this->readLocalGitCommitDate();
+    }
+
+    private function readLocalGitCommitDate(): ?string
+    {
+        if (!is_dir($this->projectRoot . '/.git')) {
+            return null;
+        }
+
+        if ($this->gitBinary === null) {
+            $this->gitBinary = $this->resolveGitBinary();
+        }
+
+        if ($this->gitBinary === null) {
+            return null;
+        }
+
+        $result = $this->run($this->gitCommand(['-C', $this->projectRoot, 'log', '-1', '--format=%cI']));
+        $date = trim($result['stdout']);
+
+        return $result['code'] === 0 && $this->isValidDateTime($date)
+            ? (new DateTimeImmutable($date))->format(DATE_ATOM)
+            : null;
+    }
+
+    private function isValidDateTime(string $value): bool
+    {
+        if (trim($value) === '') {
+            return false;
+        }
+
+        try {
+            new DateTimeImmutable($value);
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    private function formatDateTimeLabel(string $value): string
+    {
+        try {
+            return (new DateTimeImmutable($value))->format('d/m/Y H:i');
+        } catch (Exception $exception) {
+            return $value;
+        }
     }
 
     private function writeAppliedVersion(string $sha): void

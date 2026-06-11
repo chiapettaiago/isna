@@ -5,6 +5,18 @@ global $config, $base_path;
 $systemUpdateToken = AuthService::userIsAdmin() ? AuthService::generateCsrfToken('system_update') : '';
 $systemUpdatesDisabled = !empty($config['disable_update_check']);
 $systemUpdatesApiUrl = rtrim((string)($base_path ?? ''), '/') . '/api/system-updates';
+$systemLastUpdateLabel = '';
+
+if (AuthService::userIsAdmin()) {
+    require_once dirname(__DIR__) . '/services/SystemUpdateService.php';
+
+    try {
+        $systemUpdateInfo = (new SystemUpdateService(dirname(__DIR__, 2)))->lastUpdateInfo();
+        $systemLastUpdateLabel = isset($systemUpdateInfo['lastUpdatedLabel']) ? (string)$systemUpdateInfo['lastUpdatedLabel'] : '';
+    } catch (Throwable $exception) {
+        $systemLastUpdateLabel = '';
+    }
+}
 
 $logFile = dirname(__DIR__) . '/logs/access_log';
 $today = new DateTimeImmutable('today');
@@ -91,6 +103,11 @@ if (!empty($chartValues)) {
             <p class="text-muted mb-2" id="systemUpdateStatus">
               Verificando automaticamente se existe uma nova versão no GitHub.
             </p>
+            <div class="small text-muted mb-2<?php echo $systemLastUpdateLabel !== '' ? '' : ' d-none'; ?>" id="systemUpdateLastUpdated">
+              <?php if ($systemLastUpdateLabel !== ''): ?>
+                Última atualização: <?php echo htmlspecialchars($systemLastUpdateLabel, ENT_QUOTES, 'UTF-8'); ?>
+              <?php endif; ?>
+            </div>
             <div class="small text-muted mb-2 d-none" id="systemUpdateVersions"></div>
             <div class="d-none" id="systemUpdateChangesWrap">
               <p class="fw-semibold mb-1">Incluído nesta versão:</p>
@@ -400,6 +417,7 @@ if (!empty($chartValues)) {
     (function() {
       const card = document.getElementById('systemUpdateCard');
       const statusEl = document.getElementById('systemUpdateStatus');
+      const lastUpdatedEl = document.getElementById('systemUpdateLastUpdated');
       const versionsEl = document.getElementById('systemUpdateVersions');
       const changesWrap = document.getElementById('systemUpdateChangesWrap');
       const changesList = document.getElementById('systemUpdateChanges');
@@ -450,6 +468,20 @@ if (!empty($chartValues)) {
         versionsEl.classList.remove('d-none');
       }
 
+      function renderLastUpdated(data) {
+        if (!lastUpdatedEl) return;
+
+        const label = data.lastUpdatedLabel ? String(data.lastUpdatedLabel) : '';
+        if (!label) {
+          lastUpdatedEl.classList.add('d-none');
+          lastUpdatedEl.textContent = '';
+          return;
+        }
+
+        lastUpdatedEl.textContent = `Última atualização: ${label}`;
+        lastUpdatedEl.classList.remove('d-none');
+      }
+
       async function checkUpdates() {
         setButtonEnabled(false);
         statusEl.textContent = 'Verificando automaticamente se existe uma nova versão no GitHub.';
@@ -473,6 +505,7 @@ if (!empty($chartValues)) {
           }
 
           statusEl.textContent = data.message || 'Verificação de atualizações concluída.';
+          renderLastUpdated(data);
           renderVersions(data);
           renderChanges(data.available ? data.changes : []);
           setButtonEnabled(Boolean(data.available && data.canInstall));
