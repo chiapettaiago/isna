@@ -1,0 +1,348 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 9 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 3125 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 790 Td
+(Relatorio comparativo - ISNA) Tj
+T*
+(Area logada, tela de login, titulos e documentos) Tj
+T*
+(Lancamento: Comparativo com producao isna.org.br em 10/06/2026) Tj
+T*
+(Status: Preparado para apresentacao ao cliente) Tj
+T*
+(Gerado em: 10/06/2026 21:14) Tj
+T*
+() Tj
+T*
+(Este documento apresenta as mudancas implementadas na versao em desenvolvimento e compara com a) Tj
+T*
+(experiencia atualmente publicada em isna.org.br. A area logada de producao redireciona) Tj
+T*
+(visitantes sem autenticacao para o login; por isso, a comparacao da area administrativa) Tj
+T*
+(considera o comportamento publico de acesso e as melhorias implementadas no ambiente local.) Tj
+T*
+() Tj
+T*
+(Resumo) Tj
+T*
+(Login: Tela renovada) Tj
+T*
+(A producao usa uma tela com navegacao publica e card dividido. A nova versao tem visual mais) Tj
+T*
+(limpo, inspirado em painel administrativo moderno, com foco direto no acesso.) Tj
+T*
+(Area logada: Administracao modernizada) Tj
+T*
+(O ambiente autenticado recebeu sidebar com transparencia, telas mais organizadas, acoes em) Tj
+T*
+(modais e permissoes administrativas mais claras.) Tj
+T*
+(Titulos e documentos: Links protegidos) Tj
+T*
+(A producao exibe links diretos para arquivos em /docs. A nova versao passa a usar rota com) Tj
+T*
+(token criptografado no formato /documento/{token}.pdf.) Tj
+T*
+(Operacao: Menos atrito) Tj
+T*
+(Cadastros, edicoes e exclusoes ficaram mais proximos do fluxo esperado por usuarios de paineis) Tj
+T*
+(atuais, reduzindo telas longas e confirmacoes do navegador.) Tj
+T*
+() Tj
+T*
+(Mudancas realizadas) Tj
+T*
+() Tj
+T*
+(Tela de login) Tj
+T*
+(Na producao, o login em https://isna.org.br/login aparece dentro da estrutura visual do site) Tj
+T*
+(publico, com menu superior, card dividido e links de apoio.) Tj
+T*
+(- Nova composicao visual com identidade de painel administrativo, removendo distracoes da tela) Tj
+T*
+(publica.) Tj
+T*
+(- Card de acesso mais compacto, hierarquia tipografica mais clara e foco nos campos de usuario) Tj
+T*
+(e senha.) Tj
+T*
+(- Tratamento para sessao ja ativa, evitando que o usuario autenticado veja novamente um) Tj
+T*
+(formulario desnecessario.) Tj
+T*
+(- Etapa de desafio de seguranca em modal apos as credenciais, com token CSRF proprio para o) Tj
+T*
+(fluxo.) Tj
+T*
+(- Suporte visual para tema escuro nos estados da tela de login e do modal de seguranca.) Tj
+T*
+(Resultado: A entrada na area administrativa ficou mais objetiva, com aparencia mais) Tj
+T*
+(profissional e reforco de seguranca no processo de autenticacao.) Tj
+T*
+() Tj
+T*
+(Area logada e navegacao administrativa) Tj
+T*
+(A producao bloqueia a visualizacao publica da area restrita sem login. Na nova versao, a area) Tj
+T*
+(autenticada foi reorganizada para funcionar como um painel administrativo mais consistente.) Tj
+T*
+(- Sidebar com leve transparencia e efeito semelhante a liquid glass quando expandida.) Tj
+T*
+(- Organizacao visual mais moderna para telas de gestao, com botoes menores e acoes agrupadas.) Tj
+T*
+(- Fluxos de redefinir senha, criar usuario, editar usuario e excluir usuario transferidos para) Tj
+ET
+BT
+/F1 9 Tf
+50 36 Td
+(Pagina 1 de 3) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 9 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 3139 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 790 Td
+(modais.) Tj
+T*
+(- Edicao e remocao de usuarios liberadas apenas para administradores.) Tj
+T*
+(- Confirmacao de exclusao de usuario feita em modal, substituindo confirmacao simples do) Tj
+T*
+(navegador.) Tj
+T*
+(- Formulario de criacao de posts do blog movido para modal.) Tj
+T*
+(- Formulario de criacao de secoes da galeria movido para modal.) Tj
+T*
+(Resultado: O painel ficou mais proximo de uma ferramenta administrativa atual, com menor) Tj
+T*
+(poluicao visual e controles mais seguros para acoes sensiveis.) Tj
+T*
+() Tj
+T*
+(Gestao CMS e paginas) Tj
+T*
+(A tela de gestao CMS recebeu uma revisao visual para se aproximar da experiencia atual do) Tj
+T*
+(WordPress, priorizando listagem, contexto e acoes diretas.) Tj
+T*
+(- Titulo e organizacao da tela revisados para comunicar melhor a gestao da pagina inicial e das) Tj
+T*
+(paginas editaveis.) Tj
+T*
+(- Botao Criar pagina adicionado no topo da tela.) Tj
+T*
+(- Criacao de pagina funcionando em modal, com campos de titulo, slug e conteudo inicial.) Tj
+T*
+(- Novas paginas podem ser registradas no banco de dados e disponibilizadas como rotas publicas) Tj
+T*
+(dinamicas.) Tj
+T*
+(- Correcoes de comportamento para garantir abertura correta dos modais da tela CMS.) Tj
+T*
+(Resultado: O cliente ganha um fluxo mais familiar para administrar conteudos e criar novas) Tj
+T*
+(paginas sem depender de alteracao manual no codigo.) Tj
+T*
+() Tj
+T*
+(Titulos e documentos) Tj
+T*
+(Em https://isna.org.br/titulos-documentos, a producao publica cards de documentos com) Tj
+T*
+(miniaturas e links diretos para arquivos PDF dentro da pasta /docs.) Tj
+T*
+(- A nova versao preserva a experiencia publica dos cards e da visualizacao dos PDFs.) Tj
+T*
+(- Links diretos para nomes reais de arquivos foram substituidos por tokens criptografados.) Tj
+T*
+(- A rota /documento/{token}.pdf valida o token antes de localizar e entregar o arquivo ao) Tj
+T*
+(visitante.) Tj
+T*
+(- O cabecalho de exibicao passa a apresentar o PDF com nome generico, reduzindo exposicao da) Tj
+T*
+(estrutura interna.) Tj
+T*
+(- A funcionalidade existente de visualizacao em modal, paginas e zoom permanece disponivel para) Tj
+T*
+(o usuario final.) Tj
+T*
+(Resultado: O visitante continua abrindo os documentos normalmente, mas a URL deixa de revelar o) Tj
+T*
+(nome do arquivo e o caminho direto usado no servidor.) Tj
+T*
+() Tj
+T*
+(Seguranca e permissoes) Tj
+T*
+(As mudancas tambem reforcam controles administrativos em operacoes que alteram usuarios e) Tj
+T*
+(conteudos.) Tj
+T*
+(- Acoes sensiveis usam tokens CSRF especificos por fluxo.) Tj
+T*
+(- Alterar e excluir usuarios exige perfil administrador.) Tj
+T*
+(- O sistema impede remocao do proprio usuario autenticado.) Tj
+T*
+(- A atualizacao de usuario preserva regras de papel administrativo e validacoes de senha.) Tj
+T*
+(- Parte das configuracoes e registros foi preparada para persistencia em banco, reduzindo) Tj
+T*
+(dependencia de dados fixos em arquivos.) Tj
+T*
+(Resultado: As telas continuam simples para o operador, mas com barreiras melhores para evitar) Tj
+T*
+(acoes indevidas ou acidentais.) Tj
+T*
+() Tj
+ET
+BT
+/F1 9 Tf
+50 36 Td
+(Pagina 2 de 3) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 9 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 2361 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 790 Td
+(Antes e depois) Tj
+T*
+(Login) Tj
+T*
+(Antes: Producao com navbar publica, card dividido e texto de apoio dentro do layout geral do) Tj
+T*
+(site.) Tj
+T*
+(Depois: Tela administrativa dedicada, mais limpa, com sessao ativa, desafio de seguranca em) Tj
+T*
+(modal e suporte visual para tema escuro.) Tj
+T*
+(Area logada) Tj
+T*
+(Antes: Acesso publico redireciona para login; sem credenciais, a estrutura interna de producao) Tj
+T*
+(nao fica visivel para comparacao direta.) Tj
+T*
+(Depois: Painel autenticado com navegacao lateral transparente, telas modernizadas e fluxos) Tj
+T*
+(administrativos em modais.) Tj
+T*
+(Usuarios) Tj
+T*
+(Antes: Acoes administrativas menos protegidas visualmente e confirmacoes menos integradas a) Tj
+T*
+(interface.) Tj
+T*
+(Depois: Criacao, edicao, exclusao e redefinicao de senha em modais; editar e remover somente) Tj
+T*
+(para administradores.) Tj
+T*
+(CMS) Tj
+T*
+(Antes: Gestao menos parecida com ferramentas editoriais atuais e sem botao funcional de criacao) Tj
+T*
+(de pagina no topo.) Tj
+T*
+(Depois: Tela mais proxima do WordPress, com botao Criar pagina, modal funcional e paginas) Tj
+T*
+(dinamicas armazenadas em banco.) Tj
+T*
+(Blog e galeria) Tj
+T*
+(Antes: Formularios de cadastro ocupavam espaco direto nas telas de gestao.) Tj
+T*
+(Depois: Cadastros movidos para modais, mantendo a listagem como foco principal da tela.) Tj
+T*
+(Titulos e documentos) Tj
+T*
+(Antes: Cards em producao apontam para PDFs com caminhos diretos em /docs.) Tj
+T*
+(Depois: Cards passam a abrir PDFs por URLs criptografadas, preservando a visualizacao e) Tj
+T*
+(reduzindo exposicao dos nomes dos arquivos.) Tj
+T*
+() Tj
+T*
+(Criterios de qualidade) Tj
+T*
+(- Producao consultada em 10/06/2026 nas paginas https://isna.org.br/login e) Tj
+T*
+(https://isna.org.br/titulos-documentos.) Tj
+T*
+(- A pagina https://isna.org.br/area-restrita redireciona visitantes sem sessao para o login,) Tj
+T*
+(limitando a comparacao visual publica da area logada.) Tj
+T*
+(- Comparativo de titulos e documentos identifica que a producao atual usa links diretos para) Tj
+T*
+(PDFs em /docs.) Tj
+T*
+(- Relatorio gerado a partir das mudancas implementadas no codigo local da versao em) Tj
+T*
+(desenvolvimento.) Tj
+T*
+(- Recomendado validar em homologacao com usuario administrador antes da publicacao final.) Tj
+ET
+BT
+/F1 9 Tf
+50 36 Td
+(Pagina 3 de 3) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000253 00000 n 
+0000003430 00000 n 
+0000003556 00000 n 
+0000006747 00000 n 
+0000006873 00000 n 
+0000009286 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+9383
+%%EOF

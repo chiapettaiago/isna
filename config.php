@@ -11,7 +11,11 @@ $environment_config = [
     'localhost' => [
         'debug' => true,
         'force_https' => false,
-        'disable_update_check' => true,
+        'disable_update_check' => false,
+        'git_binary' => '/usr/bin/git',
+        'github_owner' => 'chiapettaiago',
+        'github_repo' => 'isna',
+        'github_branch' => 'master',
     ],
     
     // Configuração para ambiente beta
@@ -19,6 +23,10 @@ $environment_config = [
         'debug' => false,
         'force_https' => true,
         'disable_update_check' => false,
+        'git_binary' => '/usr/bin/git',
+        'github_owner' => 'chiapettaiago',
+        'github_repo' => 'isna',
+        'github_branch' => 'master',
     ],
     
     // Configuração padrão
@@ -26,6 +34,10 @@ $environment_config = [
         'debug' => false,
         'force_https' => false,
         'disable_update_check' => false,
+        'git_binary' => '/usr/bin/git',
+        'github_owner' => 'chiapettaiago',
+        'github_repo' => 'isna',
+        'github_branch' => 'master',
     ]
 ];
 

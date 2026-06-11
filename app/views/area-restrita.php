@@ -1,5 +1,10 @@
 <?php
 $user = $currentUser ?? auth_user();
+global $config, $base_path;
+
+$systemUpdateToken = AuthService::userIsAdmin() ? AuthService::generateCsrfToken('system_update') : '';
+$systemUpdatesDisabled = !empty($config['disable_update_check']);
+$systemUpdatesApiUrl = rtrim((string)($base_path ?? ''), '/') . '/api/system-updates';
 
 $logFile = dirname(__DIR__) . '/logs/access_log';
 $today = new DateTimeImmutable('today');
@@ -75,6 +80,35 @@ if (!empty($chartValues)) {
         </a>
       </div>
     </div>
+
+    <?php if (AuthService::userIsAdmin()): ?>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3" id="systemUpdateCard" data-updates-url="<?php echo htmlspecialchars($systemUpdatesApiUrl, ENT_QUOTES, 'UTF-8'); ?>">
+          <div class="flex-grow-1">
+            <h2 class="h5 fw-semibold mb-1">
+              <i class="bi bi-cloud-arrow-down-fill me-2 text-info"></i>Atualização do sistema
+            </h2>
+            <p class="text-muted mb-2" id="systemUpdateStatus">
+              Verificando automaticamente se existe uma nova versão no GitHub.
+            </p>
+            <div class="small text-muted mb-2 d-none" id="systemUpdateVersions"></div>
+            <div class="d-none" id="systemUpdateChangesWrap">
+              <p class="fw-semibold mb-1">Incluído nesta versão:</p>
+              <ul class="mb-0 ps-3" id="systemUpdateChanges"></ul>
+            </div>
+          </div>
+          <?php if ($systemUpdatesDisabled): ?>
+            <button class="btn btn-outline-secondary" type="button" disabled>
+              <i class="bi bi-slash-circle me-1"></i> Atualizações desativadas
+            </button>
+          <?php else: ?>
+            <button class="btn btn-info text-white" type="button" id="systemUpdateInstallButton" data-bs-toggle="modal" data-bs-target="#systemUpdateModal" disabled>
+              <i class="bi bi-cloud-arrow-down-fill me-1"></i> Instalar atualização
+            </button>
+          <?php endif; ?>
+        </div>
+      </div>
+    <?php endif; ?>
 
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body">
@@ -218,6 +252,40 @@ if (!empty($chartValues)) {
   </div>
 </section>
 
+<?php if (AuthService::userIsAdmin() && !$systemUpdatesDisabled): ?>
+  <div class="modal fade" id="systemUpdateModal" tabindex="-1" aria-labelledby="systemUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title h5" id="systemUpdateModalLabel">Instalar atualização</h2>
+            <div class="small text-muted">Atualização do sistema via GitHub</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">
+            O sistema vai baixar e aplicar a nova versão encontrada no GitHub.
+          </p>
+          <div class="alert alert-warning mb-0" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            A operação pode alterar arquivos do sistema. Continue apenas se não houver edições locais pendentes no servidor.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <form method="post" action="<?php echo $site_url; ?>/sistema-atualizar">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($systemUpdateToken, ENT_QUOTES, 'UTF-8'); ?>">
+            <button class="btn btn-info text-white" type="submit">
+              <i class="bi bi-cloud-arrow-down-fill me-1"></i> Instalar atualização
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+
 <?php if (!$logReadError): ?>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script>
@@ -323,6 +391,101 @@ if (!empty($chartValues)) {
           setTimeout(loadAndRender, 100);
         });
       }
+    })();
+  </script>
+<?php endif; ?>
+
+<?php if (AuthService::userIsAdmin() && !$systemUpdatesDisabled): ?>
+  <script>
+    (function() {
+      const card = document.getElementById('systemUpdateCard');
+      const statusEl = document.getElementById('systemUpdateStatus');
+      const versionsEl = document.getElementById('systemUpdateVersions');
+      const changesWrap = document.getElementById('systemUpdateChangesWrap');
+      const changesList = document.getElementById('systemUpdateChanges');
+      const installButton = document.getElementById('systemUpdateInstallButton');
+
+      if (!card || !statusEl || !installButton) return;
+
+      function setButtonEnabled(enabled) {
+        installButton.disabled = !enabled;
+        installButton.classList.toggle('btn-info', enabled);
+        installButton.classList.toggle('btn-outline-secondary', !enabled);
+        installButton.classList.toggle('text-white', enabled);
+      }
+
+      function renderChanges(changes) {
+        if (!changesWrap || !changesList) return;
+
+        changesList.textContent = '';
+        if (!Array.isArray(changes) || changes.length === 0) {
+          changesWrap.classList.add('d-none');
+          return;
+        }
+
+        changes.slice(0, 8).forEach(function(change) {
+          const item = document.createElement('li');
+          item.textContent = String(change);
+          changesList.appendChild(item);
+        });
+
+        changesWrap.classList.remove('d-none');
+      }
+
+      function renderVersions(data) {
+        if (!versionsEl) return;
+
+        const currentVersion = data.currentVersion ? String(data.currentVersion) : '';
+        const latestVersion = data.latestVersion ? String(data.latestVersion) : '';
+
+        if (!currentVersion && !latestVersion) {
+          versionsEl.classList.add('d-none');
+          versionsEl.textContent = '';
+          return;
+        }
+
+        versionsEl.textContent = currentVersion && latestVersion
+          ? `Atual: ${currentVersion} | Disponível: ${latestVersion}`
+          : `Disponível: ${latestVersion || currentVersion}`;
+        versionsEl.classList.remove('d-none');
+      }
+
+      async function checkUpdates() {
+        setButtonEnabled(false);
+        statusEl.textContent = 'Verificando automaticamente se existe uma nova versão no GitHub.';
+
+        try {
+          const response = await fetch(card.dataset.updatesUrl || '', {
+            headers: { 'Accept': 'application/json' },
+            credentials: 'same-origin'
+          });
+          const body = await response.text();
+          let data = null;
+
+          try {
+            data = JSON.parse(body);
+          } catch (parseError) {
+            throw new Error(`Resposta invalida do servidor (${response.status || 'sem status'}).`);
+          }
+
+          if (!response.ok) {
+            throw new Error(data.message || `Erro HTTP ${response.status}.`);
+          }
+
+          statusEl.textContent = data.message || 'Verificação de atualizações concluída.';
+          renderVersions(data);
+          renderChanges(data.available ? data.changes : []);
+          setButtonEnabled(Boolean(data.available && data.canInstall));
+        } catch (error) {
+          statusEl.textContent = error && error.message
+            ? `Não foi possível verificar novas versões automaticamente: ${error.message}`
+            : 'Não foi possível verificar novas versões automaticamente.';
+          renderChanges([]);
+          setButtonEnabled(false);
+        }
+      }
+
+      window.addEventListener('load', checkUpdates);
     })();
   </script>
 <?php endif; ?>

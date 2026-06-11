@@ -52,6 +52,8 @@ class ReleaseReportPdf
         $lines[] = '';
         $lines[] = 'Antes e depois';
 
+        $afterLabel = (string)($report['afterLabel'] ?? 'Depois da 2.1');
+
         foreach (($report['deliveryRows'] ?? []) as $row) {
             if (!is_array($row)) {
                 continue;
@@ -59,7 +61,7 @@ class ReleaseReportPdf
 
             $lines[] = (string)($row['area'] ?? '');
             $lines[] = 'Antes: ' . (string)($row['before'] ?? '');
-            $lines[] = 'Depois da 2.1: ' . (string)($row['after'] ?? '');
+            $lines[] = $afterLabel . ': ' . (string)($row['after'] ?? '');
         }
 
         $lines[] = '';

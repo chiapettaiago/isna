@@ -33,7 +33,7 @@ if (preg_match('#^/documento/([^/]+)\.pdf$#', $path, $matches)) {
 }
 
 $currentUser = null;
-$protectedRoutes = ['/area-restrita', '/relatorios-acesso', '/relatorios-acesso/pdf', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sobre', '/sobre/versao-2-1', '/sobre/versao-2-1/pdf'];
+$protectedRoutes = ['/area-restrita', '/relatorios-acesso', '/relatorios-acesso/pdf', '/gestao-usuarios', '/gestao-galeria', '/gestao-blog', '/gestao-cms', '/sistema-atualizar', '/api/system-updates', '/sobre', '/sobre/versao-2-1', '/sobre/versao-2-1/pdf'];
 
 // Registrar acessos simples no MySQL remoto (apenas GETs relevantes)
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -163,6 +163,59 @@ if ($path === '/api/pdf-page' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
+if ($path === '/api/system-updates' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    if (!AuthService::check()) {
+        http_response_code(401);
+        echo json_encode(['ok' => false, 'message' => 'Nao autorizado.']);
+        exit;
+    }
+
+    if (!AuthService::userIsAdmin()) {
+        http_response_code(403);
+        echo json_encode(['ok' => false, 'message' => 'Apenas administradores podem verificar atualizacoes.']);
+        exit;
+    }
+
+    if (!empty($config['disable_update_check'])) {
+        echo json_encode([
+            'ok' => true,
+            'available' => false,
+            'canInstall' => false,
+            'message' => 'A verificacao de atualizacoes esta desativada neste ambiente.',
+            'changes' => [],
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    require_once __DIR__ . '/app/services/SystemUpdateService.php';
+
+    ob_start();
+
+    try {
+        $updater = new SystemUpdateService(__DIR__);
+        $result = $updater->checkForUpdates();
+        ob_end_clean();
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    } catch (Throwable $exception) {
+        ob_end_clean();
+        http_response_code(500);
+        echo json_encode([
+            'ok' => false,
+            'available' => false,
+            'canInstall' => false,
+            'message' => 'Erro interno ao verificar atualizacoes: ' . $exception->getMessage(),
+            'changes' => [],
+        ], JSON_UNESCAPED_UNICODE);
+    }
+    exit;
+}
+
 if (in_array($path, $protectedRoutes, true) && !AuthService::check()) {
     AuthService::flashMessage('warning', 'Faça login para acessar a página solicitada.');
     $intended = $path;
@@ -230,6 +283,66 @@ if ($path === '/sobre/versao-2-1/pdf' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Cache-Control: private, max-age=0, must-revalidate');
     echo $pdf;
     exit;
+}
+
+if ($path === '/relatorio-comparativo-area-logada-login-documentos.pdf' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $pdfPath = __DIR__ . '/storage/reports/relatorio-comparativo-area-logada-login-documentos.pdf';
+    $filename = 'relatorio-comparativo-area-logada-login-documentos.pdf';
+
+    if (!is_file($pdfPath)) {
+        http_response_code(404);
+        echo 'Relatorio nao encontrado.';
+        exit;
+    }
+
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="' . $filename . '"');
+    header('Content-Length: ' . filesize($pdfPath));
+    header('Cache-Control: public, max-age=3600');
+    readfile($pdfPath);
+    exit;
+}
+
+if ($path === '/sistema-atualizar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $token = $_POST['csrf_token'] ?? '';
+
+    if (!AuthService::validateCsrfToken('system_update', is_string($token) ? $token : null)) {
+        AuthService::flashMessage('error', 'Token de segurança inválido. Por favor, tente novamente.');
+        AuthService::redirect('area-restrita');
+    }
+
+    if (!AuthService::userIsAdmin()) {
+        AuthService::flashMessage('error', 'Apenas administradores podem atualizar o sistema.');
+        AuthService::redirect('area-restrita');
+    }
+
+    if (!empty($config['disable_update_check'])) {
+        AuthService::flashMessage('warning', 'A verificação de atualizações está desativada neste ambiente.');
+        AuthService::redirect('area-restrita');
+    }
+
+    require_once __DIR__ . '/app/services/SystemUpdateService.php';
+
+    $updater = new SystemUpdateService(__DIR__);
+    $result = $updater->updateFromGithub();
+
+    if (!empty($result['updated']) && function_exists('opcache_reset')) {
+        @opcache_reset();
+    }
+
+    $message = (string)($result['message'] ?? 'Verificação de atualização concluída.');
+    $details = trim((string)($result['details'] ?? ''));
+
+    if ($details !== '') {
+        $message .= ' Detalhes: ' . $details;
+    }
+
+    AuthService::flashMessage(!empty($result['ok']) ? 'success' : 'error', $message);
+    AuthService::redirect('area-restrita');
 }
 
 if ($path === '/gestao-usuarios' && $_SERVER['REQUEST_METHOD'] === 'POST') {
